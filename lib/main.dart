@@ -2,6 +2,7 @@ import 'package:caterease/features/restaurants/presentation/bloc/restaurants_blo
 import 'package:caterease/features/location/presentation/bloc/location_bloc.dart'; // تأكد من استيراد LocationBloc
 import 'package:caterease/injection_container.dart';
 import 'package:caterease/features/restaurants/presentation/pages/home_page.dart';
+import 'package:caterease/my_order.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (_) => sl<RestaurantsBloc>()),
           BlocProvider(create: (_) => sl<LocationBloc>()),
         ],
-        child: HomePage(),
+        child: MyOrder(),
       ),
     );
   }
