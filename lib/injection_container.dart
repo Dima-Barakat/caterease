@@ -1,4 +1,3 @@
-
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
@@ -24,10 +23,10 @@ Future<void> init() async {
   // Features
   await _initRestaurants();
   await _initLocation();
-  
+
   // Core
   await _initCore();
-  
+
   // External
   await _initExternal();
 }
@@ -87,5 +86,3 @@ Future<void> _initCore() async {
 Future<void> _initExternal() async {
   sl.registerLazySingleton(() => http.Client());
 }
-
-
