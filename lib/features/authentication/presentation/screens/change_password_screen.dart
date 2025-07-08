@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:caterease/core/widgets/customtextfeild.dart';
+import 'package:caterease/core/widgets/custom_text_field.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   @override
@@ -13,6 +13,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
   bool isPasswordEnabled = false;
   bool isConfirmEnabled = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,91 +21,83 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         backgroundColor: Colors.white,
       ),
       body: Container(
-        padding: EdgeInsets.all(40),
+        padding: const EdgeInsets.all(40),
         child: Form(
-            key: formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  " Account confirmation",
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue[900],
-                  ),
+          key: formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                "Account Confirmation",
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue[900],
                 ),
-                SizedBox(
-                  height: 30,
-                ),
-                Text(
-                  "enter your new password",
-                  textAlign: TextAlign.end,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                CustomTextField(
-                  label: "password",
-                  hint: "",
-                  controller: passwordController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'يرجى إدخال كلمة المرور';
+              ),
+              const SizedBox(height: 30),
+              const Text(
+                "Enter your new password",
+                textAlign: TextAlign.end,
+              ),
+              const SizedBox(height: 10),
+              CustomTextField(
+                label: "Password",
+                hint: "",
+                controller: passwordController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your password';
+                  }
+                  if (value.length < 8) {
+                    return 'Password must be at least 8 characters';
+                  }
+                  if (!RegExp(r'[A-Z]').hasMatch(value)) {
+                    return 'Must contain at least one uppercase letter';
+                  }
+                  if (!RegExp(r'[a-z]').hasMatch(value)) {
+                    return 'Must contain at least one lowercase letter';
+                  }
+                  if (!RegExp(r'\d').hasMatch(value)) {
+                    return 'Must contain at least one number';
+                  }
+                  if (!RegExp(r'[!@#\$&*~]').hasMatch(value)) {
+                    return 'Must contain at least one special character (!@#\$&*~)';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 30),
+              CustomTextField(
+                label: "Confirm Password",
+                hint: "",
+                controller: confirmPasswordController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please confirm your password';
+                  }
+                  if (value != passwordController.text) {
+                    return 'Passwords do not match';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (formKey.currentState!.validate()) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Creating account...')),
+                      );
                     }
-                    if (value.length < 8) {
-                      return 'كلمة المرور يجب أن تكون 8 أحرف على الأقل';
-                    }
-                    if (!RegExp(r'[A-Z]').hasMatch(value)) {
-                      return 'يجب أن تحتوي على حرف كبير واحد على الأقل';
-                    }
-                    if (!RegExp(r'[a-z]').hasMatch(value)) {
-                      return 'يجب أن تحتوي على حرف صغير واحد على الأقل';
-                    }
-                    if (!RegExp(r'\d').hasMatch(value)) {
-                      return 'يجب أن تحتوي على رقم واحد على الأقل';
-                    }
-                    if (!RegExp(r'[!@#\$&*~]').hasMatch(value)) {
-                      return 'يجب أن تحتوي على رمز خاص واحد على الأقل (!@#\$&*~)';
-                    }
-                    return null;
                   },
+                  child: const Text("Confirm"),
                 ),
-                SizedBox(
-                  height: 30,
-                ),
-                CustomTextField(
-                  label: "confirm password",
-                  hint: "",
-                  controller: confirmPasswordController,
-                  //   enabled: isConfirmEnabled,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'يرجى تأكيد كلمة المرور';
-                    }
-                    if (value != passwordController.text) {
-                      return 'كلمة المرور غير متطابقة';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                SizedBox(
-                  child: ElevatedButton(
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text('جاري إنشاء الحساب...')),
-                          );
-                        }
-                      },
-                      child: Text("confirm")),
-                )
-              ],
-            )),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
