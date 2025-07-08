@@ -1,7 +1,7 @@
 import 'package:caterease/features/authentication/presentation/controllers/bloc/register/register_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:caterease/core/widgets/customtextfeild.dart';
+import 'package:caterease/core/widgets/custom_text_field.dart';
 import 'package:caterease/features/authentication/presentation/screens/verification_screen.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -56,85 +56,87 @@ class _RegisterPage extends State<RegisterPage> {
                 child: Column(
                   children: [
                     CustomTextField(
-                      label: "name",
-                      hint: "ديما بركات",
+                      label: "Name",
+                      hint: "Full Name",
                       controller: nameController,
-                      validator: (value) =>
-                          value == null || value.isEmpty ? "هذا الحقل مطلوب" : null,
+                      validator: (value) => value == null || value.isEmpty
+                          ? "This field is required"
+                          : null,
                     ),
                     const SizedBox(height: 20),
                     DropdownButtonFormField<String>(
                       value: selectedGender,
                       decoration: InputDecoration(
-                        labelText: 'gender',
+                        labelText: 'Gender',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
                       ),
                       items: const [
-                        DropdownMenuItem(value: 'm', child: Text('ذكر')),
-                        DropdownMenuItem(value: 'f', child: Text('أنثى')),
+                        DropdownMenuItem(value: 'm', child: Text('Male')),
+                        DropdownMenuItem(value: 'f', child: Text('Female')),
                       ],
                       onChanged: (value) => setState(() {
                         selectedGender = value;
                       }),
-                      validator: (value) =>
-                          value == null || value.isEmpty ? 'الرجاء اختيار الجنس' : null,
+                      validator: (value) => value == null || value.isEmpty
+                          ? 'Please select a gender'
+                          : null,
                     ),
                     const SizedBox(height: 20),
                     CustomTextField(
-                      label: "email",
+                      label: "Email",
                       controller: emailController,
                       hint: "example@gmail.com",
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "هذا الحقل مطلوب";
+                          return "This field is required";
                         }
                         final pattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
                         final regex = RegExp(pattern);
                         return !regex.hasMatch(value)
-                            ? "الرجاء إدخال بريد إلكتروني صالح"
+                            ? "Please enter a valid email address"
                             : null;
                       },
                     ),
                     const SizedBox(height: 20),
                     CustomTextField(
-                      label: "password",
+                      label: "Password",
                       controller: passwordController,
                       hint: "p@sSw0rd",
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'يرجى إدخال كلمة المرور';
+                          return 'Please enter a password';
                         }
                         if (value.length < 8) {
-                          return 'كلمة المرور يجب أن تكون 8 أحرف على الأقل';
+                          return 'Password must be at least 8 characters';
                         }
                         if (!RegExp(r'[A-Z]').hasMatch(value)) {
-                          return 'يجب أن تحتوي على حرف كبير واحد على الأقل';
+                          return 'Must contain at least one uppercase letter';
                         }
                         if (!RegExp(r'[a-z]').hasMatch(value)) {
-                          return 'يجب أن تحتوي على حرف صغير واحد على الأقل';
+                          return 'Must contain at least one lowercase letter';
                         }
                         if (!RegExp(r'\d').hasMatch(value)) {
-                          return 'يجب أن تحتوي على رقم واحد على الأقل';
+                          return 'Must contain at least one number';
                         }
                         if (!RegExp(r'[!@#\$&*~]').hasMatch(value)) {
-                          return 'يجب أن تحتوي على رمز خاص واحد على الأقل (!@#\$&*~)';
+                          return 'Must contain at least one special character (!@#\$&*~)';
                         }
                         return null;
                       },
                     ),
                     const SizedBox(height: 20),
                     CustomTextField(
-                      label: "confirm_password",
+                      label: "Confirm Password",
                       hint: "",
                       controller: confirmPasswordController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "هذا الحقل مطلوب";
+                          return "This field is required";
                         }
                         if (value != passwordController.text) {
-                          return "كلمة المرور غير متطابقة";
+                          return "Passwords do not match";
                         }
                         return null;
                       },
@@ -144,13 +146,14 @@ class _RegisterPage extends State<RegisterPage> {
                       controller: phoneNumberController,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        label: const Text("phone_number"),
+                        label: const Text("Phone Number"),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
                       ),
-                      validator: (value) =>
-                          value == null || value.isEmpty ? "هذا الحقل مطلوب" : null,
+                      validator: (value) => value == null || value.isEmpty
+                          ? "This field is required"
+                          : null,
                     ),
                     const SizedBox(height: 20),
                     SizedBox(
@@ -175,7 +178,7 @@ class _RegisterPage extends State<RegisterPage> {
                               },
                         child: state is RegisterLoading
                             ? const CircularProgressIndicator()
-                            : const Text("send"),
+                            : const Text("Register"),
                       ),
                     )
                   ],

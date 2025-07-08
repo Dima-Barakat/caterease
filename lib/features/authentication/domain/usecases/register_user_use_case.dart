@@ -14,8 +14,8 @@ class RegisterUserUseCase {
     String confirmationPassword,
     String phone,
     String gender,
-  ) {
-    return repository.register(
+  ) async {
+    return await repository.register(
         name: name,
         email: email,
         password: password,

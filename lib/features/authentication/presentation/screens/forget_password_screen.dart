@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../screens/verification_screen.dart';
-import 'package:caterease/core/widgets/customtextfeild.dart';
+import 'package:caterease/core/widgets/custom_text_field.dart';
 
 class ForgetPassword extends StatefulWidget {
   @override
@@ -29,15 +29,15 @@ class _ForgetPasswordState extends State<ForgetPassword> {
         ], */
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             image: DecorationImage(image: AssetImage(""), fit: BoxFit.cover)),
-        padding: EdgeInsets.all(40),
+        padding: const EdgeInsets.all(40),
         child: Form(
             key: formstate,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   "enter your email",
                   //    textAlign: TextAlign.center,
                   style: TextStyle(
@@ -45,7 +45,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       fontSize: 20,
                       fontWeight: FontWeight.bold),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 50,
                 ),
                 CustomTextField(
@@ -57,17 +57,16 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       return "this fieled is required";
                     }
 
-                    // التعبير المنتظم لفحص البريد الإلكتروني
                     String pattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
                     RegExp regex = RegExp(pattern);
                     if (!regex.hasMatch(value)) {
                       return "please enter correct email";
                     }
 
-                    return null; // صالح
+                    return null; 
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 ElevatedButton(
@@ -77,7 +76,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                     onPressed: () {
                       if (formstate.currentState!.validate()) {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => VerificationPage(email: "",)));
+                            builder: (context) => const VerificationPage(email: "",)));
                       }
                     },
                     child: Text("send"))
