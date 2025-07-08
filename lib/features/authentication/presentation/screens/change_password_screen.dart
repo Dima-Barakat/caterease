@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:caterease/core/widgets/customtextfeild.dart';
+import 'package:caterease/core/widgets/custom_text_feild.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   @override

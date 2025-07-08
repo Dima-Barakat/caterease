@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../screens/verification_screen.dart';
-import 'package:caterease/core/widgets/customtextfeild.dart';
+import 'package:caterease/core/widgets/custom_text_feild.dart';
 
 class ForgetPassword extends StatefulWidget {
   @override

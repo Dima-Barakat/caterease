@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:caterease/core/error/failures.dart';
 import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' as http;
