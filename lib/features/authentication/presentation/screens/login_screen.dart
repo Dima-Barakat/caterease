@@ -1,4 +1,5 @@
-import 'package:caterease/core/widgets/customtextfeild.dart';
+import 'package:caterease/core/widgets/custom_text_field.dart';
+import 'package:caterease/features/authentication/presentation/controllers/bloc/register/register_bloc.dart';
 import 'package:caterease/features/authentication/presentation/screens/forget_password_screen.dart';
 import 'package:caterease/features/authentication/presentation/screens/register_screen.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  GlobalKey<FormState> formstate = GlobalKey();
+  GlobalKey<FormState> formState = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +34,12 @@ class _LoginPageState extends State<LoginPage> {
             image: AssetImage('images/caterease.jpg'),
             fit: BoxFit.cover,
           ),
-          ),
+        ),
         padding: const EdgeInsets.all(40),
         child: Center(
           child: SingleChildScrollView(
             child: Form(
-              key: formstate,
+              key: formState,
               child: BlocListener<LoginBloc, LoginState>(
                 listener: (context, state) {
                   if (state is LoginFailure) {
@@ -56,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
-                      "login",
+                      "Login",
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -65,30 +66,30 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(height: 50),
                     CustomTextField(
-                      label: "email",
+                      label: "Email",
                       controller: emailController,
                       hint: "example@gmail.com",
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "هذا الحقل مطلوب";
+                          return "This field is required";
                         }
-                        String pattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}\$';
+                        String pattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
                         RegExp regex = RegExp(pattern);
                         if (!regex.hasMatch(value)) {
-                          return "الرجاء إدخال بريد إلكتروني صالح";
+                          return "Please enter a valid email address";
                         }
                         return null;
                       },
                     ),
                     const SizedBox(height: 30),
                     CustomTextField(
-                      label: "password",
+                      label: "Password",
                       controller: passwordController,
                       hint: "p@sSw0rd",
                       isPassword: true,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'يرجى إدخال كلمة المرور';
+                          return 'Please enter your password';
                         }
                         return null;
                       },
@@ -98,11 +99,11 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                              builder: (context) =>  ForgetPassword()),
+                              builder: (context) => ForgetPassword()),
                         );
                       },
                       child: const Text(
-                        "forget your password?",
+                        "Forgot your password?",
                         style: TextStyle(color: Color(0xFF314E76)),
                       ),
                     ),
@@ -120,13 +121,12 @@ class _LoginPageState extends State<LoginPage> {
                           onPressed: state is LoginLoading
                               ? null
                               : () {
-                                  if (formstate.currentState!.validate()) {
+                                  if (formState.currentState!.validate()) {
                                     context.read<LoginBloc>().add(
                                           LoginSubmitted(
-                                            email:
-                                                emailController.text.trim(),
-                                            password: passwordController.text
-                                                .trim(),
+                                            email: emailController.text.trim(),
+                                            password:
+                                                passwordController.text.trim(),
                                           ),
                                         );
                                   }
@@ -165,9 +165,14 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         TextButton(
                           onPressed: () {
-                            Navigator.of(context).push(
+                            Navigator.push(
+                              context,
                               MaterialPageRoute(
-                                  builder: (context) => const RegisterPage()),
+                                builder: (_) => BlocProvider<RegisterBloc>(
+                                  create: (_) => sl<RegisterBloc>(),
+                                  child: const RegisterPage(),
+                                ),
+                              ),
                             );
                           },
                           child: const Text("Create account"),

@@ -45,4 +45,14 @@ class AuthRepository implements BaseAuthRepository {
       throw Exception('Error fetching Registering: $e');
     }
   }
+
+  Future<Either<Failure, Unit>> verifyEmail(
+      {required String userId, required String otp}) async {
+    try {
+      return await remoteDataSource.verifyEmail(userId: userId, otp: otp);
+    } catch (e) {
+      print(e);
+      throw Exception('Error Fetching Verifying Email: $e');
+    }
+  }
 }

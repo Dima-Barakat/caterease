@@ -3,8 +3,10 @@ import 'package:caterease/features/authentication/data/repositories/auth_reposit
 import 'package:caterease/features/authentication/domain/repositories/base_auth_repository.dart';
 import 'package:caterease/features/authentication/domain/usecases/login_user_use_case.dart';
 import 'package:caterease/features/authentication/domain/usecases/register_user_use_case.dart';
+import 'package:caterease/features/authentication/domain/usecases/verify_email_use_case.dart';
 import 'package:caterease/features/authentication/presentation/controllers/bloc/login/login_bloc.dart';
 import 'package:caterease/features/authentication/presentation/controllers/bloc/register/register_bloc.dart';
+import 'package:caterease/features/authentication/presentation/controllers/bloc/verify/verify_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
@@ -91,10 +93,13 @@ Future<void> _initAuthentication() async {
   //:Bloc
   sl.registerFactory(() => LoginBloc(sl()));
   sl.registerFactory(() => RegisterBloc(sl()));
+  sl.registerFactory(() => VerifyBloc(sl()));
+
 
   //: UseCases
   sl.registerLazySingleton(() => LoginUserUseCase(sl()));
   sl.registerLazySingleton(() => RegisterUserUseCase(sl()));
+  sl.registerLazySingleton(() => VerifyEmailUseCase(sl()));
 
   //: Repositories
   sl.registerLazySingleton<BaseAuthRepository>(() => AuthRepository(sl()));
