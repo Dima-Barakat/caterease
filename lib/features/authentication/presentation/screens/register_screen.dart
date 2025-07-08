@@ -1,7 +1,7 @@
 import 'package:caterease/features/authentication/presentation/controllers/bloc/register/register_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:caterease/core/widgets/customtextfeild.dart';
+import 'package:caterease/core/widgets/custom_text_feild.dart';
 import 'package:caterease/features/authentication/presentation/screens/verification_screen.dart';
 
 class RegisterPage extends StatefulWidget {
