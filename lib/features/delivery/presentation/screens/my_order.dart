@@ -1,7 +1,7 @@
 import 'package:caterease/core/theming/colors_theme.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+//import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 class MyOrder extends StatefulWidget {
   @override

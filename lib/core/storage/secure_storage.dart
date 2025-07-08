@@ -10,7 +10,7 @@ class SecureStorage {
   }
 
   Future<void> saveUserData(
-      {required String userId,
+      {required int userId,
       required String email,
       required String? image,
       String? name}) async {
