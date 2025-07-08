@@ -1,4 +1,3 @@
-
 import 'package:caterease/features/authentication/data/models/authentication_model.dart';
 import 'package:caterease/features/authentication/domain/repositories/base_auth_repository.dart';
 

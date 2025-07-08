@@ -1,16 +1,13 @@
-import 'package:caterease/features/authentication/data/datasources/auth_remote_data_source.dart';
-import 'package:caterease/features/authentication/data/repositories/auth_repository.dart';
-import 'package:caterease/features/authentication/domain/usecases/login_user_use_case.dart';
+import 'package:caterease/core/widgets/customtextfeild.dart';
+import 'package:caterease/features/authentication/presentation/screens/forget_password_screen.dart';
+import 'package:caterease/features/authentication/presentation/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../injection_container.dart';
 import '../controllers/bloc/login/login_bloc.dart';
 import '../controllers/bloc/login/login_event.dart';
 import '../controllers/bloc/login/login_state.dart';
-
-import '../screens/register_screen.dart';
-import '../screens/forget_password_screen.dart';
-
-import 'package:caterease/core/widgets/customtextfeild.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -29,173 +26,155 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => LoginBloc(LoginUserUseCase(AuthRepository(AuthRemoteDataSourceImpl()))),
-      child: Scaffold(
-        body: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(
-                  'images/caterease.jpg'), // Add your background image asset if any
-              fit: BoxFit.cover,
-            ),
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('images/caterease.jpg'),
+            fit: BoxFit.cover,
           ),
-          padding: const EdgeInsets.all(40),
-          child: Center(
-            child: SingleChildScrollView(
-              child: Form(
-                key: formstate,
-                child: BlocListener<LoginBloc, LoginState>(
-                  listener: (context, state) {
-                    if (state is LoginFailure) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(state.error)),
-                      );
-                    } else if (state is LoginSuccess) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Welcome ${state.user.user.name}')),
-                      );
-                    }
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "login",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 30,
-                        ),
+        ),
+        padding: const EdgeInsets.all(40),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Form(
+              key: formstate,
+              child: BlocListener<LoginBloc, LoginState>(
+                listener: (context, state) {
+                  if (state is LoginFailure) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(state.error)),
+                    );
+                  } else if (state is LoginSuccess) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          content: Text('Welcome ${state.user.user.name}')),
+                    );
+                  }
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "login",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
                       ),
-                      const SizedBox(height: 50),
-                      CustomTextField(
-                        label: "email",
-                        controller: emailController,
-                        hint: "example@gmail.com",
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "هذا الحقل مطلوب";
-                          }
-                          String pattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
-                          RegExp regex = RegExp(pattern);
-                          if (!regex.hasMatch(value)) {
-                            return "الرجاء إدخال بريد إلكتروني صالح";
-                          }
-                          return null;
-                        },
+                    ),
+                    const SizedBox(height: 50),
+                    CustomTextField(
+                      label: "email",
+                      controller: emailController,
+                      hint: "example@gmail.com",
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "هذا الحقل مطلوب";
+                        }
+                        String pattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}\$';
+                        RegExp regex = RegExp(pattern);
+                        if (!regex.hasMatch(value)) {
+                          return "الرجاء إدخال بريد إلكتروني صالح";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 30),
+                    CustomTextField(
+                      label: "password",
+                      controller: passwordController,
+                      hint: "p@sSw0rd",
+                      isPassword: true,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'يرجى إدخال كلمة المرور';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) =>  ForgetPassword()),
+                        );
+                      },
+                      child: const Text(
+                        "forget your password?",
+                        style: TextStyle(color: Color(0xFF314E76)),
                       ),
-                      const SizedBox(height: 30),
-                      CustomTextField(
-                        label: "password",
-                        controller: passwordController,
-                        hint: "p@sSw0rd",
-                        isPassword: true,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'يرجى إدخال كلمة المرور';
-                          }
-                          // if (value.length < 8) {
-                          //   return 'كلمة المرور يجب أن تكون 8 أحرف على الأقل';
-                          // }
-                          // if (!RegExp(r'[A-Z]').hasMatch(value)) {
-                          //   return 'يجب أن تحتوي على حرف كبير واحد على الأقل';
-                          // }
-                          // if (!RegExp(r'[a-z]').hasMatch(value)) {
-                          //   return 'يجب أن تحتوي على حرف صغير واحد على الأقل';
-                          // }
-                          // if (!RegExp(r'\d').hasMatch(value)) {
-                          //   return 'يجب أن تحتوي على رقم واحد على الأقل';
-                          // }
-                          // if (!RegExp(r'[!@#\$&*~]').hasMatch(value)) {
-                          //   return 'يجب أن تحتوي على رمز خاص واحد على الأقل (!@#\$&*~)';
-                          // }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) => ForgetPassword()),
-                          );
-                        },
-                        child: const Text(
-                          "forget your password?",
-                          style: TextStyle(color: Color(0xFF314E76)),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      BlocBuilder<LoginBloc, LoginState>(
-                        builder: (context, state) {
-                          return ElevatedButton(
-                            style: ButtonStyle(
-                              shape: MaterialStatePropertyAll(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25),
-                                ),
+                    ),
+                    const SizedBox(height: 10),
+                    BlocBuilder<LoginBloc, LoginState>(
+                      builder: (context, state) {
+                        return ElevatedButton(
+                          style: ButtonStyle(
+                            shape: MaterialStatePropertyAll(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25),
                               ),
                             ),
-                            onPressed: state is LoginLoading
-                                ? null
-                                : () {
-                                    if (formstate.currentState!.validate()) {
-                                      context.read<LoginBloc>().add(
-                                            LoginSubmitted(
-                                              email:
-                                                  emailController.text.trim(),
-                                              password: passwordController.text
-                                                  .trim(),
-                                            ),
-                                          );
-                                    }
-                                  },
-                            child: Container(
-                              width: MediaQuery.of(context).size.width / 2.5,
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              child: state is LoginLoading
-                                  ? const SizedBox(
-                                      height: 20,
-                                      width: 20,
-                                      child: CircularProgressIndicator(
-                                        color: Colors.white,
-                                        strokeWidth: 2,
-                                      ),
-                                    )
-                                  : const Text(
-                                      "Sign in",
-                                      style: TextStyle(color: Colors.black),
+                          ),
+                          onPressed: state is LoginLoading
+                              ? null
+                              : () {
+                                  if (formstate.currentState!.validate()) {
+                                    context.read<LoginBloc>().add(
+                                          LoginSubmitted(
+                                            email:
+                                                emailController.text.trim(),
+                                            password: passwordController.text
+                                                .trim(),
+                                          ),
+                                        );
+                                  }
+                                },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width / 2.5,
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            child: state is LoginLoading
+                                ? const SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 2,
                                     ),
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 80),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Don't have an account?",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                                  )
+                                : const Text(
+                                    "Sign in",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
                           ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) => Register()),
-                              );
-                            },
-                            child: const Text("Create account"),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 80),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Don't have an account?",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
                           ),
-                        ],
-                      )
-                    ],
-                  ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => const RegisterPage()),
+                            );
+                          },
+                          child: const Text("Create account"),
+                        ),
+                      ],
+                    )
+                  ],
                 ),
               ),
             ),

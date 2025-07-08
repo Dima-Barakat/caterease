@@ -2,34 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class VerificationPage extends StatefulWidget {
+  final String email;
+
+  const VerificationPage({required this.email, super.key});
+
   @override
   State<VerificationPage> createState() => _VerificationPageState();
 }
 
 class _VerificationPageState extends State<VerificationPage> {
   final TextEditingController _otpController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.white,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
         ),
-        /*   actions: [
-          IconButton(
-            icon: Icon(Icons.arrow_forward, color: Colors.blue),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          )
-        ], */
-
         elevation: 0,
       ),
       body: Padding(
@@ -38,22 +29,33 @@ class _VerificationPageState extends State<VerificationPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              " Account confirmation",
+              "Account Confirmation",
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
                 color: Colors.blue[900],
               ),
             ),
-//SizedBox(height: 16),
-            //  Image.asset(""),
-            SizedBox(height: 50),
+            const SizedBox(height: 8),
             Text(
-              "please enter the sent code",
+              "A verification code has been sent to:",
+              style: TextStyle(fontSize: 14),
+            ),
+            Text(
+              widget.email,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Colors.black87,
+              ),
+            ),
+            const SizedBox(height: 40),
+            const Text(
+              "Please enter the 6-digit code below",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             PinCodeTextField(
               appContext: context,
               length: 6,
@@ -71,22 +73,26 @@ class _VerificationPageState extends State<VerificationPage> {
               ),
               onChanged: (value) {},
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  // تحقق من الرمز
+                  if (_otpController.text.length != 6) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("الرجاء إدخال رمز مكوّن من 6 أرقام")),
+                    );
+                    return;
+                  }
+
+                  // هنا يمكنك إرسال الرمز إلى API أو Bloc
                   print("الرمز المُدخل: ${_otpController.text}");
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("جاري التحقق من الرمز...")),
+                  );
                 },
-                /*   style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  padding: EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),*/
-                child: Text("send", style: TextStyle(fontSize: 16)),
+                child: const Text("Send", style: TextStyle(fontSize: 16)),
               ),
             ),
           ],

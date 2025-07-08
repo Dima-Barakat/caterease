@@ -1,3 +1,10 @@
+import 'package:caterease/features/authentication/data/datasources/auth_remote_data_source.dart';
+import 'package:caterease/features/authentication/data/repositories/auth_repository.dart';
+import 'package:caterease/features/authentication/domain/repositories/base_auth_repository.dart';
+import 'package:caterease/features/authentication/domain/usecases/login_user_use_case.dart';
+import 'package:caterease/features/authentication/domain/usecases/register_user_use_case.dart';
+import 'package:caterease/features/authentication/presentation/controllers/bloc/login/login_bloc.dart';
+import 'package:caterease/features/authentication/presentation/controllers/bloc/register/register_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
@@ -21,6 +28,7 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   // Features
+  await _initAuthentication();
   await _initRestaurants();
   await _initLocation();
 
@@ -77,6 +85,23 @@ Future<void> _initLocation() async {
   sl.registerLazySingleton<LocationDataSource>(
     () => LocationDataSourceImpl(),
   );
+}
+
+Future<void> _initAuthentication() async {
+  //:Bloc
+  sl.registerFactory(() => LoginBloc(sl()));
+  sl.registerFactory(() => RegisterBloc(sl()));
+
+  //: UseCases
+  sl.registerLazySingleton(() => LoginUserUseCase(sl()));
+  sl.registerLazySingleton(() => RegisterUserUseCase(sl()));
+
+  //: Repositories
+  sl.registerLazySingleton<BaseAuthRepository>(() => AuthRepository(sl()));
+
+  //: DataSources
+  sl.registerLazySingleton<BaseAuthRemoteDataSource>(
+      () => AuthRemoteDataSource());
 }
 
 Future<void> _initCore() async {
