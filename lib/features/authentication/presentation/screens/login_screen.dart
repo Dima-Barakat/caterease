@@ -75,12 +75,12 @@ class _LoginPageState extends State<LoginPage> {
                         hint: "example@gmail.com",
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "هذا الحقل مطلوب";
+                            return "this fieled is required  ";
                           }
                           String pattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
                           RegExp regex = RegExp(pattern);
                           if (!regex.hasMatch(value)) {
-                            return "الرجاء إدخال بريد إلكتروني صالح";
+                            return "please enter correct email    ";
                           }
                           return null;
                         },
