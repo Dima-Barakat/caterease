@@ -77,7 +77,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                     onPressed: () {
                       if (formstate.currentState!.validate()) {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => VerificationPage()));
+                            builder: (context) => VerificationPage(email: "",)));
                       }
                     },
                     child: Text("send"))

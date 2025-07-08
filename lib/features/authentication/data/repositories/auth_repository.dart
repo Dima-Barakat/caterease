@@ -1,10 +1,12 @@
+import 'package:caterease/core/error/failures.dart';
 import 'package:caterease/core/storage/secure_storage.dart';
 import 'package:caterease/features/authentication/data/datasources/auth_remote_data_source.dart';
 import 'package:caterease/features/authentication/data/models/authentication_model.dart';
 import 'package:caterease/features/authentication/domain/repositories/base_auth_repository.dart';
+import 'package:dartz/dartz.dart';
 
 class AuthRepository implements BaseAuthRepository {
-  final AuthRemoteDataSource remoteDataSource;
+  final BaseAuthRemoteDataSource remoteDataSource;
 
   AuthRepository(this.remoteDataSource);
 
@@ -22,21 +24,25 @@ class AuthRepository implements BaseAuthRepository {
   }
 
   @override
-  Future<AuthenticationModel> register({
+  Future<Either<Failure, Unit>> register({
     required String name,
     required String email,
     required String password,
+    required String confirmationPassword,
     required String phone,
-    required String photo,
     required String gender,
   }) async {
-    final user = await remoteDataSource.register(
-        name: name,
-        email: email,
-        password: password,
-        phone: phone,
-        photo: photo,
-        gender: gender);
-    return user;
+    try {
+      return await remoteDataSource.register(
+          name: name,
+          email: email,
+          password: password,
+          confirmationPassword: confirmationPassword,
+          phone: phone,
+          gender: gender);
+    } catch (e) {
+      print(e);
+      throw Exception('Error fetching Registering: $e');
+    }
   }
 }
