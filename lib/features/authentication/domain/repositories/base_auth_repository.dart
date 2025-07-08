@@ -1,5 +1,7 @@
-import '../../data/models/authentication_model.dart';
+import 'package:caterease/core/error/failures.dart';
+import 'package:dartz/dartz.dart';
 
+import '../../data/models/authentication_model.dart';
 
 abstract class BaseAuthRepository {
   Future<AuthenticationModel> login({
@@ -7,12 +9,12 @@ abstract class BaseAuthRepository {
     required String password,
   });
 
-  Future<AuthenticationModel> register({
+  Future<Either<Failure, Unit>> register({
     required String name,
     required String email,
     required String password,
+    required String confirmationPassword,
     required String phone,
-    required String photo,
     required String gender,
   });
 }
