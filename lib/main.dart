@@ -1,3 +1,7 @@
+import 'package:caterease/features/authentication/presentation/controllers/bloc/login/login_bloc.dart';
+import 'package:caterease/features/authentication/presentation/controllers/bloc/register/register_bloc.dart';
+import 'package:caterease/features/authentication/presentation/screens/register_screen.dart';
+import 'package:caterease/features/authentication/presentation/screens/login_screen.dart';
 import 'package:caterease/core/theming/colors_theme.dart';
 import 'package:caterease/features/delivery/presentation/screens/order_details.dart';
 import 'package:caterease/features/restaurants/presentation/bloc/restaurants_bloc.dart';
@@ -32,10 +36,16 @@ class MyApp extends StatelessWidget {
                 fontSize: 20,
                 fontWeight: FontWeight.bold)),
       ),
-      home: MultiBlocProvider(providers: [
-        BlocProvider(create: (_) => sl<RestaurantsBloc>()),
-        BlocProvider(create: (_) => sl<LocationBloc>()),
-      ], child: OrderDetails()),
+
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => sl<LoginBloc>()),
+          BlocProvider(create: (_) => sl<RegisterBloc>()),
+          BlocProvider(create: (_) => sl<RestaurantsBloc>()),
+          BlocProvider(create: (_) => sl<LocationBloc>()),
+        ],
+        child: const RegisterPage(),
+      ),
     );
   }
 }
