@@ -32,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
             image: AssetImage('images/caterease.jpg'),
             fit: BoxFit.cover,
           ),
-        ),
+          ),
         padding: const EdgeInsets.all(40),
         child: Center(
           child: SingleChildScrollView(
