@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:caterease/core/error/failures.dart';
+import 'package:caterease/core/storage/secure_storage.dart';
 import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' as http;
 import 'package:caterease/core/constants/api_constants.dart';
@@ -15,6 +16,8 @@ abstract class BaseAuthRemoteDataSource {
     required String phone,
     required String gender,
   });
+  Future<Either<Failure, Unit>> verifyEmail(
+      {required String userId, required String otp});
 }
 
 class AuthRemoteDataSource implements BaseAuthRemoteDataSource {
@@ -60,7 +63,7 @@ class AuthRemoteDataSource implements BaseAuthRemoteDataSource {
         'name': name,
         'email': email,
         'password': password,
-        'confirmationPassword': confirmationPassword,
+        'password_confirmation': confirmationPassword,
         'phone': phone,
         'gender': gender,
       };
@@ -73,6 +76,12 @@ class AuthRemoteDataSource implements BaseAuthRemoteDataSource {
           body: json.encode(formData));
 
       if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        SecureStorage().saveUserData(
+            email: responseData['user']['email'],
+            userId: responseData['user']['id'],
+            name: responseData['user']['name'],
+            image: null);
         print(response.body);
         return const Right(unit);
       } else {
@@ -81,6 +90,34 @@ class AuthRemoteDataSource implements BaseAuthRemoteDataSource {
     } catch (e) {
       print(e.toString());
       throw Exception('Error during registration: $e');
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> verifyEmail(
+      {required String userId, required String otp}) async {
+    try {
+      final formData = {
+        'user_id': userId,
+        'otp': otp,
+      };
+      final response = await http.post(
+        Uri.parse(ApiConstants.verifyOtp),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: json.encode(formData),
+      );
+
+      if (response.statusCode == 200) {
+        print(response.body);
+        return const Right(unit);
+      } else {
+        throw Exception('Login failed: ${response.body}');
+      }
+    } catch (e) {
+      throw Exception('Error during Verifying Email: $e');
     }
   }
 }
