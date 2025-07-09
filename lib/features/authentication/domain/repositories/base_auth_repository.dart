@@ -17,4 +17,7 @@ abstract class BaseAuthRepository {
     required String phone,
     required String gender,
   });
+
+  Future<Either<Failure, Unit>> verifyEmail(
+      {required String userId, required String otp});
 }

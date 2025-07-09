@@ -29,11 +29,11 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: const Text('Profile'),
      //   centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Form(
           key: _formKey,
           child: Column(
@@ -48,8 +48,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: Column(
                         children: [
                           ListTile(
-                            leading: Icon(Icons.camera_alt),
-                            title: Text("open camera "),
+                            leading: const Icon(Icons.camera_alt),
+                            title: const Text("open camera "),
                             onTap: () async {
                               final XFile? image = await picker.pickImage(
                                   source: ImageSource.camera);
@@ -58,8 +58,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             },
                           ),
                           ListTile(
-                            leading: Icon(Icons.photo_library),
-                            title: Text("choose from gallery"),
+                            leading: const Icon(Icons.photo_library),
+                            title: const Text("choose from gallery"),
                             onTap: () async {
                               final XFile? image = await picker.pickImage(
                                   source: ImageSource.gallery);
@@ -75,7 +75,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: CircleAvatar(
                   radius: 40,
                   backgroundColor: Colors.grey[300],
-                  child: Icon(Icons.camera_alt, size: 30),
+                  child: const Icon(Icons.camera_alt, size: 30),
                 ),
                 /* child: CircleAvatar(
                   radius: 50,
@@ -88,7 +88,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       : null,
                 ), */
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               buildLabel("Your Full Name"),
               buildTextField(
                   controller: nameController, hint: "Enter full name"),
@@ -190,7 +190,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 }, */
               ),
               SizedBox(height: 20), */
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -203,24 +203,24 @@ class _ProfilePageState extends State<ProfilePage> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
-                    padding: EdgeInsets.symmetric(vertical: 15),
+                    padding: const EdgeInsets.symmetric(vertical: 15),
                   ),
-                  child: Text("Save", style: TextStyle(fontSize: 16)),
+                  child: const Text("Save", style: TextStyle(fontSize: 16)),
                 ),
               ),
-              SizedBox(height: 25),
-              Divider(),
+              const SizedBox(height: 25),
+              const Divider(),
               ListTile(
-                leading: Icon(Icons.logout),
-                title: Text("Log out"),
+                leading: const Icon(Icons.logout),
+                title: const Text("Log out"),
                 onTap: () {
                   // تنفيذ تسجيل الخروج
                 },
               ),
               ListTile(
-                leading: Icon(Icons.delete, color: Colors.red),
+                leading: const Icon(Icons.delete, color: Colors.red),
                 title:
-                    Text("Delete Account", style: TextStyle(color: Colors.red)),
+                    const Text("Delete Account", style: TextStyle(color: Colors.red)),
                 onTap: () {
                   // تنفيذ حذف الحساب
                 },
