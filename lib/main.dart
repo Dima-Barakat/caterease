@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:caterease/features/restaurants/presentation/bloc/restaurants_bloc.dart';
 import 'package:caterease/features/location/presentation/bloc/location_bloc.dart';
 import 'package:caterease/injection_container.dart';
-import 'app_theme.dart';
+import 'core/theming/app_theme.dart';
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
