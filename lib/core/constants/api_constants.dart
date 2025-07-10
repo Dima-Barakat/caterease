@@ -1,5 +1,37 @@
 class ApiConstants {
-  static const String baseUrl = 'http://192.168.0.106:8000/api';
+  //:Base Url
+  // static const String baseUrl = 'http://192.168.43.2:8000/api';
+
+  //:Base Url
+  static const String baseUrl = "http://10.0.2.2:8000/api";
+
+  //! Authentication
+  //: Login Api
+  static const String login = "$baseUrl/login";
+
+  //: Register Api
+  static const String register = "$baseUrl/register";
+
+  //: Verify OTP Api
+  static const String verifyOtp = "$baseUrl/verify-otp";
+
+  //: Forget Password
+  static const String forgetPassword = "$baseUrl/??";
+
+  //: Reset Password
+  static const String resetPassword = "$baseUrl/??";
+
+  //! Customer section
+  //: get Profile details
+  static const String customerProfile = "$baseUrl/customer/show";
+
+  //: Update Profile details
+  static const String updateCustomerProfile = "$baseUrl/";
+
+  //: get nearby branches
   static const String nearbyBranches = '/branches/nearby';
+
+  //: get all restaurants
   static const String restaurants = '/restaurants';
+
 }
