@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.lightTheme,
         navigatorObservers: [routeObserver],
         home: AnimatedSplashScreen(),
+
       ),
     );
   }
