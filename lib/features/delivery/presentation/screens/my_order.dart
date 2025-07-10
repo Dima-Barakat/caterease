@@ -20,6 +20,7 @@ class _MyOrderState extends State<MyOrder> {
         // centerTitle: true,
       ),
       body: Card(
+
           color: AppTheme.lightBlue,
           margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           shape:
@@ -37,7 +38,7 @@ class _MyOrderState extends State<MyOrder> {
         backgroundColor: AppTheme.darkBlue,
         activeColor: AppTheme.lightGreen,
         initialActiveIndex: 0,
-        items: [
+        items: const [
           TabItem(icon: Icons.home, title: 'Home'),
           TabItem(icon: Icons.settings, title: 'setting'),
         ],
