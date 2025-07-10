@@ -1,3 +1,4 @@
+import 'package:caterease/core/widgets/order_card.dart';
 import 'package:caterease/features/authentication/presentation/controllers/bloc/login/login_bloc.dart';
 import 'package:caterease/features/authentication/presentation/controllers/bloc/register/register_bloc.dart';
 import 'package:caterease/features/authentication/presentation/controllers/bloc/verify/verify_bloc.dart';
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (_) => sl<RestaurantsBloc>()),
           BlocProvider(create: (_) => sl<LocationBloc>()),
         ],
-        child: const LoginPage(),
+        child: MyOrder(),
       ),
     );
   }

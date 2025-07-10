@@ -1,5 +1,5 @@
 import 'package:caterease/core/theming/colors_theme.dart';
-import 'package:caterease/core/widgets/order_card.dart';
+import 'package:caterease/core/widgets/order_detail_container.dart';
 import 'package:flutter/material.dart';
 
 class OrderDetails extends StatefulWidget {
@@ -31,7 +31,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                     color: Colors.black,
                   ),
                 ),
-                OrderInfoCard(
+                OrderDetailContainer(
                   orderNumber: '#1234567890',
                   status: 'Delivered',
                 ),
