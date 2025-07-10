@@ -1,6 +1,7 @@
 import 'package:caterease/features/authentication/presentation/controllers/bloc/login/login_bloc.dart';
 import 'package:caterease/features/authentication/presentation/controllers/bloc/register/register_bloc.dart';
 import 'package:caterease/features/authentication/presentation/controllers/bloc/verify/verify_bloc.dart';
+import 'package:caterease/features/authentication/presentation/screens/forget_password_screen.dart';
 import 'package:caterease/features/authentication/presentation/screens/register_screen.dart';
 import 'package:caterease/features/authentication/presentation/screens/login_screen.dart';
 import 'package:caterease/core/theming/colors_theme.dart';
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (_) => sl<RestaurantsBloc>()),
           BlocProvider(create: (_) => sl<LocationBloc>()),
         ],
-        child: const LoginPage(),
+        child: const ForgetPassword(),
       ),
     );
   }

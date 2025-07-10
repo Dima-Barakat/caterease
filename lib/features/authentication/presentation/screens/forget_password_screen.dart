@@ -3,12 +3,14 @@ import '../screens/verification_screen.dart';
 import 'package:caterease/core/widgets/custom_text_field.dart';
 
 class ForgetPassword extends StatefulWidget {
+  const ForgetPassword({super.key});
+
   @override
   State<ForgetPassword> createState() => _ForgetPasswordState();
 }
 
 class _ForgetPasswordState extends State<ForgetPassword> {
-  GlobalKey<FormState> formstate = GlobalKey();
+  GlobalKey<FormState> formState = GlobalKey();
   final emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(Icons.arrow_back)),
+            icon: const Icon(Icons.arrow_back)),
         /*  actions: [
           IconButton(
               onPressed: () {
@@ -33,7 +35,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
             image: DecorationImage(image: AssetImage(""), fit: BoxFit.cover)),
         padding: const EdgeInsets.all(40),
         child: Form(
-            key: formstate,
+            key: formState,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -54,7 +56,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                   hint: "example@gmail.com",
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "this fieled is required";
+                      return "this field is required";
                     }
 
                     String pattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
@@ -74,12 +76,12 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                         shape: WidgetStatePropertyAll(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(25)))),
                     onPressed: () {
-                      if (formstate.currentState!.validate()) {
+                      if (formState.currentState!.validate()) {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => const VerificationPage(email: "",)));
                       }
                     },
-                    child: Text("send"))
+                    child: const Text("send"))
               ],
             )),
       ),
