@@ -1,3 +1,12 @@
+import 'package:caterease/features/authentication/data/datasources/auth_remote_data_source.dart';
+import 'package:caterease/features/authentication/data/repositories/auth_repository.dart';
+import 'package:caterease/features/authentication/domain/repositories/base_auth_repository.dart';
+import 'package:caterease/features/authentication/domain/usecases/login_user_use_case.dart';
+import 'package:caterease/features/authentication/domain/usecases/register_user_use_case.dart';
+import 'package:caterease/features/authentication/domain/usecases/verify_email_use_case.dart';
+import 'package:caterease/features/authentication/presentation/controllers/bloc/login/login_bloc.dart';
+import 'package:caterease/features/authentication/presentation/controllers/bloc/register/register_bloc.dart';
+import 'package:caterease/features/authentication/presentation/controllers/bloc/verify/verify_bloc.dart';
 import 'package:caterease/features/location/data/datasources/send_location_remote_data_source.dart';
 import 'package:caterease/features/location/domain/usecases/send_location_usecase.dart';
 import 'package:get_it/get_it.dart';
@@ -22,10 +31,31 @@ import 'core/network/network_client.dart';
 final sl = GetIt.instance;
 
 Future<void> init() async {
+  await _initAuthentication();
   await _initRestaurants();
   await _initLocation();
   await _initCore();
   await _initExternal();
+}
+
+Future<void> _initAuthentication() async {
+  //:Bloc
+  sl.registerFactory(() => LoginBloc(sl()));
+  sl.registerFactory(() => RegisterBloc(sl()));
+  sl.registerFactory(() => VerifyBloc(sl()));
+
+
+  //: UseCases
+  sl.registerLazySingleton(() => LoginUserUseCase(sl()));
+  sl.registerLazySingleton(() => RegisterUserUseCase(sl()));
+  sl.registerLazySingleton(() => VerifyEmailUseCase(sl()));
+
+  //: Repositories
+  sl.registerLazySingleton<BaseAuthRepository>(() => AuthRepository(sl()));
+
+  //: DataSources
+  sl.registerLazySingleton<BaseAuthRemoteDataSource>(
+      () => AuthRemoteDataSource());
 }
 
 Future<void> _initRestaurants() async {
