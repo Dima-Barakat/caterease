@@ -9,15 +9,18 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc(this.useCase) : super(LoginInitial()) {
     on<LoginSubmitted>((event, emit) async {
       emit(LoginLoading());
-      try {
-        final user = await useCase.login(
-          event.email,
-          event.password,
-        );
-        emit(LoginSuccess(user));
-      } catch (e) {
-        emit(LoginFailure(e.toString()));
-      }
+      final result = await useCase.login(
+        event.email,
+        event.password,
+      );
+      result.fold(
+        (failure) {
+          emit(LoginFailure(failure.toString()));
+        },
+        (authModel) {
+          emit(LoginSuccess(authModel));
+        },
+      );
     });
   }
 }

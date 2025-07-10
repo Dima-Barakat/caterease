@@ -3,6 +3,7 @@ import 'package:caterease/core/storage/secure_storage.dart';
 import 'package:caterease/features/authentication/data/datasources/auth_remote_data_source.dart';
 import 'package:caterease/features/authentication/data/models/authentication_model.dart';
 import 'package:caterease/features/authentication/domain/repositories/base_auth_repository.dart';
+import 'package:caterease/features/profile/data/models/user_model.dart';
 import 'package:dartz/dartz.dart';
 
 class AuthRepository implements BaseAuthRepository {
@@ -11,20 +12,19 @@ class AuthRepository implements BaseAuthRepository {
   AuthRepository(this.remoteDataSource);
 
   @override
-  Future<AuthenticationModel> login(
+  Future<Either<Failure, AuthenticationModel>> login(
       {required String email, required String password}) async {
     try {
       final authentication = await remoteDataSource.login(email, password);
       await SecureStorage().saveTokens(authentication.accessToken);
-      return authentication;
+      return Right(authentication);
     } catch (e) {
-      print(e);
       throw Exception('Error fetching profile data: $e');
     }
   }
 
   @override
-  Future<Either<Failure, Unit>> register({
+  Future<Either<Failure, UserModel>> register({
     required String name,
     required String email,
     required String password,
@@ -33,26 +33,27 @@ class AuthRepository implements BaseAuthRepository {
     required String gender,
   }) async {
     try {
-      return await remoteDataSource.register(
+      final user = await remoteDataSource.register(
           name: name,
           email: email,
           password: password,
           confirmationPassword: confirmationPassword,
           phone: phone,
           gender: gender);
+      return Right(user);
     } catch (e) {
-      print(e);
       throw Exception('Error fetching Registering: $e');
     }
   }
 
+  @override
   Future<Either<Failure, Unit>> verifyEmail(
       {required String userId, required String otp}) async {
     try {
-      return await remoteDataSource.verifyEmail(userId: userId, otp: otp);
+      final unit = await remoteDataSource.verifyEmail(userId: userId, otp: otp);
+      return Right(unit);
     } catch (e) {
-      print(e);
-      throw Exception('Error Fetching Verifying Email: $e');
+      throw Exception('Error fetching Verifying Email: $e');
     }
   }
 }

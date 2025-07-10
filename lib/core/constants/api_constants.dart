@@ -5,6 +5,7 @@ class ApiConstants {
   //:Base Url
   static const String baseUrl = "http://10.0.2.2:8000/api";
 
+  //! Authentication
   //: Login Api
   static const String login = "$baseUrl/login";
 
@@ -13,6 +14,12 @@ class ApiConstants {
 
   //: Verify OTP Api
   static const String verifyOtp = "$baseUrl/verify-otp";
+
+  //: Forget Password
+  static const String forgetPassword = "$baseUrl/??";
+
+  //: Reset Password
+  static const String resetPassword = "$baseUrl/??";
 
   //! Customer section
   //: get Profile details

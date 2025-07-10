@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:caterease/core/error/failures.dart';
 import 'package:caterease/core/storage/secure_storage.dart';
+import 'package:caterease/features/profile/data/models/user_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' as http;
 import 'package:caterease/core/constants/api_constants.dart';
@@ -9,7 +9,8 @@ import 'package:caterease/features/authentication/data/models/authentication_mod
 
 abstract class BaseAuthRemoteDataSource {
   Future<AuthenticationModel> login(String email, String password);
-  Future<Either<Failure, Unit>> register({
+
+  Future<UserModel> register({
     required String name,
     required String email,
     required String password,
@@ -17,8 +18,10 @@ abstract class BaseAuthRemoteDataSource {
     required String phone,
     required String gender,
   });
-  Future<Either<Failure, Unit>> verifyEmail(
-      {required String userId, required String otp});
+
+  Future<Unit> verifyEmail({required String userId, required String otp});
+
+  Future<Unit> forgetPassword({required String email});
 }
 
 class AuthRemoteDataSource implements BaseAuthRemoteDataSource {
@@ -51,7 +54,7 @@ class AuthRemoteDataSource implements BaseAuthRemoteDataSource {
   }
 
   @override
-  Future<Either<Failure, Unit>> register({
+  Future<UserModel> register({
     required String name,
     required String email,
     required String password,
@@ -84,18 +87,17 @@ class AuthRemoteDataSource implements BaseAuthRemoteDataSource {
           name: responseData['user']['name'],
         );
         print(response.body);
-        return const Right(unit);
+        return UserModel.fromJson(jsonDecode(response.body));
       } else {
         throw Exception('Registration failed: ${response.body}');
       }
     } catch (e) {
-      print(e.toString());
       throw Exception('Error during registration: $e');
     }
   }
 
   @override
-  Future<Either<Failure, Unit>> verifyEmail(
+  Future<Unit> verifyEmail(
       {required String userId, required String otp}) async {
     try {
       final formData = {
@@ -114,9 +116,31 @@ class AuthRemoteDataSource implements BaseAuthRemoteDataSource {
 
       if (response.statusCode == 200) {
         print(response.body);
-        return const Right(unit);
+        return unit;
       } else {
         throw Exception('Login failed: ${response.body}');
+      }
+    } catch (e) {
+      throw Exception('Error during Verifying Email: $e');
+    }
+  }
+
+  @override
+  Future<Unit> forgetPassword({required String email}) async {
+    try {
+      final formData = {'email': email};
+      final response = await http.post(Uri.parse(ApiConstants.forgetPassword),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+          body: json.encode(formData));
+
+      if (response.statusCode == 200) {
+        print(response.body);
+        return unit;
+      } else {
+        throw Exception(response.body);
       }
     } catch (e) {
       throw Exception('Error during Verifying Email: $e');
