@@ -1,4 +1,4 @@
-import 'package:caterease/core/theming/colors_theme.dart';
+import 'package:caterease/core/theming/app_theme.dart';
 import 'package:caterease/core/widgets/order_card.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +13,7 @@ class _OrderDetailsState extends State<OrderDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: ColorsTheme.darkBlue,
+        backgroundColor: AppTheme.darkBlue,
         leading: IconButton(onPressed: () { Navigator.pop(context);}, icon: Icon(Icons.arrow_back)),
       ),
       body: Container(

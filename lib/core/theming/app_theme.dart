@@ -9,7 +9,7 @@ class AppTheme {
   static ThemeData lightTheme = ThemeData(
     primaryColor: darkBlue,
     scaffoldBackgroundColor: Colors.white,
-    appBarTheme: AppBarTheme(
+    appBarTheme: const AppBarTheme(
       backgroundColor: Colors.white,
       foregroundColor: darkBlue,
       elevation: 0,
@@ -19,7 +19,7 @@ class AppTheme {
         color: darkBlue,
       ),
     ),
-    textTheme: TextTheme(
+    textTheme: const TextTheme(
       bodyLarge: TextStyle(color: Colors.black87),
       titleLarge: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
     ),
