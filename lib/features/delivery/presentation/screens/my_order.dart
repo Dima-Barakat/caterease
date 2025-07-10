@@ -1,4 +1,5 @@
 import 'package:caterease/core/theming/colors_theme.dart';
+import 'package:caterease/core/widgets/order_card.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 //import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
@@ -21,24 +22,23 @@ class _MyOrderState extends State<MyOrder> {
         // centerTitle: true,
       ),
       body: Card(
+          margin: EdgeInsets.all(15),
           color: ColorsTheme.lightBlue,
-          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          elevation: 5,
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [Text("aaaa")],
-            ),
-          )),
+          elevation: 3,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: OrderCard(
+              image: "",
+              restaurantName: "restaurantName",
+              message: "message",
+              text: "view")),
       bottomNavigationBar: ConvexAppBar(
         color: ColorsTheme.lightGray,
         backgroundColor: ColorsTheme.darkBlue,
         activeColor: ColorsTheme.lightGreen,
         initialActiveIndex: 0,
-        items: [
+        items: const [
           TabItem(icon: Icons.home, title: 'Home'),
           TabItem(icon: Icons.settings, title: 'setting'),
         ],

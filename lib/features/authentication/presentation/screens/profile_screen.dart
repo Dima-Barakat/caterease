@@ -23,14 +23,20 @@ class _ProfilePageState extends State<ProfilePage> {
   String? photoUrl;
   final ImagePicker picker = ImagePicker();
   final List<String> genders = ['Male', 'Female'];
-  final List<String> cities = ['Damascus', 'Aleppo', 'Homs', 'Latakia'];
+  final List<String> cities = [
+    'Damascus',
+    'Aleppo',
+    'Homs',
+    'Latakia',
+    'Damascus-countryside'
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
-     //   centerTitle: true,
+        //   centerTitle: true,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -219,8 +225,8 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               ListTile(
                 leading: const Icon(Icons.delete, color: Colors.red),
-                title:
-                    const Text("Delete Account", style: TextStyle(color: Colors.red)),
+                title: const Text("Delete Account",
+                    style: TextStyle(color: Colors.red)),
                 onTap: () {
                   // تنفيذ حذف الحساب
                 },
