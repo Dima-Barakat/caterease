@@ -1,4 +1,3 @@
-
 import 'package:equatable/equatable.dart';
 
 class Restaurant extends Equatable {
@@ -49,5 +48,3 @@ class City extends Equatable {
   @override
   List<Object> get props => [id, name, country];
 }
-
-

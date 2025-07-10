@@ -1,4 +1,3 @@
-
 import "../../domain/entities/restaurant.dart";
 
 class RestaurantModel extends Restaurant {
@@ -42,5 +41,3 @@ class CityModel extends City {
     );
   }
 }
-
-
