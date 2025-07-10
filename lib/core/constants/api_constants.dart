@@ -26,4 +26,5 @@ class ApiConstants {
 
   //: get all restaurants
   static const String restaurants = '/restaurants';
+
 }

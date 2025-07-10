@@ -1,4 +1,3 @@
-
 part of "restaurants_bloc.dart";
 
 abstract class RestaurantsState extends Equatable {
@@ -19,6 +18,15 @@ class RestaurantsLoaded extends RestaurantsState {
   List<Object> get props => [restaurants];
 }
 
+class RestaurantsByCategoryLoaded extends RestaurantsState {
+  final List<BranchModel> restaurants;
+
+  RestaurantsByCategoryLoaded(this.restaurants);
+
+  @override
+  List<Object> get props => [restaurants];
+}
+
 class RestaurantsError extends RestaurantsState {
   final String message;
 
@@ -27,5 +35,3 @@ class RestaurantsError extends RestaurantsState {
   @override
   List<Object> get props => [message];
 }
-
-

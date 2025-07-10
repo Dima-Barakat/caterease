@@ -1,4 +1,3 @@
-
 part of "restaurants_bloc.dart";
 
 abstract class RestaurantsEvent extends Equatable {
@@ -19,6 +18,13 @@ class LoadNearbyRestaurantsEvent extends RestaurantsEvent {
   List<Object> get props => [latitude, longitude];
 }
 
+class GetRestaurantsByCategoryEvent extends RestaurantsEvent {
+  final String category;
+
+  GetRestaurantsByCategoryEvent(this.category);
+
+  @override
+  List<Object> get props => [category];
+}
+
 class LoadAllRestaurantsEvent extends RestaurantsEvent {}
-
-
