@@ -1,11 +1,11 @@
-
 import "package:dartz/dartz.dart";
 import "../../../../core/error/failures.dart";
 import "../../../../core/usecases/usecase.dart";
 import "../entities/restaurant.dart";
 import "../repositories/restaurants_repository.dart";
 
-class GetNearbyRestaurants implements UseCase<List<Restaurant>, LocationParams> {
+class GetNearbyRestaurants
+    implements UseCase<List<Restaurant>, LocationParams> {
   final RestaurantsRepository repository;
 
   GetNearbyRestaurants(this.repository);
@@ -25,5 +25,3 @@ class LocationParams {
 
   LocationParams({required this.latitude, required this.longitude});
 }
-
-

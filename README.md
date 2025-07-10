@@ -1,4 +1,4 @@
-# cater_ease
+# caterease_project
 
 A new Flutter project.
 
