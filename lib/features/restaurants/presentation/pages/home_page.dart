@@ -1,28 +1,60 @@
+import 'package:caterease/features/restaurants/presentation/pages/category_restaurants_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:caterease/features/restaurants/presentation/bloc/restaurants_bloc.dart';
 import 'package:caterease/features/location/presentation/bloc/location_bloc.dart';
 import 'package:caterease/features/restaurants/presentation/widgets/restaurant_card.dart';
 import 'package:caterease/features/location/presentation/widgets/location_permission_widget.dart';
+import 'package:caterease/main.dart'; // استيراد routeObserver
 
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with RouteAware {
+  final categories = [
+    {"name": "Western", "image": "assets/images/westren.jpg"},
+    {"name": "Eastern", "image": "assets/images/eastren.jpg"},
+    {"name": "Desserts", "image": "assets/images/sweets.jpg"},
+    {"name": "Soft Drinks", "image": "assets/images/drinks.jpg"},
+  ];
+
   @override
   void initState() {
     super.initState();
     context.read<LocationBloc>().add(RequestLocationPermissionEvent());
   }
 
-  final categories = [
-    {"name": "Western Food", "image": "assets/images/westren.jpg"},
-    {"name": "Eastern Food", "image": "assets/images/eastren.jpg"},
-    {"name": "Sweets", "image": "assets/images/sweets.jpg"},
-    {"name": "Soft Drinks", "image": "assets/images/drinks.jpg"},
-  ];
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(
+        this, ModalRoute.of(context)! as PageRoute); // ✅ مهم
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this); // ✅ مهم
+    super.dispose();
+  }
+
+  @override
+  @override
+  void didPopNext() {
+    final locationState = context.read<LocationBloc>().state;
+
+    if (locationState is LocationLoaded) {
+      context.read<RestaurantsBloc>().add(
+            LoadNearbyRestaurantsEvent(
+              latitude: locationState.position.latitude,
+              longitude: locationState.position.longitude,
+            ),
+          );
+    } else {
+      context.read<LocationBloc>().add(GetCurrentLocationEvent());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +68,15 @@ class _HomePageState extends State<HomePage> {
           if (locationState is LocationPermissionGranted) {
             context.read<LocationBloc>().add(GetCurrentLocationEvent());
           } else if (locationState is LocationLoaded) {
+            // ⬇️⬇️ إرسال الموقع للسيرفر
+            context.read<LocationBloc>().add(
+                  SendLocationToServerEvent(
+                    locationState.position.latitude,
+                    locationState.position.longitude,
+                  ),
+                );
+
+            // تحميل المطاعم القريبة
             context.read<RestaurantsBloc>().add(
                   LoadNearbyRestaurantsEvent(
                     latitude: locationState.position.latitude,
@@ -43,7 +84,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                 );
           } else if (locationState is LocationError) {
-            // If location permission is denied or location cannot be fetched, load all restaurants
             context.read<RestaurantsBloc>().add(LoadAllRestaurantsEvent());
           }
         },
@@ -64,7 +104,6 @@ class _HomePageState extends State<HomePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: 16),
-                        // 🔹 عنوان (اختياري)
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Text(
@@ -74,14 +113,11 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         SizedBox(height: 16),
-
-                        // 🔹 المطاعم (أفقي)
                         SizedBox(
-                          height: 330, // ارتفاع البطاقة تقريبي
+                          height: 330,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
                             itemCount: restaurantsState.restaurants.length,
                             itemBuilder: (context, index) {
                               return RestaurantCard(
@@ -90,7 +126,6 @@ class _HomePageState extends State<HomePage> {
                             },
                           ),
                         ),
-
                         SizedBox(height: 24),
                         Padding(
                           padding: const EdgeInsets.symmetric(
@@ -102,7 +137,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         SizedBox(
-                          height: 150, // كافي لعرض الصورة والاسم تحتها
+                          height: 150,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: categories.length,
@@ -111,14 +146,20 @@ class _HomePageState extends State<HomePage> {
                               final cat = categories[index];
                               return GestureDetector(
                                 onTap: () {
-                                  // تنقل أو فلترة حسب الكاتيغوري
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          CategoryRestaurantsPage(
+                                              category: cat["name"]!),
+                                    ),
+                                  );
                                 },
                                 child: Container(
                                   margin: EdgeInsets.only(right: 17),
-                                  width: 120, // العرض الثابت لكل عنصر
+                                  width: 120,
                                   child: Column(
                                     children: [
-                                      // الصورة مع ظل
                                       Container(
                                         width: 120,
                                         height: 120,
@@ -154,7 +195,6 @@ class _HomePageState extends State<HomePage> {
                             },
                           ),
                         ),
-
                         SizedBox(height: 24),
                       ],
                     ),

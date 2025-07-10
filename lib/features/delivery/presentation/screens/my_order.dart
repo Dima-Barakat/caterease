@@ -1,7 +1,6 @@
-import 'package:caterease/core/theming/colors_theme.dart';
+import 'package:caterease/core/theming/app_theme.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
-//import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 class MyOrder extends StatefulWidget {
   @override
@@ -21,7 +20,7 @@ class _MyOrderState extends State<MyOrder> {
         // centerTitle: true,
       ),
       body: Card(
-          color: ColorsTheme.lightBlue,
+          color: AppTheme.lightBlue,
           margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -34,9 +33,9 @@ class _MyOrderState extends State<MyOrder> {
             ),
           )),
       bottomNavigationBar: ConvexAppBar(
-        color: ColorsTheme.lightGray,
-        backgroundColor: ColorsTheme.darkBlue,
-        activeColor: ColorsTheme.lightGreen,
+        color: AppTheme.lightGray,
+        backgroundColor: AppTheme.darkBlue,
+        activeColor: AppTheme.lightGreen,
         initialActiveIndex: 0,
         items: [
           TabItem(icon: Icons.home, title: 'Home'),

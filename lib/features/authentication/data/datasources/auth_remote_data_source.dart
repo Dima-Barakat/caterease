@@ -82,10 +82,10 @@ class AuthRemoteDataSource implements BaseAuthRemoteDataSource {
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
         SecureStorage().saveUserData(
-            email: responseData['user']['email'],
-            userId: responseData['user']['id'],
-            name: responseData['user']['name'],
-            image: null);
+          email: responseData['user']['email'],
+          userId: responseData['user']['id'],
+          name: responseData['user']['name'],
+        );
         print(response.body);
         return UserModel.fromJson(jsonDecode(response.body));
       } else {
@@ -109,6 +109,7 @@ class AuthRemoteDataSource implements BaseAuthRemoteDataSource {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
+         // 'Authentication':'Bearer 17|asjefjhcsHVasgjhyvfasjvfasjcsdv'
         },
         body: json.encode(formData),
       );
