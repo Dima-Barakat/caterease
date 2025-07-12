@@ -1,7 +1,6 @@
 import 'package:caterease/core/widgets/build_label.dart';
 import 'package:caterease/core/widgets/build_text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProfilePage extends StatefulWidget {
