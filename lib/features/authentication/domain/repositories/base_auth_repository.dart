@@ -1,4 +1,5 @@
 import 'package:caterease/core/error/failures.dart';
+import 'package:caterease/features/authentication/data/models/reset_password_model.dart';
 import 'package:caterease/features/profile/data/models/user_model.dart';
 import 'package:dartz/dartz.dart';
 
@@ -14,11 +15,25 @@ abstract class BaseAuthRepository {
     required String name,
     required String email,
     required String password,
-    required String confirmationPassword,
+    required String passwordConfirmation,
     required String phone,
     required String gender,
   });
 
   Future<Either<Failure, Unit>> verifyEmail(
       {required String userId, required String otp});
+
+  Future<Either<Failure, ResetPasswordModel>> forgetPassword(
+      {required String email});
+
+  Future<Either<Failure, Unit>> verifyOtp({
+    required String userId,
+    required String otp,
+  });
+
+  Future<Either<Failure, Unit>> resetPassword({
+    required String email,
+    required String newPassword,
+    required String confirmPassword,
+  });
 }

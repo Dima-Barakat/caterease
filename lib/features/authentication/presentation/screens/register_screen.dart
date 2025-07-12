@@ -1,3 +1,4 @@
+import 'package:caterease/core/storage/secure_storage.dart';
 import 'package:caterease/features/authentication/presentation/controllers/bloc/register/register_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,7 +37,9 @@ class _RegisterPage extends State<RegisterPage> {
             context,
             MaterialPageRoute(
               builder: (context) => VerificationPage(
+                scenario: "signUp",
                 email: emailController.text,
+                userId: SecureStorage().getUserId().toString(),
               ),
             ),
           );

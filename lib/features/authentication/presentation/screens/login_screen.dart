@@ -31,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('images/caterease.jpg'),
+            image: AssetImage('assets/images/login_background.png'),
             fit: BoxFit.cover,
           ),
         ),
@@ -99,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                              builder: (context) => ForgetPassword()),
+                              builder: (context) => const ForgetPassword()),
                         );
                       },
                       child: const Text(

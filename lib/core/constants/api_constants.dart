@@ -16,10 +16,10 @@ class ApiConstants {
   static const String verifyOtp = "$baseUrl/verify-otp";
 
   //: Forget Password
-  static const String forgetPassword = "$baseUrl/??";
+  static const String forgetPassword = "$baseUrl/forgot-password/send-otp";
 
   //: Reset Password
-  static const String resetPassword = "$baseUrl/??";
+  static const String resetPassword = "$baseUrl/forgot-password/reset";
 
   //! Customer section
   //: get Profile details
@@ -33,5 +33,4 @@ class ApiConstants {
 
   //: get all restaurants
   static const String restaurants = '/restaurants';
-
 }
