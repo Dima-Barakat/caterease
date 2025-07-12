@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         title: 'Caterease',
         theme: AppTheme.lightTheme,
         navigatorObservers: [routeObserver],
-        home: const LoginPage(),
+        home: AnimatedSplashScreen(),
       ),
     );
   }
