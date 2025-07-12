@@ -6,7 +6,6 @@ import 'package:caterease/core/widgets/custom_text_field.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../controllers/bloc/password_reset/password_reset_bloc.dart';
 import '../../domain/usecases/password_reset_use_case.dart';
-import 'package:caterease/injection_container.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   final String email;
