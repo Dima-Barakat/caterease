@@ -39,9 +39,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                 builder: (context) => VerificationPage(
                   scenario: "forgotPassword",
                   email: emailController.text,
-                  userId: SecureStorage()
-                      .getUserId()
-                      .toString(), //TODO: //! You should replace this with actual userId from backend
+                  userId: SecureStorage().getUserId().toString(),
                 ),
               ));
             } else if (state is PasswordResetEmailFailed) {
