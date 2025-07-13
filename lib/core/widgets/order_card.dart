@@ -1,4 +1,4 @@
-import 'package:caterease/core/theming/colors_theme.dart';
+import 'package:caterease/core/theming/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class OrderCard extends StatelessWidget {
@@ -7,7 +7,7 @@ class OrderCard extends StatelessWidget {
   final String message;
   final String text;
 
-   OrderCard(
+  OrderCard(
       {super.key,
       required this.image,
       required this.restaurantName,
@@ -65,7 +65,7 @@ class OrderCard extends StatelessWidget {
     return ElevatedButton(
       onPressed: () {},
       style: ElevatedButton.styleFrom(
-        backgroundColor: ColorsTheme.lightGray,
+        backgroundColor: AppTheme.lightGray,
         // side: const BorderSide(color: Colors.purple),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
@@ -75,7 +75,7 @@ class OrderCard extends StatelessWidget {
       ),
       child: Text(
         text,
-        style: TextStyle(color: ColorsTheme.darkBlue),
+        style: TextStyle(color: AppTheme.darkBlue),
       ),
     );
   }
