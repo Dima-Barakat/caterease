@@ -7,7 +7,7 @@ class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
@@ -18,6 +18,8 @@ class _ProfilePageState extends State<ProfilePage> {
   TextEditingController dobController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController locationController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  // bool _obscurePassword = true;
 
   String? selectedGender;
   String? selectedCity;
@@ -36,7 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: const Text('Profile'), centerTitle: true,
         //   centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -104,6 +106,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   controller: emailController,
                   hint: "Email address",
                   keyboardType: TextInputType.emailAddress),
+              buildLabel("password"),
+              buildTextField(
+                controller: passwordController,
+                hint: "Enter your password",
+              ),
               buildLabel("Date of birth"),
               buildTextField(
                 controller: dobController,
@@ -140,7 +147,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 onChanged: (value) => setState(() => selectedGender = value),
                 decoration: inputDecoration(),
               ),
-              /*              buildLabel("City"),
+              buildLabel("City"),
               DropdownButtonFormField<String>(
                 value: selectedCity,
                 items: cities
@@ -152,7 +159,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 onChanged: (value) => setState(() => selectedCity = value),
                 decoration: inputDecoration(),
               ),
-              SizedBox(height: 20),
+              /*   SizedBox(height: 20),
               buildLabel("Location"),
               buildTextField(
                 controller: locationController,
@@ -216,22 +223,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               const SizedBox(height: 25),
-              const Divider(),
-              ListTile(
-                leading: const Icon(Icons.logout),
-                title: const Text("Log out"),
-                onTap: () {
-                  // تنفيذ تسجيل الخروج
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.delete, color: Colors.red),
-                title: const Text("Delete Account",
-                    style: TextStyle(color: Colors.red)),
-                onTap: () {
-                  // تنفيذ حذف الحساب
-                },
-              ),
             ],
           ),
         ),

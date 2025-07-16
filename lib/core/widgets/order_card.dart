@@ -75,7 +75,8 @@ class OrderCard extends StatelessWidget {
       ),
       child: Text(
         text,
-        style: const TextStyle(color: AppTheme.darkBlue),
+        style: TextStyle(color: AppTheme.darkBlue),
+
       ),
     );
   }

@@ -87,14 +87,7 @@ class AuthRemoteDataSource implements BaseAuthRemoteDataSource {
           body: json.encode(formData));
 
       if (response.statusCode == 200) {
-        final responseData = json.decode(response.body);
-        SecureStorage().saveUserData(
-          email: responseData['user']['email'],
-          userId: responseData['user']['id'],
-          name: responseData['user']['name'],
-        );
-        print(response.body);
-        return UserModel.fromJson(jsonDecode(response.body));
+        return UserModel.fromJson(jsonDecode(response.body)['user']);
       } else {
         throw Exception(response.body);
       }
