@@ -11,12 +11,15 @@ class OrderDetails extends StatefulWidget {
 
 class _OrderDetailsState extends State<OrderDetails> {
   @override
- 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppTheme.darkBlue,
-        leading: IconButton(onPressed: () { Navigator.pop(context);}, icon: Icon(Icons.arrow_back)),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back)),
       ),
       body: Container(
         child: Padding(
@@ -33,7 +36,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                     color: Colors.black,
                   ),
                 ),
-                OrderDetailContainer(
+                const OrderDetailContainer(
                   orderNumber: '#1234567890',
                   status: 'Delivered',
                 ),
