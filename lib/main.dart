@@ -4,6 +4,10 @@ import 'package:caterease/features/authentication/presentation/controllers/bloc/
 import 'package:caterease/features/authentication/presentation/controllers/bloc/register/register_bloc.dart';
 import 'package:caterease/features/authentication/presentation/controllers/bloc/verify/verify_bloc.dart';
 import 'package:caterease/features/authentication/presentation/screens/login_screen.dart';
+import 'package:caterease/features/authentication/presentation/screens/register_screen.dart';
+import 'package:caterease/features/delivery/presentation/screens/my_order.dart';
+import 'package:caterease/features/profile/presentation/screens/profile_page.dart';
+import 'package:caterease/features/profile/presentation/screens/setting_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:caterease/features/restaurants/presentation/bloc/restaurants_bloc.dart';
@@ -36,7 +40,8 @@ class MyApp extends StatelessWidget {
         title: 'Caterease',
         theme: AppTheme.lightTheme,
         navigatorObservers: [routeObserver],
-        home: AnimatedSplashScreen(),
+        home: MyOrder(),
+        // home:  AnimatedSplashScreen(),
       ),
     );
   }
