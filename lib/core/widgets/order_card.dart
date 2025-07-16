@@ -2,7 +2,7 @@ import 'package:caterease/core/theming/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class OrderCard extends StatelessWidget {
-  String image;
+  final String image;
   final String restaurantName;
   final String message;
   final String text;
@@ -76,6 +76,7 @@ class OrderCard extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(color: AppTheme.darkBlue),
+
       ),
     );
   }
