@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-
-
 /// A reusable text field widget.
 Widget buildTextField({
   required TextEditingController controller,
@@ -22,6 +20,7 @@ Widget buildTextField({
 /// A helper function for input decoration.
 InputDecoration inputDecoration({String? hintText}) => InputDecoration(
       hintText: hintText,
+      hintStyle: TextStyle(color: Colors.grey),
       filled: true,
       fillColor: Colors.grey[100],
       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
