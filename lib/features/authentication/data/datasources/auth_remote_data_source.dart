@@ -1,9 +1,10 @@
 import 'dart:convert';
+import 'package:caterease/core/error/failures.dart';
+import 'package:caterease/core/network/network_client.dart';
 import 'package:caterease/core/storage/secure_storage.dart';
 import 'package:caterease/features/authentication/data/models/reset_password_model.dart';
 import 'package:caterease/features/profile/data/models/user_model.dart';
 import 'package:dartz/dartz.dart';
-import 'package:http/http.dart' as http;
 import 'package:caterease/core/constants/api_constants.dart';
 import 'package:caterease/features/authentication/data/models/authentication_model.dart';
 
@@ -32,31 +33,30 @@ abstract class BaseAuthRemoteDataSource {
 }
 
 class AuthRemoteDataSource implements BaseAuthRemoteDataSource {
+  final NetworkClient client;
+
+  AuthRemoteDataSource(this.client);
+
   @override
   Future<AuthenticationModel> login(String email, String password) async {
+    final formData = {
+      'email': email,
+      'password': password,
+    };
     try {
-      final formData = {
-        'email': email,
-        'password': password,
-      };
-
-      final response = await http.post(
-        Uri.parse(ApiConstants.login),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: json.encode(formData),
-      );
+      final response = await client.post(ApiConstants.login, body: formData);
 
       if (response.statusCode == 200) {
-        print(response.body);
-        return AuthenticationModel.fromJson(json.decode(response.body));
+        final decodedData = jsonDecode(response.body);
+        await SecureStorage().saveToken(decodedData['access_token']);
+        return AuthenticationModel.fromJson(decodedData);
       } else {
-        throw Exception(response.body);
+        final error = jsonDecode(response.body);
+        throw ServerException(
+            error['original']['message'] ?? 'Unexpected error');
       }
     } catch (e) {
-      throw Exception('Error during login: $e');
+      return throw ServerException("Login Failed: $e");
     }
   }
 
@@ -78,21 +78,16 @@ class AuthRemoteDataSource implements BaseAuthRemoteDataSource {
         'phone': phone,
         'gender': gender,
       };
-      final uri = Uri.parse(ApiConstants.register);
-      final response = await http.post(uri,
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-          },
-          body: json.encode(formData));
+      final response = await client.post(ApiConstants.register, body: formData);
 
       if (response.statusCode == 200) {
         return UserModel.fromJson(jsonDecode(response.body)['user']);
       } else {
-        throw Exception(response.body);
+        final error = jsonDecode(response.body);
+        throw ServerException(error['message'] ?? 'Unexpected error');
       }
     } catch (e) {
-      throw Exception('Error during registration: $e');
+      return throw ServerException("Register failed: $e");
     }
   }
 
@@ -104,24 +99,17 @@ class AuthRemoteDataSource implements BaseAuthRemoteDataSource {
         'user_id': userId,
         'otp': otp,
       };
-      final response = await http.post(
-        Uri.parse(ApiConstants.verifyOtp),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          // 'Authentication':'Bearer 17|asjefjhcsHVasgjhyvfasjvfasjcsdv'
-        },
-        body: json.encode(formData),
-      );
+      final response =
+          await client.post(ApiConstants.verifyOtp, body: formData);
 
       if (response.statusCode == 200) {
-        print(response.body);
         return unit;
       } else {
-        throw Exception(response.body);
+        final error = jsonDecode(response.body);
+        throw ServerException(error['message'] ?? 'Unexpected error');
       }
     } catch (e) {
-      throw Exception('Error during Verifying Email: $e');
+      return throw ServerException("Email Verification failed: $e");
     }
   }
 
@@ -129,22 +117,19 @@ class AuthRemoteDataSource implements BaseAuthRemoteDataSource {
   Future<ResetPasswordModel> forgetPassword({required String email}) async {
     try {
       final formData = {'email': email};
-      final response = await http.post(Uri.parse(ApiConstants.forgetPassword),
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-          },
-          body: json.encode(formData));
+      final response =
+          await client.post(ApiConstants.forgetPassword, body: formData);
 
       if (response.statusCode == 200) {
         final data = ResetPasswordModel.fromJson(json.decode(response.body));
         SecureStorage().saveUserData(email: email, userId: data.userId);
         return data;
       } else {
-        throw Exception(response.body);
+        final error = jsonDecode(response.body);
+        throw ServerException(error['message'] ?? 'Unexpected error');
       }
     } catch (e) {
-      throw Exception('Error during Verifying Email: $e');
+      return throw ServerException("Forget password Request failed: $e");
     }
   }
 
@@ -155,23 +140,17 @@ class AuthRemoteDataSource implements BaseAuthRemoteDataSource {
         'user_id': userId,
         'otp': otp,
       };
-      final response = await http.post(
-        Uri.parse(ApiConstants.verifyOtp),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: json.encode(formData),
-      );
+      final response =
+          await client.post(ApiConstants.verifyOtp, body: formData);
 
       if (response.statusCode == 200) {
-        print(response.body);
         return unit;
       } else {
-        throw Exception(response.body);
+        final error = jsonDecode(response.body);
+        throw ServerException(error['message'] ?? 'Unexpected error');
       }
     } catch (e) {
-      throw Exception('Error during OTP Verification: $e');
+      return throw ServerException("OTP Verification failed: $e");
     }
   }
 
@@ -186,21 +165,17 @@ class AuthRemoteDataSource implements BaseAuthRemoteDataSource {
         'newPassword': newPassword,
         'newPassword_confirmation': confirmPassword,
       };
-      final response = await http.post(Uri.parse(ApiConstants.resetPassword),
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-          },
-          body: json.encode(formData));
+      final response =
+          await client.post(ApiConstants.resetPassword, body: formData);
 
       if (response.statusCode == 200) {
-        print(response.body);
         return unit;
       } else {
-        throw Exception(response.body);
+        final error = jsonDecode(response.body);
+        throw ServerException(error['message'] ?? 'Unexpected error');
       }
     } catch (e) {
-      throw Exception('Error during Resetting Password: $e');
+      return throw ServerException("Password Reset failed: $e");
     }
   }
 }
