@@ -11,12 +11,12 @@ class LoginInitial extends LoginState {}
 class LoginLoading extends LoginState {}
 
 class LoginSuccess extends LoginState {
-  final AuthenticationModel user;
+  final AuthenticationModel authData;
 
-  LoginSuccess(this.user);
+  LoginSuccess(this.authData);
 
   @override
-  List<Object> get props => [user];
+  List<Object> get props => [authData];
 }
 
 class LoginFailure extends LoginState {

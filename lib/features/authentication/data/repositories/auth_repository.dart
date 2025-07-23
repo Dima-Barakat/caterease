@@ -17,10 +17,11 @@ class AuthRepository implements BaseAuthRepository {
       {required String email, required String password}) async {
     try {
       final authentication = await remoteDataSource.login(email, password);
-      await SecureStorage().saveTokens(authentication.accessToken);
       return Right(authentication);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
     } catch (e) {
-      throw Exception('Error fetching profile data: $e');
+      return Left(UnexpectedFailure("Unexpected error: $e"));
     }
   }
 
@@ -43,8 +44,10 @@ class AuthRepository implements BaseAuthRepository {
           gender: gender);
       await SecureStorage().saveUserData(userId: user.id, email: email);
       return Right(user);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
     } catch (e) {
-      throw Exception('Error fetching Registering: $e');
+      return Left(UnexpectedFailure("Unexpected error: $e"));
     }
   }
 
@@ -54,8 +57,10 @@ class AuthRepository implements BaseAuthRepository {
     try {
       final unit = await remoteDataSource.verifyEmail(userId: userId, otp: otp);
       return Right(unit);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
     } catch (e) {
-      throw Exception('Error fetching Verifying Email: $e');
+      return Left(UnexpectedFailure("Unexpected error: $e"));
     }
   }
 
@@ -67,15 +72,11 @@ class AuthRepository implements BaseAuthRepository {
           await remoteDataSource.forgetPassword(email: email);
       await SecureStorage()
           .saveUserData(userId: resetPasswordModel.userId, email: email);
-      print(resetPasswordModel.userId);
-      print(resetPasswordModel.userId);
-      print(resetPasswordModel.userId);
-      print(resetPasswordModel.userId);
-      print(resetPasswordModel.userId);
-      print(resetPasswordModel.userId);
       return Right(resetPasswordModel);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
     } catch (e) {
-      throw Exception('Error fetching Forgetting Password: $e');
+      return Left(UnexpectedFailure("Unexpected error: $e"));
     }
   }
 
@@ -87,8 +88,10 @@ class AuthRepository implements BaseAuthRepository {
     try {
       final unit = await remoteDataSource.verifyOtp(userId: userId, otp: otp);
       return Right(unit);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
     } catch (e) {
-      throw Exception('Error fetching OTP Verification: $e');
+      return Left(UnexpectedFailure("Unexpected error: $e"));
     }
   }
 
@@ -105,8 +108,10 @@ class AuthRepository implements BaseAuthRepository {
         confirmPassword: confirmPassword,
       );
       return Right(unit);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
     } catch (e) {
-      throw Exception('Error fetching Resetting Password: $e');
+      return Left(UnexpectedFailure("Unexpected error: $e"));
     }
   }
 }

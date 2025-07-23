@@ -1,6 +1,5 @@
-import 'package:caterease/features/profile/presentation/screens/profile_page.dart';
+import 'package:caterease/features/profile/presentation/screens/profile/profile_view_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 
 class SettingPage extends StatefulWidget {
   @override
@@ -12,27 +11,25 @@ class _SettingPageState extends State<SettingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("settings"),
+        title: const Text("settings"),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             ListTile(
-              leading: Icon(Icons.person),
-              title: Text("Profile"),
+              leading: const Icon(Icons.person),
+              title: const Text("Profile"),
               onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => ProfilePage()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const ProfileViewPage()));
               },
             ),
             const Divider(),
             ListTile(
               leading: const Icon(Icons.logout),
               title: const Text("Log out"),
-              onTap: () {
-                // تنفيذ تسجيل الخروج
-              },
+              onTap: () {},
             ),
             ListTile(
               leading: const Icon(Icons.delete, color: Colors.red),

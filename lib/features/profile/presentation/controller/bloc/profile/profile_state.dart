@@ -1,5 +1,4 @@
-import 'package:caterease/features/profile/domain/entities/user.dart';
-import 'package:equatable/equatable.dart';
+part of 'profile_bloc.dart';
 
 abstract class ProfileState extends Equatable {
   const ProfileState();
@@ -29,3 +28,6 @@ class ProfileError extends ProfileState {
   @override
   List<Object?> get props => [message];
 }
+
+//: Update Profile States
+class ProfileUpdated extends ProfileState {}

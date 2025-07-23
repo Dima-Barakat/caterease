@@ -5,6 +5,8 @@ class AppTheme {
   static const Color lightGreen = Color(0xFFB7D6B7);
   static const Color lightBlue = Color(0xFFC0CCD8);
   static const Color darkBlue = Color(0xFF314E76);
+  static const Color fontBlack = Color(0xFF402e32);
+  static const Color primaryDark = Color(0xFF997A56);
 
   static ThemeData lightTheme = ThemeData(
     primaryColor: darkBlue,
@@ -31,7 +33,7 @@ class AppTheme {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
     ),
-    colorScheme: ColorScheme.light(
+    colorScheme: const ColorScheme.light(
       primary: darkBlue,
       secondary: lightGreen,
       surface: lightGray,
