@@ -1,4 +1,4 @@
-import 'package:caterease/features/address/data/models/address_model.dart';
+import 'package:caterease/features/profile/data/models/address_model.dart';
 import '../../domain/entities/user.dart';
 
 class UserModel extends User {
@@ -8,6 +8,7 @@ class UserModel extends User {
       required super.name,
       required super.phone,
       required super.gender,
+      required super.role,
       super.photo,
       super.addresses});
 
@@ -17,6 +18,7 @@ class UserModel extends User {
         name: json["name"],
         phone: json["phone"],
         gender: json["gender"],
+        role: json["role"],
         photo: json["photo"] != null ? json['photo'] : null,
         addresses: json['addresses'] != null
             ? List<AddressModel>.from(

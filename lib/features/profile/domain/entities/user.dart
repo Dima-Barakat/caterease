@@ -1,13 +1,14 @@
-import 'package:caterease/features/address/domain/entities/address.dart';
+import 'package:caterease/features/profile/domain/entities/address.dart';
 import 'package:equatable/equatable.dart';
 
 class User extends Equatable {
   final int id;
   final String email;
   final String name;
-  final int phone;
+  final String phone;
   final String gender;
   final String? photo;
+  final String? role;
   final List<Address>? addresses;
 
   const User(
@@ -17,6 +18,7 @@ class User extends Equatable {
       required this.phone,
       required this.gender,
       this.photo,
+      this.role,
       this.addresses});
 
   @override

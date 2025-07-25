@@ -12,7 +12,7 @@ class RegisterUserUseCase {
     String name,
     String email,
     String password,
-    String confirmationPassword,
+    String passwordConfirmation,
     String phone,
     String gender,
   ) async {
@@ -20,7 +20,7 @@ class RegisterUserUseCase {
         name: name,
         email: email,
         password: password,
-        confirmationPassword: confirmationPassword,
+        passwordConfirmation: passwordConfirmation,
         phone: phone,
         gender: gender);
   }
