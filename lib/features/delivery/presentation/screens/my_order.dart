@@ -1,4 +1,5 @@
 import 'package:caterease/core/theming/app_theme.dart';
+import 'package:caterease/core/widgets/order_card.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +21,6 @@ class _MyOrderState extends State<MyOrder> {
         // centerTitle: true,
       ),
       body: Card(
-
           color: AppTheme.lightBlue,
           margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           shape:
@@ -29,8 +29,15 @@ class _MyOrderState extends State<MyOrder> {
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [Text("aaaa")],
+              children: [
+                OrderCard(
+                    image: "image",
+                    restaurantName: "restaurantName",
+                    message: "message",
+                    text: "text")
+              ],
             ),
           )),
       bottomNavigationBar: ConvexAppBar(

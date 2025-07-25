@@ -62,22 +62,26 @@ class OrderCard extends StatelessWidget {
   }
 
   Widget elevatedButton(String text) {
-    return ElevatedButton(
-      onPressed: () {},
-      style: ElevatedButton.styleFrom(
-        backgroundColor: AppTheme.lightGray,
-        // side: const BorderSide(color: Colors.purple),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        ElevatedButton(
+          onPressed: () {},
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppTheme.lightGray,
+            // side: const BorderSide(color: Colors.purple),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+            elevation: 0,
+          ),
+          child: Text(
+            text,
+            style: TextStyle(color: AppTheme.darkBlue),
+          ),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-        elevation: 0,
-      ),
-      child: Text(
-        text,
-        style: TextStyle(color: AppTheme.darkBlue),
-
-      ),
+      ],
     );
   }
 }
