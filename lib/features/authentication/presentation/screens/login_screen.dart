@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
                   } else if (state is LoginSuccess) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                          content: Text('Welcome ${state.user.user.name}')),
+                          content: Text('Welcome ${state.authData.user.name}')),
                     );
                   }
                 },
@@ -112,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
                       builder: (context, state) {
                         return ElevatedButton(
                           style: ButtonStyle(
-                            shape: MaterialStatePropertyAll(
+                            shape: WidgetStatePropertyAll(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(25),
                               ),

@@ -1,3 +1,4 @@
+import 'package:caterease/core/network/network_client.dart';
 import 'package:caterease/features/authentication/data/datasources/auth_remote_data_source.dart';
 import 'package:caterease/features/authentication/data/repositories/auth_repository.dart';
 import 'package:caterease/features/authentication/domain/usecases/verify_email_use_case.dart';
@@ -35,8 +36,7 @@ class _VerificationPageState extends State<VerificationPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => VerifyBloc(
-          VerifyEmailUseCase(AuthRepository(AuthRemoteDataSource()))),
+      create: (_) => sl<VerifyBloc>(),
       child: BlocConsumer<VerifyBloc, VerifyState>(
         listener: (context, state) {
           if (state is VerifyLoading) {

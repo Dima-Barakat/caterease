@@ -1,3 +1,10 @@
+import 'package:caterease/features/profile/data/datasources/address_remote_datasource.dart';
+import 'package:caterease/features/profile/data/repositories/address_repository.dart';
+import 'package:caterease/features/profile/domain/repositories/base_address_repository.dart';
+import 'package:caterease/features/profile/domain/usecases/address/create_address_use_case.dart';
+import 'package:caterease/features/profile/domain/usecases/address/delete_address_use_case.dart';
+import 'package:caterease/features/profile/domain/usecases/address/index_addresses_use_case.dart';
+import 'package:caterease/features/profile/presentation/controller/bloc/address/address_bloc.dart';
 import 'package:caterease/features/authentication/data/datasources/auth_remote_data_source.dart';
 import 'package:caterease/features/authentication/data/repositories/auth_repository.dart';
 import 'package:caterease/features/authentication/domain/repositories/base_auth_repository.dart';
@@ -11,6 +18,13 @@ import 'package:caterease/features/authentication/presentation/controllers/bloc/
 import 'package:caterease/features/authentication/presentation/controllers/bloc/verify/verify_bloc.dart';
 import 'package:caterease/features/location/data/datasources/send_location_remote_data_source.dart';
 import 'package:caterease/features/location/domain/usecases/send_location_usecase.dart';
+import 'package:caterease/features/profile/data/datasources/profile_remote_datasource.dart';
+import 'package:caterease/features/profile/data/repositories/user_repository.dart';
+import 'package:caterease/features/profile/domain/repositories/base_profile_repository.dart';
+import 'package:caterease/features/profile/domain/usecases/profile/get_profile_details_use_case.dart';
+import 'package:caterease/features/profile/domain/usecases/profile/update_profile_use_case.dart';
+import 'package:caterease/features/profile/presentation/controller/bloc/profile/profile_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
@@ -38,6 +52,8 @@ Future<void> init() async {
   await _initLocation();
   await _initCore();
   await _initExternal();
+  await _initProfile();
+  await _initAddress();
 }
 
 Future<void> _initAuthentication() async {
@@ -46,7 +62,6 @@ Future<void> _initAuthentication() async {
   sl.registerFactory(() => RegisterBloc(sl()));
   sl.registerFactory(() => VerifyBloc(sl()));
   sl.registerFactory(() => PasswordResetBloc(sl()));
-
 
   //: UseCases
   sl.registerLazySingleton(() => LoginUserUseCase(sl()));
@@ -58,7 +73,23 @@ Future<void> _initAuthentication() async {
 
   //: DataSources
   sl.registerLazySingleton<BaseAuthRemoteDataSource>(
-      () => AuthRemoteDataSource());
+      () => AuthRemoteDataSource(sl()));
+}
+
+Future<void> _initProfile() async {
+  //: Bloc
+  sl.registerFactory(() => ProfileBloc(sl(), sl()));
+
+  //:UseCases
+  sl.registerLazySingleton(() => GetProfileDetailsUseCase(sl()));
+  sl.registerLazySingleton(() => UpdateProfileUseCase(sl()));
+
+  //:Repository
+  sl.registerLazySingleton<BaseProfileRepository>(() => UserRepository(sl()));
+
+  //:DataSource
+  sl.registerLazySingleton<BaseProfileRemoteDatasource>(
+      () => ProfileRemoteDatasource(sl()));
 }
 
 Future<void> _initRestaurants() async {
@@ -109,9 +140,30 @@ Future<void> _initLocation() async {
 }
 
 Future<void> _initCore() async {
-  sl.registerLazySingleton(() => NetworkClient(sl()));
+  sl.registerLazySingleton(() => NetworkClient(sl(), sl()));
 }
 
 Future<void> _initExternal() async {
   sl.registerLazySingleton(() => http.Client());
+  sl.registerLazySingleton<FlutterSecureStorage>(
+    () => const FlutterSecureStorage(),
+  );
+}
+
+Future<void> _initAddress() async {
+  //:Bloc
+  sl.registerFactory(() => AddressBloc(sl(), sl(), sl()));
+
+  //:UseCase
+  sl.registerLazySingleton(() => IndexAddressesUseCase(sl()));
+  sl.registerLazySingleton(() => CreateAddressUseCase(sl()));
+  sl.registerLazySingleton(() => DeleteAddressUseCase(sl()));
+
+  //:Repository
+  sl.registerLazySingleton<BaseAddressRepository>(
+      () => AddressRepository(sl(), sl()));
+
+  //:DataSource
+  sl.registerLazySingleton<BaseAddressRemoteDatasource>(
+      () => AddressRemoteDatasource(client: sl()));
 }
