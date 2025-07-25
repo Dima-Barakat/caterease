@@ -1,12 +1,15 @@
-import '../entities/user.dart';
-import '../repositories/base_user_repository.dart';
+import 'package:caterease/core/error/failures.dart';
+import 'package:dartz/dartz.dart';
+
+import '../../entities/user.dart';
+import '../../repositories/base_profile_repository.dart';
 
 class UpdateProfileUseCase {
-  final BaseUserRepository baseUserRepository;
+  final BaseProfileRepository baseUserRepository;
 
   const UpdateProfileUseCase(this.baseUserRepository);
 
-  Future<User> updateProfileDetails({
+  Future<Either<Failure, User>> updateProfileDetails({
     String? name,
     String? email,
     String? phone,

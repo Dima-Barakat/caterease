@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:caterease/core/constants/api_constants.dart';
+import 'package:caterease/core/network/network_client.dart';
 import 'package:caterease/core/storage/secure_storage.dart';
 import '../models/user_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart'; // for MediaType
 
-//! The abstract class
 abstract class BaseProfileRemoteDatasource {
   Future<UserModel> getProfileDetails();
 
@@ -18,24 +18,18 @@ abstract class BaseProfileRemoteDatasource {
       String? photo});
 }
 
-//! Class Extends
 class ProfileRemoteDatasource implements BaseProfileRemoteDatasource {
+  final NetworkClient client;
+
+  ProfileRemoteDatasource(this.client);
   @override
   Future<UserModel> getProfileDetails() async {
     try {
-      final token = await SecureStorage().getAccessToken();
-
-      final response = await http.get(
-        Uri.parse(ApiConstants.customerProfile),
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-          'Authentication':'Bearer ${SecureStorage().getAccessToken()}'
-        },
-      );
+      final response = await client.get(ApiConstants.customerProfile);
 
       if (response.statusCode == 200) {
-        final data = json.decode(response.body);
+        final data = jsonDecode(response.body);
+        print(data['data']);
         return UserModel.fromJson(data['data']);
       } else {
         throw Exception('Failed to load profile data');
@@ -57,7 +51,7 @@ class ProfileRemoteDatasource implements BaseProfileRemoteDatasource {
       final token = await SecureStorage().getAccessToken();
 
       final uri = Uri.parse(ApiConstants.updateCustomerProfile);
-      final request = http.MultipartRequest('PUT', uri)
+      final request = http.MultipartRequest('POST', uri)
         ..headers['Authorization'] = 'Bearer $token'
         ..headers['Accept'] = 'application/json';
 
@@ -80,10 +74,10 @@ class ProfileRemoteDatasource implements BaseProfileRemoteDatasource {
       final response = await http.Response.fromStream(streamedResponse);
 
       if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        return UserModel.fromJson(data);
+        final data = jsonDecode(response.body);
+        return UserModel.fromJson(data['data']);
       } else {
-        throw Exception('Failed to update profile data');
+        throw Exception(response.body);
       }
     } catch (e) {
       throw Exception('Error updating profile data: $e');

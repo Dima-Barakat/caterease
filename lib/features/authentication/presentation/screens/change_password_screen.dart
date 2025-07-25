@@ -1,6 +1,8 @@
+import 'package:caterease/core/storage/secure_storage.dart';
 import 'package:caterease/features/authentication/data/datasources/auth_remote_data_source.dart';
 import 'package:caterease/features/authentication/data/repositories/auth_repository.dart';
 import 'package:caterease/features/authentication/presentation/screens/login_screen.dart';
+import 'package:caterease/injection_container.dart';
 import 'package:flutter/material.dart';
 import 'package:caterease/core/widgets/custom_text_field.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,8 +32,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => PasswordResetBloc(
-          PasswordResetUseCase(AuthRepository(AuthRemoteDataSource()))),
+      create: (_) => sl<PasswordResetBloc>(),
       child: BlocConsumer<PasswordResetBloc, PasswordResetState>(
         listener: (context, state) {
           if (state is PasswordChangeLoading) {
