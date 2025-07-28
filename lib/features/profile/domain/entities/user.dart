@@ -8,7 +8,7 @@ class User extends Equatable {
   final String phone;
   final String gender;
   final String? photo;
-  final String? role;
+  final int? roleId;
   final List<Address>? addresses;
 
   const User(
@@ -18,7 +18,7 @@ class User extends Equatable {
       required this.phone,
       required this.gender,
       this.photo,
-      this.role,
+      this.roleId,
       this.addresses});
 
   @override

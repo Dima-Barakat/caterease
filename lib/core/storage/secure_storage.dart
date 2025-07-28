@@ -10,9 +10,13 @@ class SecureStorage {
 
   //: Write Important user data to the storage
   Future<void> saveUserData(
-      {required int userId, required String email, String? name}) async {
+      {required int userId,
+      required String email,
+      String? name,
+      int? roleId}) async {
     await storage.write(key: 'user_id', value: userId.toString());
     await storage.write(key: 'email', value: email.toString());
+    await storage.write(key: 'role', value: roleId.toString());
   }
 
   //: Read the Access-Token from the storage
@@ -24,6 +28,9 @@ class SecureStorage {
 
   //: Reade the User's Email from the storage
   Future<String?> getEmail() async => await storage.read(key: "email");
+
+  //: Reade the User's Role from the storage
+  Future<String?> getRole() async => await storage.read(key: "role");
 
   //: Clear all data on logout
   Future<void> clearAll() async => await storage.deleteAll();
