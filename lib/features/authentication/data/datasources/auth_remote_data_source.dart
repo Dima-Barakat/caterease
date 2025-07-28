@@ -48,12 +48,11 @@ class AuthRemoteDataSource implements BaseAuthRemoteDataSource {
 
       if (response.statusCode == 200) {
         final decodedData = jsonDecode(response.body);
-        await SecureStorage().saveToken(decodedData['access_token']);
         return AuthenticationModel.fromJson(decodedData);
       } else {
         final error = jsonDecode(response.body);
         throw ServerException(
-            error['original']['message'] ?? 'Unexpected error');
+            error['message'] ?? 'Unexpected error');
       }
     } catch (e) {
       return throw ServerException("Login Failed: $e");
