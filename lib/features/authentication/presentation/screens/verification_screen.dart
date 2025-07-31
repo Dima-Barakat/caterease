@@ -1,7 +1,3 @@
-import 'package:caterease/core/network/network_client.dart';
-import 'package:caterease/features/authentication/data/datasources/auth_remote_data_source.dart';
-import 'package:caterease/features/authentication/data/repositories/auth_repository.dart';
-import 'package:caterease/features/authentication/domain/usecases/verify_email_use_case.dart';
 import 'package:caterease/features/authentication/presentation/controllers/bloc/login/login_bloc.dart';
 import 'package:caterease/features/authentication/presentation/controllers/bloc/password_reset/password_reset_bloc.dart';
 import 'package:caterease/features/authentication/presentation/controllers/bloc/verify/verify_bloc.dart';

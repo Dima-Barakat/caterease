@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:caterease/core/error/failures.dart';
 import 'package:caterease/core/storage/secure_storage.dart';
 import 'package:caterease/features/authentication/data/datasources/auth_remote_data_source.dart';
@@ -9,7 +11,7 @@ import 'package:dartz/dartz.dart';
 
 class AuthRepository implements BaseAuthRepository {
   final BaseAuthRemoteDataSource remoteDataSource;
-
+  SecureStorage secureStorage = SecureStorage();
   AuthRepository(this.remoteDataSource);
 
   @override
@@ -17,6 +19,22 @@ class AuthRepository implements BaseAuthRepository {
       {required String email, required String password}) async {
     try {
       final authentication = await remoteDataSource.login(email, password);
+
+      //:Save data to storage
+      await secureStorage.saveToken(authentication.accessToken);
+      await secureStorage.saveUserData(
+          userId: authentication.user.id,
+          email: authentication.user.email,
+          name: authentication.user.name,
+          roleId: authentication.user.roleId);
+      print("DATA: \n");
+      String? token = await secureStorage.getAccessToken();
+      String? id = await secureStorage.getUserId();
+      String? userEmail = await secureStorage.getEmail();
+      String? role = await secureStorage.getRole();
+      print(
+          "User Token: $token \n User ID: $id \n User Role: $role \n User Email: $userEmail");
+      print("\n");
       return Right(authentication);
     } on ServerException catch (e) {
       return Left(ServerFailure(e.message));
