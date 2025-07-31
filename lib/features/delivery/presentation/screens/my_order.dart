@@ -71,17 +71,6 @@ class _MyOrderState extends State<MyOrder> {
           }
         },
       ),
-      bottomNavigationBar: ConvexAppBar(
-        color: AppTheme.lightGray,
-        backgroundColor: AppTheme.darkBlue,
-        activeColor: AppTheme.lightGreen,
-        initialActiveIndex: 0,
-        items: const [
-          TabItem(icon: Icons.home, title: 'Home'),
-          TabItem(icon: Icons.settings, title: 'setting'),
-        ],
-        onTap: (int i) => print('click index=$i'),
-      ),
     );
   }
 }
