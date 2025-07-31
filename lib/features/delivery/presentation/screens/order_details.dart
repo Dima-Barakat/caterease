@@ -74,12 +74,6 @@ class _OrderDetailsState extends State<OrderDetails> {
                     ),
                   ),
                 )
-                /*     UserInfoCard(
-              name: 'أحمد محمد',
-              phone: '0501234567',
-              address: 'الرياض، حي النرجس، شارع 123',
-            ),
-             */
               ]),
         ),
       ),
