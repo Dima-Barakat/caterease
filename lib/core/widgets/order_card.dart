@@ -74,7 +74,7 @@ class OrderCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-            elevation: 0,
+          
           ),
           child: Text(
             text,
