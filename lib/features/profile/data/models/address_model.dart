@@ -21,8 +21,22 @@ class AddressModel extends Address {
       building: json['building'] ?? '',
       floor: json['floor'] ?? '',
       apartment: json['apartment'] ?? '',
-      latitude: json['latitude']?? '0.0',
+      latitude: json['latitude'] ?? '0.0',
       longitude: json['longitude'] ?? '0.0',
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'city': city,
+      // 'country': country,
+      'street': street,
+      'building': building,
+      'floor': floor,
+      'apartment': apartment,
+      'latitude': latitude,
+      'longitude': longitude,
+    };
   }
 }

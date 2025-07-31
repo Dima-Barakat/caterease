@@ -76,7 +76,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            GestureDetector(
+            /*   GestureDetector(
               onTap: () async {
                 showModalBottomSheet(
                   context: context,
@@ -117,7 +117,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                   child: const Icon(Icons.person),
                 ),
               ),
-            ),
+            ), */
             const SizedBox(height: 20),
             buildLabel("Your Full Name"),
             buildTextField(controller: nameController, hint: "Enter full name"),
