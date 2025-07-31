@@ -15,26 +15,26 @@ abstract class Failure extends Equatable {
 
 /// Server failure (e.g. backend error, wrong credentials, etc.)
 class ServerFailure extends Failure {
-  const ServerFailure([String? message]) : super(message);
+  const ServerFailure([super.message]);
 }
 
 /// Network failure (e.g. no internet connection)
 class NetworkFailure extends Failure {
-  const NetworkFailure([String? message]) : super(message);
+  const NetworkFailure([super.message]);
 }
 
 /// Location failure (e.g. user denied location access)
 class LocationFailure extends Failure {
-  const LocationFailure([String? message]) : super(message);
+  const LocationFailure([super.message]);
 }
 
 /// Permission failure (e.g. file storage, camera)
 class PermissionFailure extends Failure {
-  const PermissionFailure([String? message]) : super(message);
+  const PermissionFailure([super.message]);
 }
 /// Unexpected failure 
 class UnexpectedFailure extends Failure {
-  const UnexpectedFailure([String? message]) : super(message);
+  const UnexpectedFailure([super.message]);
 }
 
 class ServerException implements Exception {

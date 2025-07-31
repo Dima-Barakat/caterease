@@ -1,3 +1,9 @@
+import 'package:caterease/features/delivery/data/datasources/order_remote_data_source.dart';
+import 'package:caterease/features/delivery/data/repositories/order_repository.dart';
+import 'package:caterease/features/delivery/domain/repositories/base_order_repository.dart';
+import 'package:caterease/features/delivery/domain/usecases/get_all_orders_use_case.dart';
+import 'package:caterease/features/delivery/domain/usecases/get_order_details_use_case.dart';
+import 'package:caterease/features/delivery/presentation/controller/bloc/delivery_order_bloc.dart';
 import 'package:caterease/features/profile/data/datasources/address_remote_datasource.dart';
 import 'package:caterease/features/profile/data/repositories/address_repository.dart';
 import 'package:caterease/features/profile/domain/repositories/base_address_repository.dart';
@@ -54,6 +60,7 @@ Future<void> init() async {
   await _initExternal();
   await _initProfile();
   await _initAddress();
+  await _initOrder();
 }
 
 Future<void> _initAuthentication() async {
@@ -166,4 +173,21 @@ Future<void> _initAddress() async {
   //:DataSource
   sl.registerLazySingleton<BaseAddressRemoteDatasource>(
       () => AddressRemoteDatasource(client: sl()));
+}
+
+Future<void> _initOrder() async {
+  //:Bloc
+  sl.registerFactory(() => DeliveryOrderBloc(sl(), sl()));
+
+  //:UseCase
+  sl.registerLazySingleton(() => GetAllOrdersUseCase(repository: sl()));
+  sl.registerLazySingleton(() => GetOrderDetailsUseCase(repository: sl()));
+
+  //:Repository
+  sl.registerLazySingleton<BaseOrderRepository>(
+      () => OrderRepository(dataSource: sl()));
+
+  //:DataSource
+  sl.registerLazySingleton<BaseOrderRemoteDataSource>(
+      () => OrderRemoteDataSource(client: sl()));
 }
