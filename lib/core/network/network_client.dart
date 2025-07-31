@@ -8,7 +8,7 @@ class NetworkClient {
   final FlutterSecureStorage storage;
 
   NetworkClient(this.client, this.storage);
-
+  //: Headers
   Future<Map<String, String>> _getHeaders() async {
     SecureStorage secureStorage = SecureStorage();
     String? token = await secureStorage.getAccessToken();
@@ -16,11 +16,14 @@ class NetworkClient {
     print('→ token from storage: "$token"');
     return {
       'Content-Type': 'application/json',
+      'Accept': 'application/json',
       if (token != null && token.trim().isNotEmpty)
-        'Authorization': 'Bearer $token',
+        'Authorization':
+            'Bearer 1|w60RRUQOB4Cx9vTPBGzUmDpAl0tyfa71hDGbMrQH10bc1699', //! 'Bearer $token'
     };
   }
 
+  //: Get Request
   Future<http.Response> get(String url, {Map<String, String>? headers}) async {
     final defaultHeaders = await _getHeaders();
     return await client.get(
@@ -29,6 +32,7 @@ class NetworkClient {
     );
   }
 
+  //: Post Request
   Future<http.Response> post(
     String url, {
     Map<String, String>? headers,
@@ -47,6 +51,7 @@ class NetworkClient {
     );
   }
 
+  //: Delete Request
   Future<http.Response> delete(String url,
       {Map<String, String>? headers}) async {
     final defaultHeaders = await _getHeaders();
