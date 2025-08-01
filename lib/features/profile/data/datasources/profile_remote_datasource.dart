@@ -20,8 +20,8 @@ abstract class BaseProfileRemoteDatasource {
 
 class ProfileRemoteDatasource implements BaseProfileRemoteDatasource {
   final NetworkClient client;
-
   ProfileRemoteDatasource(this.client);
+
   @override
   Future<UserModel> getProfileDetails() async {
     try {
@@ -32,10 +32,11 @@ class ProfileRemoteDatasource implements BaseProfileRemoteDatasource {
         print(data['data']);
         return UserModel.fromJson(data['data']);
       } else {
-        throw Exception('Failed to load profile data');
+        final error = jsonDecode(response.body);
+        throw Exception(error['message'] ?? 'Unexpected Error');
       }
     } catch (e) {
-      throw Exception('Error fetching profile data: $e');
+      throw Exception('Error fetching profile data:\n $e');
     }
   }
 
@@ -77,10 +78,11 @@ class ProfileRemoteDatasource implements BaseProfileRemoteDatasource {
         final data = jsonDecode(response.body);
         return UserModel.fromJson(data['data']);
       } else {
-        throw Exception(response.body);
+        final error = jsonDecode(response.body);
+        throw Exception(error['message'] ?? 'Unexpected error');
       }
     } catch (e) {
-      throw Exception('Error updating profile data: $e');
+      throw Exception('Error updating profile data: \n $e');
     }
   }
 }

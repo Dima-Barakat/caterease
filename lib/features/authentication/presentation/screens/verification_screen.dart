@@ -45,7 +45,7 @@ class _VerificationPageState extends State<VerificationPage> {
             );
 
             // Delay slightly so the SnackBar can show
-            Future.delayed(const Duration(milliseconds: 500), () {
+            Future.delayed(const Duration(milliseconds: 1000), () {
               if (widget.scenario == "signUp") {
                 Navigator.pushAndRemoveUntil(
                   context,

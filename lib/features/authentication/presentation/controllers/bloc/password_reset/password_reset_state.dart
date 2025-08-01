@@ -31,6 +31,8 @@ class PasswordResetEmailSuccess extends PasswordResetState {
 }
 
 //! OTP verification states
+class OtpVerificationLoading extends PasswordResetState {}
+
 class OtpVerificationSuccess extends PasswordResetState {}
 
 class OtpVerificationFailed extends PasswordResetState {
@@ -42,16 +44,11 @@ class OtpVerificationFailed extends PasswordResetState {
   List<Object> get props => [error];
 }
 
-class OtpVerificationLoading extends PasswordResetState {}
 
 //! Password change states
+class PasswordChangeLoading extends PasswordResetState {}
 
-class PasswordChangeSuccess extends PasswordResetState {
-  PasswordChangeSuccess();
-
-  @override
-  List<Object> get props => [];
-}
+class PasswordChangeSuccess extends PasswordResetState {}
 
 class PasswordChangeFailed extends PasswordResetState {
   final String error;
@@ -62,4 +59,3 @@ class PasswordChangeFailed extends PasswordResetState {
   List<Object> get props => [error];
 }
 
-class PasswordChangeLoading extends PasswordResetState {}

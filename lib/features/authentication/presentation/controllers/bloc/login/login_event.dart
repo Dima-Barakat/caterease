@@ -14,14 +14,3 @@ class LoginSubmitted extends LoginEvent {
   @override
   List<Object> get props => [email, password];
 }
-
-class LoginSucceeded extends LoginEvent {}
-
-class LoginFailed extends LoginEvent {
-  final String error;
-
-  LoginFailed({required this.error});
-
-  @override
-  List<Object> get props => [error];
-}
