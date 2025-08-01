@@ -1,6 +1,7 @@
 import 'package:caterease/animated_splash_screen.dart';
 import 'package:caterease/features/authentication/presentation/screens/login_screen.dart';
-import 'package:caterease/features/delivery/presentation/screens/home_page.dart';
+import 'package:caterease/features/authentication/presentation/screens/register_screen.dart';
+import 'package:caterease/features/delivery/presentation/screens/home_page_o.dart';
 import 'package:caterease/features/delivery/presentation/controller/bloc/delivery_order_bloc.dart';
 import 'package:caterease/features/delivery/presentation/screens/order_details.dart';
 import 'package:caterease/features/profile/presentation/controller/bloc/address/address_bloc.dart';
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
         title: 'Caterease',
         theme: AppTheme.lightTheme,
         navigatorObservers: [routeObserver],
-        home: HomePageO(),
+        home: const RegisterPage(),
         // home:  AnimatedSplashScreen(),
       ),
     );
