@@ -48,7 +48,6 @@ class _RegisterPage extends State<RegisterPage> {
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            elevation: 0,
             backgroundColor: Colors.transparent,
             leading: IconButton(
               icon: const Icon(Icons.arrow_back, color: Colors.black),

@@ -19,7 +19,7 @@ class NetworkClient {
       'Accept': 'application/json',
       if (token != null && token.trim().isNotEmpty)
         'Authorization':
-            'Bearer 1|w60RRUQOB4Cx9vTPBGzUmDpAl0tyfa71hDGbMrQH10bc1699', //! 'Bearer $token'
+            'Bearer $token', //! 'Bearer $token'
     };
   }
 

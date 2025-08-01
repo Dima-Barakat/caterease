@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                       if (!mounted) return;
 
                       if (role == '5') {
-                        destination = MyOrder();
+                        destination = const MyOrder();
                       } else {
                         destination = SettingPage();
                       }

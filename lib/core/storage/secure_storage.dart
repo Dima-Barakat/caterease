@@ -17,6 +17,7 @@ class SecureStorage {
     await storage.write(key: 'user_id', value: userId.toString());
     await storage.write(key: 'email', value: email.toString());
     await storage.write(key: 'role', value: roleId.toString());
+    await storage.write(key: 'name', value: name.toString());
   }
 
   //: Read the Access-Token from the storage
