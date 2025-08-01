@@ -19,14 +19,15 @@ class ApiConstants {
   static const String resetPassword = "$baseUrl/forgot-password/reset";
 
   //! Customer section
-  
+
   //- Profile:
   //: get
   static const String customerProfile = "$baseUrl/customer/show";
   //: Update
   static const String updateCustomerProfile = "$baseUrl/customer/update";
   //: Update Password
-  static const String updateCustomerPassword = "$baseUrl/customer/update-password";
+  static const String updateCustomerPassword =
+      "$baseUrl/customer/update-password";
 
   //- Addresses:
   //: get all
@@ -34,9 +35,17 @@ class ApiConstants {
   //: create
   static const String createAddress = "$baseUrl/customer/creat";
   //: delete
-  static const String deleteAddress = "$baseUrl/customer/delete_addresse/";
+  static const String deleteAddress = "$baseUrl/customer/delete_addresse/"; //ID
   //: get nearby branches
   static const String nearbyBranches = '/branches/nearby';
   //: get all restaurants
   static const String restaurants = '/restaurants';
+
+  //! Delivery Section
+
+  //- orders:
+  //: Get All Orders
+  static const String orders = "$baseUrl/delivery/orders";
+  //: Get Order Details
+  static const String orderDetails = "$baseUrl/delivery/assigned-orders/"; //ID
 }

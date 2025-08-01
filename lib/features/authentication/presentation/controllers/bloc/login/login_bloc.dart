@@ -17,8 +17,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         (failure) {
           emit(LoginFailure(failure.toString()));
         },
-        (authModel) {
-          emit(LoginSuccess(authModel));
+        (authData) {
+          emit(LoginSuccess(authData));
         },
       );
     });

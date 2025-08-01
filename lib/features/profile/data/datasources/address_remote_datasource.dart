@@ -23,8 +23,8 @@ class AddressRemoteDatasource extends BaseAddressRemoteDatasource {
   Future<List<AddressModel>> getAllAddresses() async {
     final response = await client.get(ApiConstants.getAllAddress);
     final responseData = json.decode(response.body);
-    final List<dynamic> restaurants = responseData["data"];
     if (response.statusCode == 200) {
+      final List<dynamic> restaurants = responseData["data"];
       return restaurants.map((json) => AddressModel.fromJson(json)).toList();
     } else {
       throw Exception(response.body.toString());
