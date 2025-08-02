@@ -43,5 +43,26 @@ class _HomePageState extends State<HomePageO> {
         },
       ),
     );
+    /*
+      bottomNavigationBar: CurvedNavigationBar(
+        key: _bottomNavigationKey,
+        index: _currentIndex,
+        height: 60.0,
+        items: const <Widget>[
+          Icon(Icons.home, size: 30, color: Colors.white),
+          Icon(Icons.settings, size: 30, color: Colors.white),
+        ],
+        color: AppTheme.darkBlue,
+        buttonBackgroundColor: AppTheme.lightGreen,
+        backgroundColor: Colors.white,
+        animationCurve: Curves.easeInOut,
+        animationDuration: Duration(milliseconds: 600),
+        onTap: (int i) {
+          setState(() {
+            _currentIndex = i;
+          });
+        },
+        // letIndexChange: (index) => true,
+      ),  */
   }
 }

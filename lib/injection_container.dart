@@ -71,7 +71,6 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   await _initAuthentication();
-  await _initRestaurants();
   await _initLocation();
   await _initRestaurants();
   await _initPackages();
@@ -224,9 +223,6 @@ Future<void> _initCart() async {
         updateCartItemUseCase: sl(),
         removeCartItemUseCase: sl(),
       ));
-  sl.registerLazySingleton<FlutterSecureStorage>(
-    () => const FlutterSecureStorage(),
-  );
 }
 
 Future<void> _initAddress() async {
