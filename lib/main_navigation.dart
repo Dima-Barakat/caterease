@@ -1,5 +1,6 @@
 import 'package:caterease/core/theming/app_theme.dart';
 import 'package:caterease/features/cart/presentation/pages/cart_page.dart';
+import 'package:caterease/features/profile/presentation/screens/profile/profile_view_page.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:caterease/features/restaurants/presentation/pages/home_page.dart';
@@ -19,6 +20,7 @@ class _MainNavigationState extends State<MainNavigation> {
     HomePage(),
     OrdersMainPage(),
     CartPage(),
+    ProfileViewPage()
   ];
 
   @override
