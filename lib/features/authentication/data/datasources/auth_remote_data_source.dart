@@ -51,8 +51,7 @@ class AuthRemoteDataSource implements BaseAuthRemoteDataSource {
         return AuthenticationModel.fromJson(decodedData);
       } else {
         final error = jsonDecode(response.body);
-        throw ServerException(
-            error['message'] ?? 'Unexpected error');
+        throw ServerException(error['message'] ?? 'Unexpected error');
       }
     } catch (e) {
       return throw ServerException("Login Failed: $e");
