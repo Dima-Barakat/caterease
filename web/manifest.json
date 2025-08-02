@@ -1,6 +1,6 @@
 {
-    "name": "caterease_project",
-    "short_name": "caterease_project",
+    "name": "caterease",
+    "short_name": "caterease",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

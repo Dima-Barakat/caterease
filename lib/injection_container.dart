@@ -1,3 +1,19 @@
+import 'package:caterease/features/cart/data/datasources/cart_remote_data_source.dart';
+import 'package:caterease/features/cart/data/repositories/cart_repository_impl.dart';
+import 'package:caterease/features/cart/domain/repositories/cart_repository.dart';
+import 'package:caterease/features/cart/domain/usecases/add_to_cart_use_case.dart';
+import 'package:caterease/features/cart/domain/usecases/get_cart_packages_use_case.dart';
+import 'package:caterease/features/cart/domain/usecases/remove_cart_item_use_case.dart';
+import 'package:caterease/features/cart/domain/usecases/update_cart_item_use_case.dart';
+import 'package:caterease/features/cart/presentation/bloc/cart_bloc.dart';
+import 'package:caterease/features/location/data/datasources/send_location_remote_data_source.dart';
+import 'package:caterease/features/location/domain/usecases/send_location_usecase.dart';
+import 'package:caterease/features/packages/data/datasources/packages_remote_data_source.dart';
+import 'package:caterease/features/packages/data/repositories/packages_repository_impl.dart';
+import 'package:caterease/features/packages/domain/repositories/packages_repository.dart';
+import 'package:caterease/features/packages/domain/usecases/get_packages_for_branch.dart';
+import 'package:caterease/features/packages/domain/usecases/get_package_detail.dart';
+import 'package:caterease/features/packages/presentation/bloc/packages_bloc.dart';
 import 'package:caterease/features/delivery/data/datasources/order_remote_data_source.dart';
 import 'package:caterease/features/delivery/data/repositories/order_repository.dart';
 import 'package:caterease/features/delivery/domain/repositories/base_order_repository.dart';
@@ -22,8 +38,7 @@ import 'package:caterease/features/authentication/presentation/controllers/bloc/
 import 'package:caterease/features/authentication/presentation/controllers/bloc/password_reset/password_reset_bloc.dart';
 import 'package:caterease/features/authentication/presentation/controllers/bloc/register/register_bloc.dart';
 import 'package:caterease/features/authentication/presentation/controllers/bloc/verify/verify_bloc.dart';
-import 'package:caterease/features/location/data/datasources/send_location_remote_data_source.dart';
-import 'package:caterease/features/location/domain/usecases/send_location_usecase.dart';
+
 import 'package:caterease/features/profile/data/datasources/profile_remote_datasource.dart';
 import 'package:caterease/features/profile/data/repositories/user_repository.dart';
 import 'package:caterease/features/profile/domain/repositories/base_profile_repository.dart';
@@ -33,6 +48,7 @@ import 'package:caterease/features/profile/presentation/controller/bloc/profile/
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+
 
 import 'features/restaurants/data/datasources/restaurants_remote_data_source.dart';
 import 'features/restaurants/data/repositories/restaurants_repository_impl.dart';
@@ -50,12 +66,16 @@ import 'features/location/presentation/bloc/location_bloc.dart';
 
 import 'core/network/network_client.dart';
 
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
   await _initAuthentication();
   await _initRestaurants();
   await _initLocation();
+  await _initRestaurants();
+  await _initPackages();
+  await _initCart();
   await _initCore();
   await _initExternal();
   await _initProfile();
@@ -119,7 +139,6 @@ Future<void> _initRestaurants() async {
 }
 
 Future<void> _initLocation() async {
-  // ✅ Data Sources
   sl.registerLazySingleton<LocationDataSource>(
     () => LocationDataSourceImpl(),
   );
@@ -152,6 +171,59 @@ Future<void> _initCore() async {
 
 Future<void> _initExternal() async {
   sl.registerLazySingleton(() => http.Client());
+  sl.registerLazySingleton(() => const FlutterSecureStorage());
+}
+
+Future<void> _initPackages() async {
+  // Data sources
+  sl.registerLazySingleton<PackagesRemoteDataSource>(
+    () => PackagesRemoteDataSourceImpl(client: sl()),
+  );
+
+  // Repositories
+  sl.registerLazySingleton<PackagesRepository>(
+    () => PackagesRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  // Use cases
+  sl.registerLazySingleton(() => GetPackagesForBranch(sl()));
+  sl.registerLazySingleton(() => GetPackageDetail(sl()));
+
+  // Bloc
+  sl.registerFactory(() => PackagesBloc(
+        getPackagesForBranch: sl(),
+        getPackageDetail: sl(),
+      ));
+}
+
+Future<void> _initCart() async {
+  // Data sources
+  sl.registerLazySingleton<CartRemoteDataSource>(
+    () => CartRemoteDataSourceImpl(client: sl()),
+  );
+
+  // Repositories
+  sl.registerLazySingleton<CartRepository>(
+    () => CartRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  // Use cases
+  sl.registerLazySingleton(() => AddToCartUseCase(sl()));
+  sl.registerLazySingleton(() => GetCartPackagesUseCase(sl()));
+// ← أضف هذول
+  sl.registerLazySingleton<UpdateCartItemUseCase>(
+    () => UpdateCartItemUseCase(sl()),
+  );
+  sl.registerLazySingleton<RemoveCartItemUseCase>(
+    () => RemoveCartItemUseCase(sl()),
+  );
+  // Bloc
+  sl.registerFactory(() => CartBloc(
+        addToCartUseCase: sl(),
+        getCartPackagesUseCase: sl(),
+        updateCartItemUseCase: sl(),
+        removeCartItemUseCase: sl(),
+      ));
   sl.registerLazySingleton<FlutterSecureStorage>(
     () => const FlutterSecureStorage(),
   );
