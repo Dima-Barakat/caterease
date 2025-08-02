@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:caterease/app_theme.dart';
+import 'package:caterease/core/theming/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:caterease/features/packages/domain/entities/package.dart';
 
