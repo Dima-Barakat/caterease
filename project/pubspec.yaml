@@ -1,0 +1,59 @@
+name: caterease
+description: "A Flutter app for food delivery with location-based restaurant discovery"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.1.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  flutter_bloc: ^8.1.4
+  get_it: ^7.6.7
+  http: ^1.2.0
+  geolocator: ^10.1.0
+  permission_handler: ^11.2.0
+  cached_network_image: ^3.3.1
+  dartz: ^0.10.1
+  flutter_native_splash: ^2.4.0
+  equatable: ^2.0.5
+  internet_connection_checker: ^1.0.0+1
+  pin_code_fields: ^8.0.0   
+  salomon_bottom_bar: ^3.3.2
+  cupertino_icons: ^1.0.8
+  image_picker: ^1.0.0
+  flutter_local_notifications: ^17.0.0
+  flutter_secure_storage: ^9.0.0
+  convex_bottom_bar: ^3.2.0
+  curved_navigation_bar: ^1.0.6 #latest version
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  build_runner: ^2.4.4
+  mockito: ^5.3.2
+
+flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/logos/
+    - assets/images/
+    
+flutter_native_splash:
+  color: "#ffffff" # لون الخلفية
+  image: assets/logos/caterease_logo.png # مسار الشعار
+  android: true
+  ios: true
+  android_gravity: center
+  fullscreen: true
+
+
+
+  curved_navigation_bar: ^1.0.6 #latest version
+
