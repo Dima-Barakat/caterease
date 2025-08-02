@@ -80,14 +80,14 @@ class _ProfileScreenState extends State<ProfileViewPage> {
                               )));
                     }),
                     const SizedBox(height: 12),
-                    _buildInfoRow("Full Name", user.name),
+                    _buildInfoRow("Full Name", user.name, Icons.person),
                     const SizedBox(height: 4),
-                    _buildInfoRow("Email", user.email),
+                    _buildInfoRow("Email", user.email, Icons.email),
                     const SizedBox(height: 4),
-                    _buildInfoRow("Phone Number", user.phone),
+                    _buildInfoRow("Phone Number", user.phone, Icons.phone),
                     const SizedBox(height: 4),
-                    _buildInfoRow(
-                        "Gender", user.gender == 'f' ? 'Female' : 'Male'),
+                    _buildInfoRow("Gender",
+                        user.gender == 'f' ? 'Female' : 'Male', Icons.wc),
                     const SizedBox(height: 25),
                     _buildSectionHeader('Your Addresses', "Add new address",
                         () {
@@ -243,12 +243,14 @@ class _ProfileScreenState extends State<ProfileViewPage> {
     );
   }
 
-  Widget _buildInfoRow(String label, String value) {
+  Widget _buildInfoRow(String label, String value, IconData icon) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Icon(icon, color: AppTheme.fontBlack.withOpacity(0.7), size: 20),
+          const SizedBox(width: 10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -268,6 +270,11 @@ class _ProfileScreenState extends State<ProfileViewPage> {
                     fontWeight: FontWeight.w600,
                     fontSize: 15,
                   ),
+                ),
+                const SizedBox(height: 6),
+                Container(
+                  height: 1,
+                  color: Colors.grey.shade300,
                 ),
               ],
             ),
