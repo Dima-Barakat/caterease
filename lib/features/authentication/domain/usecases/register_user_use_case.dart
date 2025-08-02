@@ -1,5 +1,6 @@
 import 'package:caterease/core/error/failures.dart';
 import 'package:caterease/features/authentication/domain/repositories/base_auth_repository.dart';
+import 'package:caterease/features/profile/data/models/user_model.dart';
 import 'package:dartz/dartz.dart';
 
 class RegisterUserUseCase {
@@ -7,11 +8,11 @@ class RegisterUserUseCase {
 
   RegisterUserUseCase(this.repository);
 
-  Future<Either<Failure, Unit>> register(
+  Future<Either<Failure, UserModel>> register(
     String name,
     String email,
     String password,
-    String confirmationPassword,
+    String passwordConfirmation,
     String phone,
     String gender,
   ) async {
@@ -19,7 +20,7 @@ class RegisterUserUseCase {
         name: name,
         email: email,
         password: password,
-        confirmationPassword: confirmationPassword,
+        passwordConfirmation: passwordConfirmation,
         phone: phone,
         gender: gender);
   }

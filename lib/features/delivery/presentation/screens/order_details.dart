@@ -1,5 +1,7 @@
-import 'package:caterease/core/theming/colors_theme.dart';
+import 'package:caterease/core/theming/app_theme.dart';
 import 'package:caterease/core/widgets/order_card.dart';
+import 'package:caterease/core/widgets/order_detail_container.dart';
+
 import 'package:flutter/material.dart';
 
 class OrderDetails extends StatefulWidget {
@@ -12,7 +14,7 @@ class _OrderDetailsState extends State<OrderDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: ColorsTheme.darkBlue,
+        backgroundColor: AppTheme.darkBlue,
         leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
@@ -34,7 +36,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                     color: Colors.black,
                   ),
                 ),
-                OrderInfoCard(
+                const OrderDetailContainer(
                   orderNumber: '#1234567890',
                   status: 'Delivered',
                 ),

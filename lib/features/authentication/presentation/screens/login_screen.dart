@@ -1,12 +1,14 @@
+import 'package:caterease/core/storage/secure_storage.dart';
 import 'package:caterease/core/widgets/custom_text_field.dart';
 import 'package:caterease/features/authentication/presentation/controllers/bloc/register/register_bloc.dart';
 import 'package:caterease/features/authentication/presentation/screens/forget_password_screen.dart';
 import 'package:caterease/features/authentication/presentation/screens/register_screen.dart';
-import 'package:caterease/main_navigation.dart';
+import 'package:caterease/features/delivery/presentation/screens/my_order.dart';
+import 'package:caterease/features/profile/presentation/screens/profile/setting_page.dart';
+import 'package:caterease/injection_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../injection_container.dart';
 import '../controllers/bloc/login/login_bloc.dart';
 import '../controllers/bloc/login/login_event.dart';
 import '../controllers/bloc/login/login_state.dart';
@@ -32,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('images/caterease.jpg'),
+            image: AssetImage('assets/images/background.jpg'),
             fit: BoxFit.cover,
           ),
         ),
@@ -48,9 +50,26 @@ class _LoginPageState extends State<LoginPage> {
                       SnackBar(content: Text(state.error)),
                     );
                   } else if (state is LoginSuccess) {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => MainNavigation()),
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          content: Text('Welcome ${state.authData.user.name}')),
                     );
+                    Future.delayed(Duration.zero, () async {
+                      String? role = await SecureStorage().getRole();
+
+                      Widget destination;
+                      if (!mounted) return;
+
+                      if (role == '5') {
+                        destination = const MyOrder();
+                      } else {
+                        destination = SettingPage();
+                      }
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (_) => destination),
+                      );
+                    });
                   }
                 },
                 child: Column(
@@ -99,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                              builder: (context) => ForgetPassword()),
+                              builder: (context) => const ForgetPassword()),
                         );
                       },
                       child: const Text(
@@ -112,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                       builder: (context, state) {
                         return ElevatedButton(
                           style: ButtonStyle(
-                            shape: MaterialStatePropertyAll(
+                            shape: WidgetStatePropertyAll(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(25),
                               ),

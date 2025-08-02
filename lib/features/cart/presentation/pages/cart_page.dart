@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:caterease/features/cart/presentation/bloc/cart_bloc.dart';
 import 'package:caterease/features/cart/domain/entities/update_cart_item_request.dart';
-import 'package:caterease/app_theme.dart';
+import 'package:caterease/core/theming/app_theme.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({Key? key}) : super(key: key);

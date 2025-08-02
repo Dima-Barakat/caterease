@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:caterease/app_theme.dart';
+import 'package:caterease/core/theming/app_theme.dart';
 import 'package:caterease/features/cart/domain/entities/add_to_cart_request.dart'
     as CartRequest;
 import 'package:caterease/features/cart/domain/entities/update_cart_item_request.dart';

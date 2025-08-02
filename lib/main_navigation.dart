@@ -1,4 +1,4 @@
-import 'package:caterease/app_theme.dart';
+import 'package:caterease/core/theming/app_theme.dart';
 import 'package:caterease/features/cart/presentation/pages/cart_page.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
