@@ -27,9 +27,14 @@ class _OrderDetailsState extends State<OrderDetails> {
       appBar: AppBar(
         backgroundColor: AppTheme.darkBlue,
         leading: IconButton(
-            color: AppTheme.fontBlack,
-            onPressed: () => Navigator.pop(context),
-            icon: const Icon(Icons.arrow_back)),
+          icon: Icon(Icons.arrow_back, color: AppTheme.fontBlack),
+          onPressed: () {
+            // Dispatch reset event
+            context.read<DeliveryOrderBloc>().add(GetAllOrdersEvent());
+            // Pop the screen
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: BlocConsumer<DeliveryOrderBloc, DeliveryOrderState>(
           listener: (context, state) => {

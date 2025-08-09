@@ -83,7 +83,7 @@ class _OrdersListState extends State<OrdersList> {
               },
             );
           } else {
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: Text('Unhandled state: $state'));
           }
         },
       ),
