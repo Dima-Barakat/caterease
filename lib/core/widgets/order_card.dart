@@ -5,19 +5,20 @@ class OrderCard extends StatelessWidget {
   final String image;
   final String restaurantName;
   final String message;
-  final String text;
+  final String createdSince;
 
-  OrderCard(
-      {super.key,
-      required this.image,
-      required this.restaurantName,
-      required this.message,
-      required this.text});
+  OrderCard({
+    super.key,
+    required this.image,
+    required this.restaurantName,
+    required this.message,
+    required this.createdSince,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 150,
+      height: 110,
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Row(
@@ -35,7 +36,18 @@ class OrderCard extends StatelessWidget {
                 children: [
                   buildText(restaurantName, message),
                   const SizedBox(height: 6),
-                  elevatedButton(text)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        createdSince,
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -53,10 +65,6 @@ class OrderCard extends StatelessWidget {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         Text(message),
-        const Text(
-          '2h',
-          style: TextStyle(fontSize: 12, color: Colors.grey),
-        ),
       ],
     );
   }

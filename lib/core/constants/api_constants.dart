@@ -53,4 +53,7 @@ class ApiConstants {
   static const String orders = "$baseUrl/delivery/orders";
   //: Get Order Details
   static const String orderDetails = "$baseUrl/delivery/assigned-orders/"; //ID
+  //: Change Order's Status
+  static const String orderStatus = "$baseUrl/delivery/...../"; //ID
+
 }
