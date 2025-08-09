@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
 
 class OrderDetailContainer extends StatelessWidget {
-  final String orderNumber;
-  final String status;
+  final String label1;
+  final String value1;
+
+  final String label2;
+  final String value2;
+
+  final String label3;
+  final String value3;
 
   const OrderDetailContainer({
     super.key,
-    required this.orderNumber,
-    required this.status,
+    required this.label1,
+    required this.label2,
+    required this.label3,
+    required this.value1,
+    required this.value2,
+    required this.value3,
   });
 
   @override
@@ -26,10 +36,13 @@ class OrderDetailContainer extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                _buildInfoRow('Order Number', orderNumber),
+                _buildInfoRow(label1, value1),
                 const SizedBox(height: 16),
-                _buildInfoRow('Status', status),
+                _buildInfoRow(label2, value2),
+                const SizedBox(height: 16),
+                _buildInfoRow(label3, value3),
               ],
             ),
           ),
@@ -40,20 +53,22 @@ class OrderDetailContainer extends StatelessWidget {
 
   Widget _buildInfoRow(String label, String value) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          label,
+          "$label: ",
           style: const TextStyle(
-            color: Color(0xFF314E76),
-            fontSize: 16,
-          ),
+              color: Color(0xFF314E76),
+              fontSize: 16,
+              fontWeight: FontWeight.bold),
         ),
-        Text(
-          value,
-          style: const TextStyle(
-            color: Colors.black,
-            fontSize: 16,
+        Expanded(
+          child: Text(
+            value,
+            style: const TextStyle(
+              color: Color(0xFF314E76),
+              fontSize: 16,
+            ),
           ),
         ),
       ],

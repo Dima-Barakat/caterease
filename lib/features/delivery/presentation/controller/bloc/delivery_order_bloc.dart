@@ -26,16 +26,26 @@ class DeliveryOrderBloc extends Bloc<DeliveryOrderEvent, DeliveryOrderState> {
       }
     });
 
-    on<GetOrderDetails>((event, emit) async {
+    on<GetOrderDetailsEvent>((event, emit) async {
       emit(OrderLoading());
 
       try {
-        final result = await getOneUseCase.getOrderDetails();
+        final result = await getOneUseCase.getOrderDetails(event.id);
 
         result.fold(
           (failure) => emit(OrderError(failure.toString())),
           (success) => emit(OrderLoaded(success)),
         );
+      } catch (e) {
+        emit(OrderError(e.toString()));
+      }
+    });
+
+    on<UpdateStatusOrderEvent>((event, emit) async {
+      emit(OrderLoading());
+
+      try {
+        // final result = await
       } catch (e) {
         emit(OrderError(e.toString()));
       }

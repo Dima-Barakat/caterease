@@ -7,7 +7,7 @@ class GetOrderDetailsUseCase {
   final BaseOrderRepository repository;
   GetOrderDetailsUseCase({required this.repository});
 
-  Future<Either<Failure, OrderModel>> getOrderDetails() async {
-    return await repository.getOrderDetails();
+  Future<Either<Failure, OrderModel>> getOrderDetails(int id) async {
+    return await repository.getOrderDetails(id);
   }
 }

@@ -28,11 +28,16 @@ final class OrderListLoaded extends DeliveryOrderState {
   List<Object> get props => [orders];
 }
 
-final class OrderUpdated extends DeliveryOrderState {}
+final class OrderStatusUpdated extends DeliveryOrderState {
+  final String message;
+  const OrderStatusUpdated(this.message);
+
+  @override
+  List<Object> get props => [message];
+}
 
 final class OrderError extends DeliveryOrderState {
   final String message;
-
   const OrderError(this.message);
 
   @override

@@ -9,4 +9,20 @@ sealed class DeliveryOrderEvent extends Equatable {
 
 final class GetAllOrdersEvent extends DeliveryOrderEvent {}
 
-final class GetOrderDetails extends DeliveryOrderEvent {}
+final class GetOrderDetailsEvent extends DeliveryOrderEvent {
+  final int id;
+
+  const GetOrderDetailsEvent({required this.id});
+
+  @override
+  List<Object> get props => [id];
+}
+
+final class UpdateStatusOrderEvent extends DeliveryOrderEvent {
+  final int id;
+
+  const UpdateStatusOrderEvent({required this.id});
+
+  @override
+  List<Object> get props => [id];
+}
