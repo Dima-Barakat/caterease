@@ -27,8 +27,10 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
   String? selectedGender;
   String? photoUrl;
   final imageService = ImageService();
-  final List<String> genders = ['m', 'f'];
-
+  final genders = [
+    {"label": "Female", "value": "f"},
+    {"label": "Male", "value": "m"},
+  ];
   @override
   void initState() {
     super.initState();
@@ -137,11 +139,13 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
               value: selectedGender,
               items: genders
                   .map((gender) => DropdownMenuItem(
-                        value: gender,
-                        child: Text(gender),
+                        value: gender["value"],
+                        child: Text(gender["label"]!),
                       ))
                   .toList(),
-              onChanged: (value) => setState(() => selectedGender = value),
+              onChanged: (value) => setState(() {
+                selectedGender = value!;
+              }),
               decoration: inputDecoration(),
             ),
             const SizedBox(height: 20),
@@ -179,8 +183,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
 
   String? _normalizeGender(String? genderCode) {
     if (genderCode == null) return null;
-    if (genderCode == 'm') return 'm';
-    if (genderCode == 'f') return 'f';
+    if (genderCode == 'm' || genderCode == 'Male') return 'm';
+    if (genderCode == 'f' || genderCode == 'Female') return 'f';
     return genderCode; // fallback
   }
 }
