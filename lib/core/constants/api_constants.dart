@@ -1,8 +1,8 @@
 class ApiConstants {
   //:Base Url
-  // static const String baseUrl = 'http://192.168.43.2:8000/api';
+  static const String baseUrl = 'http://192.168.1.108:8000/api';
   //:Base Url
-  static const String baseUrl = "http://10.0.2.2:8000/api";
+  //static const String baseUrl = "http://10.0.2.2:8000/api";
   //:Image Url
   static const String imageUrl = "http://10.0.2.2:8000";
 
@@ -17,6 +17,8 @@ class ApiConstants {
   static const String forgetPassword = "$baseUrl/forgot-password/send-otp";
   //: Reset Password
   static const String resetPassword = "$baseUrl/forgot-password/reset";
+  //: Logout
+  static const String logout = "$baseUrl/logout";
 
   //! Customer section
 
@@ -55,5 +57,4 @@ class ApiConstants {
   static const String orderDetails = "$baseUrl/delivery/assigned-orders/"; //ID
   //: Change Order's Status
   static const String orderStatus = "$baseUrl/delivery/...../"; //ID
-
 }

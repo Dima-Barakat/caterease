@@ -1,7 +1,7 @@
 import 'package:caterease/core/theming/app_theme.dart';
 import 'package:caterease/core/widgets/order_detail_container.dart';
 import 'package:caterease/core/widgets/qr_scanner_screen.dart';
-import 'package:caterease/features/delivery/presentation/controller/bloc/delivery_order_bloc.dart';
+import 'package:caterease/features/delivery/presentation/controller/bloc/order/delivery_order_bloc.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,12 +26,14 @@ class _OrderDetailsState extends State<OrderDetails> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppTheme.darkBlue,
+        title: const Text(
+          "Order Details",
+          style: TextStyle(color: Colors.white),
+        ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: AppTheme.fontBlack),
+          icon: const Icon(Icons.arrow_back, color: AppTheme.fontBlack),
           onPressed: () {
-            // Dispatch reset event
             context.read<DeliveryOrderBloc>().add(GetAllOrdersEvent());
-            // Pop the screen
             Navigator.pop(context);
           },
         ),
@@ -83,17 +85,14 @@ class _OrderDetailsState extends State<OrderDetails> {
                           ),
                         ),
                         OrderDetailContainer(
-                          label1: 'Name',
-                          value1: order.customerName,
-                          label2: 'Phone',
-                          value2: '09366123456',
-                          label3: 'Address',
-                          value3:
-                              'Building: ${order.address!.building ?? ''} - Floor: ${order.address!.floor ?? ''} - apartment: ${order.address!.apartment ?? ''}',
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
+                            label1: 'Name',
+                            value1: order.customerName,
+                            label2: 'Phone',
+                            value2: '09366123456',
+                            label3: 'Address',
+                            value3:
+                                'Building: ${order.address!.building ?? ''} - Floor: ${order.address!.floor ?? ''} - apartment: ${order.address!.apartment ?? ''}'),
+                        const SizedBox(height: 15),
                         const Text(
                           'Restaurant information',
                           style: TextStyle(

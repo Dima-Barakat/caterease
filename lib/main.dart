@@ -3,8 +3,9 @@ import 'package:caterease/features/authentication/presentation/controllers/bloc/
 import 'package:caterease/features/authentication/presentation/controllers/bloc/register/register_bloc.dart';
 import 'package:caterease/features/authentication/presentation/controllers/bloc/verify/verify_bloc.dart';
 import 'package:caterease/features/cart/presentation/bloc/cart_bloc.dart';
-import 'package:caterease/features/delivery/presentation/controller/bloc/delivery_order_bloc.dart';
+import 'package:caterease/features/delivery/presentation/controller/bloc/order/delivery_order_bloc.dart';
 import 'package:caterease/features/delivery/presentation/screens/orders_list.dart';
+import 'package:caterease/features/profile/presentation/screens/profile/profile_view_page.dart';
 import 'package:caterease/features/restaurants/presentation/pages/orders_main_page.dart';
 import 'package:caterease/features/profile/presentation/controller/bloc/address/address_bloc.dart';
 import 'package:caterease/features/authentication/presentation/controllers/bloc/password_reset/password_reset_bloc.dart';
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
         title: 'Caterease',
         theme: AppTheme.lightTheme,
         navigatorObservers: [routeObserver],
-        home: OrdersList(),
+        home: AnimatedSplashScreen(),
         onGenerateRoute: (settings) {
           if (settings.name == '/packageDetails') {
             final Package package = settings.arguments as Package;

@@ -19,7 +19,7 @@ import 'package:caterease/features/delivery/data/repositories/order_repository.d
 import 'package:caterease/features/delivery/domain/repositories/base_order_repository.dart';
 import 'package:caterease/features/delivery/domain/usecases/get_all_orders_use_case.dart';
 import 'package:caterease/features/delivery/domain/usecases/get_order_details_use_case.dart';
-import 'package:caterease/features/delivery/presentation/controller/bloc/delivery_order_bloc.dart';
+import 'package:caterease/features/delivery/presentation/controller/bloc/order/delivery_order_bloc.dart';
 import 'package:caterease/features/profile/data/datasources/address_remote_datasource.dart';
 import 'package:caterease/features/profile/data/repositories/address_repository.dart';
 import 'package:caterease/features/profile/domain/repositories/base_address_repository.dart';

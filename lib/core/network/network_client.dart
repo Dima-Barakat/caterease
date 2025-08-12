@@ -11,8 +11,7 @@ class NetworkClient {
   //: Headers
   Future<Map<String, String>> _getHeaders() async {
     SecureStorage secureStorage = SecureStorage();
-    String? token = '23|V477vP9Lrhcqy496vjRr9elB3ucJApvN89lewqUp5f3e9813'; //await secureStorage.getAccessToken();
-
+    String? token = await secureStorage.getAccessToken();
     print('→ token from storage: "$token"');
     return {
       'Content-Type': 'application/json',
