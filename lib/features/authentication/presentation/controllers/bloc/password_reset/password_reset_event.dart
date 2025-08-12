@@ -15,16 +15,6 @@ class PasswordResetRequested extends PasswordResetEvent {
   List<Object> get props => [email];
 }
 
-class PasswordResetRequestSucceeded extends PasswordResetEvent {}
-
-class PasswordResetRequestFailed extends PasswordResetEvent {
-  final String error;
-
-  PasswordResetRequestFailed({required this.error});
-
-  @override
-  List<Object> get props => [error];
-}
 
 //! Password Reset Verification Events
 
@@ -36,17 +26,6 @@ class VerifyOtpEvent extends PasswordResetEvent {
 
   @override
   List<Object> get props => [userId, otp];
-}
-
-class VerifyOtpSucceeded extends PasswordResetEvent {}
-
-class VerifyOtpFailed extends PasswordResetEvent {
-  final String error;
-
-  VerifyOtpFailed({required this.error});
-
-  @override
-  List<Object> get props => [error];
 }
 
 //! Change Password Events
@@ -63,13 +42,4 @@ class ChangePasswordEvent extends PasswordResetEvent {
 
   @override
   List<Object> get props => [email, newPassword, passwordConfirmation];
-}
-
-class ChangePasswordSucceeded extends PasswordResetEvent {
-  final String message;
-
-  ChangePasswordSucceeded({required this.message});
-
-  @override
-  List<Object> get props => [message];
 }

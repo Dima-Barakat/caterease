@@ -41,11 +41,19 @@ class ApiConstants {
   //: get all restaurants
   static const String restaurants = '/restaurants';
 
-  //! Delivery Section
+  //: Cart Api
+  static const String addToCart = "/cart/add";
+  static const String getCartPackages = "/cart/packages";
+  static const String updateCartItem = "/cart/item/"; // يتبعه ID
+  static const String removeCartItem = "/cart/items/"; // يتبعه ID
 
+  //! Delivery Section
   //- orders:
   //: Get All Orders
   static const String orders = "$baseUrl/delivery/orders";
   //: Get Order Details
   static const String orderDetails = "$baseUrl/delivery/assigned-orders/"; //ID
+  //: Change Order's Status
+  static const String orderStatus = "$baseUrl/delivery/...../"; //ID
+
 }

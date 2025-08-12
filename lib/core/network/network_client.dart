@@ -11,15 +11,14 @@ class NetworkClient {
   //: Headers
   Future<Map<String, String>> _getHeaders() async {
     SecureStorage secureStorage = SecureStorage();
-    String? token = await secureStorage.getAccessToken();
+    String? token = '23|V477vP9Lrhcqy496vjRr9elB3ucJApvN89lewqUp5f3e9813'; //await secureStorage.getAccessToken();
 
     print('→ token from storage: "$token"');
     return {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       if (token != null && token.trim().isNotEmpty)
-        'Authorization':
-            'Bearer 1|w60RRUQOB4Cx9vTPBGzUmDpAl0tyfa71hDGbMrQH10bc1699', //! 'Bearer $token'
+        'Authorization': 'Bearer $token', //! 'Bearer $token'
     };
   }
 

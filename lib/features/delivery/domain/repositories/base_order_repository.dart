@@ -5,5 +5,7 @@ import 'package:dartz/dartz.dart';
 abstract class BaseOrderRepository {
   Future<Either<Failure, List<OrderModel>>> getAllOrders();
 
-  Future<Either<Failure, OrderModel>> getOrderDetails();
+  Future<Either<Failure, OrderModel>> getOrderDetails(int id);
+
+  Future<Either<Failure, Unit>> changeOrderStatus(int id);
 }
