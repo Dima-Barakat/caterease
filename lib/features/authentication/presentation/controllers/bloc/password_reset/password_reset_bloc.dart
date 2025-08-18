@@ -10,7 +10,7 @@ class PasswordResetBloc extends Bloc<PasswordResetEvent, PasswordResetState> {
 
   PasswordResetBloc(this.useCase) : super(PasswordResetInitial()) {
     //! Step 1: Send Email
-    on<PasswordResetRequested>((event, emit) async {
+    on<PasswordResetRequestedEvent>((event, emit) async {
       emit(PasswordResetLoading());
       final result = await useCase.forgetPassword(email: event.email);
 

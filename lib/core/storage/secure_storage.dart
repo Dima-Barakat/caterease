@@ -24,13 +24,13 @@ class SecureStorage {
   Future<String?> getAccessToken() async =>
       await storage.read(key: 'access_token');
 
-  //: Reade the User-id from the storage
+  //: Read the User-id from the storage
   Future<String?> getUserId() async => await storage.read(key: "user_id");
 
-  //: Reade the User's Email from the storage
+  //: Read the User's Email from the storage
   Future<String?> getEmail() async => await storage.read(key: "email");
 
-  //: Reade the User's Role from the storage
+  //: Read the User's Role from the storage
   Future<String?> getRole() async => await storage.read(key: "role");
 
   //: Clear all data on logout

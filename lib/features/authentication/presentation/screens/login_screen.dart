@@ -1,5 +1,6 @@
 import 'package:caterease/core/storage/secure_storage.dart';
 import 'package:caterease/core/widgets/custom_text_field.dart';
+import 'package:caterease/core/widgets/show_custom_snack_bar.dart';
 import 'package:caterease/features/authentication/presentation/controllers/bloc/register/register_bloc.dart';
 import 'package:caterease/features/authentication/presentation/screens/forget_password_screen.dart';
 import 'package:caterease/features/authentication/presentation/screens/register_screen.dart';
@@ -48,14 +49,12 @@ class _LoginPageState extends State<LoginPage> {
               child: BlocListener<LoginBloc, LoginState>(
                 listener: (context, state) {
                   if (state is LoginFailure) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(state.error)),
-                    );
+                    showCustomSnackBar(context,
+                        message: state.error, type: SnackBarType.error);
                   } else if (state is LoginSuccess) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                          content: Text('Welcome ${state.authData.user.name}')),
-                    );
+                    showCustomSnackBar(context,
+                        message: 'Welcome ${state.authData.user.name}',
+                        type: SnackBarType.success);
                     Future.delayed(Duration.zero, () async {
                       String? role = await SecureStorage().getRole();
 

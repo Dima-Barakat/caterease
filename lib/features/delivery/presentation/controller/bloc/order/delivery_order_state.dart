@@ -12,7 +12,7 @@ final class OrderInitial extends DeliveryOrderState {}
 final class OrderLoading extends DeliveryOrderState {}
 
 final class OrderLoaded extends DeliveryOrderState {
-  final Order order;
+  final OrderModel order;
 
   const OrderLoaded(this.order);
 
@@ -21,7 +21,7 @@ final class OrderLoaded extends DeliveryOrderState {
 }
 
 final class OrderListLoaded extends DeliveryOrderState {
-  final List<Order> orders;
+  final List<OrderModel> orders;
   const OrderListLoaded(this.orders);
 
   @override
@@ -31,6 +31,22 @@ final class OrderListLoaded extends DeliveryOrderState {
 final class OrderStatusUpdated extends DeliveryOrderState {
   final String message;
   const OrderStatusUpdated(this.message);
+
+  @override
+  List<Object> get props => [message];
+}
+
+final class OrderAccepted extends DeliveryOrderState {
+  final String message;
+  const OrderAccepted(this.message);
+
+  @override
+  List<Object> get props => [message];
+}
+
+final class OrderDeclined extends DeliveryOrderState {
+  final String message;
+  const OrderDeclined(this.message);
 
   @override
   List<Object> get props => [message];

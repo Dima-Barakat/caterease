@@ -1,22 +1,20 @@
+import 'package:caterease/core/error/failures.dart';
+import 'package:caterease/features/delivery/data/models/order_model.dart';
+import 'package:caterease/features/delivery/domain/usecases/order_use_cases.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:caterease/features/orders/domain/entities/order.dart';
-import 'package:caterease/features/delivery/domain/usecases/get_all_orders_use_case.dart';
-import 'package:caterease/features/delivery/domain/usecases/get_order_details_use_case.dart';
 import 'package:equatable/equatable.dart';
 
 part 'delivery_order_event.dart';
 part 'delivery_order_state.dart';
 
 class DeliveryOrderBloc extends Bloc<DeliveryOrderEvent, DeliveryOrderState> {
-  final GetAllOrdersUseCase getAllUseCase;
-  final GetOrderDetailsUseCase getOneUseCase;
+  final OrderUseCases useCases;
 
-  DeliveryOrderBloc(this.getAllUseCase, this.getOneUseCase)
-      : super(OrderInitial()) {
+  DeliveryOrderBloc(this.useCases) : super(OrderInitial()) {
     on<GetAllOrdersEvent>((event, emit) async {
       emit(OrderLoading());
       try {
-        final result = await getAllUseCase.getAllOrders();
+        final result = await useCases.getAllOrders();
         result.fold(
           (failure) => emit(OrderError(failure.toString())),
           (success) => emit(OrderListLoaded(success)),
@@ -30,7 +28,7 @@ class DeliveryOrderBloc extends Bloc<DeliveryOrderEvent, DeliveryOrderState> {
       emit(OrderLoading());
 
       try {
-        final result = await getOneUseCase.getOrderDetails(event.id);
+        final result = await useCases.getOrderDetails(event.id);
 
         result.fold(
           (failure) => emit(OrderError(failure.toString())),
@@ -42,10 +40,67 @@ class DeliveryOrderBloc extends Bloc<DeliveryOrderEvent, DeliveryOrderState> {
     });
 
     on<UpdateStatusOrderEvent>((event, emit) async {
-      emit(OrderLoading());
-
       try {
-        // final result = await
+        emit(OrderLoading());
+
+        final result = await useCases.changeOrderStatus(event.id, event.status);
+
+        if (result.isLeft()) {
+          final failure = result.fold((f) => f, (_) => null);
+          emit(OrderError(failure.toString()));
+        } else {
+          emit(const OrderStatusUpdated("Order Status Updated"));
+
+          final order = await useCases.getOrderDetails(event.id);
+          order.fold(
+            (failure) => emit(OrderError(failure.toString())),
+            (success) => emit(OrderLoaded(success)),
+          );
+        }
+      } catch (e) {
+        emit(OrderError(e.toString()));
+      }
+    });
+
+    on<AcceptOrder>((event, emit) async {
+      try {
+        emit(OrderLoading());
+
+        final result = await useCases.acceptOrder(event.id);
+
+        if (result.isLeft()) {
+          final failure = result.fold((f) => f, (_) => null);
+          emit(OrderError(failure.toString()));
+        } else {
+          emit(const OrderAccepted("Order accepted"));
+
+          final orders = await useCases.getAllOrders();
+
+          orders.fold(
+            (failure) => emit(OrderError(failure.toString())),
+            (success) => emit(OrderListLoaded(success)),
+          );
+        }
+      } catch (e) {
+        emit(OrderError(e.toString()));
+      }
+    });
+
+    on<DeclineOrder>((event, emit) async {
+      try {
+        emit(OrderLoading());
+        await useCases.declineOrder(event.id, event.rejectReason);
+
+        // reload orders after decline
+        final orders = await useCases.getAllOrders();
+
+        orders.fold(
+          (failure) => emit(OrderError(failure.toString())),
+          (success) {
+            emit(const OrderDeclined("Order declined"));
+            emit(OrderListLoaded(success));
+          },
+        );
       } catch (e) {
         emit(OrderError(e.toString()));
       }

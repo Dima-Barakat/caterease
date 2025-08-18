@@ -32,11 +32,11 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen>
 
     _controller.forward();
 
-    Timer(Duration(seconds: 3), () {
+    /* Timer(Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (_) => const LoginPage()),
       );
-    });
+    }); */
   }
 
   @override
