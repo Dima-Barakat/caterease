@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:caterease/core/constants/api_constants.dart';
 import 'package:caterease/core/error/failures.dart';
 import 'package:http/http.dart' as http;
 import '../models/package_model.dart';
@@ -21,7 +22,7 @@ class PackagesRemoteDataSourceImpl implements PackagesRemoteDataSource {
     String? token = await secureStorage.getAccessToken();
 
     final response = await client.get(
-      Uri.parse('http://192.168.198.155:8000/api/branches/$branchId/packages'),
+      Uri.parse('${ApiConstants.baseUrl}/branches/$branchId/packages'),
       headers: {
         'Accept': 'application/json',
         'Authorization': 'Bearer $token',
@@ -43,7 +44,7 @@ class PackagesRemoteDataSourceImpl implements PackagesRemoteDataSource {
     String? token = await secureStorage.getAccessToken();
 
     final response = await client.get(
-      Uri.parse('http://192.168.198.155:8000/api/packages/$packageId'),
+      Uri.parse('${ApiConstants.baseUrl}/packages/$packageId'),
       headers: {
         'Accept': 'application/json',
         'Authorization': 'Bearer $token',

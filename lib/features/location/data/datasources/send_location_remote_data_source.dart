@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:caterease/core/constants/api_constants.dart';
 import 'package:caterease/core/storage/secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -23,11 +24,12 @@ class SendLocationRemoteDataSourceImpl implements SendLocationRemoteDataSource {
   }) async {
     SecureStorage secureStorage = SecureStorage();
     String? token = await secureStorage.getAccessToken();
-    final url = Uri.parse('http://192.168.198.155:8000/api/customer/creat');
+    final url = Uri.parse('${ApiConstants.baseUrl}/customer/creat');
     print(' Token: $token');
     final response = await http.post(
       url,
       headers: {
+        'Accept': 'application/json',
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',
       },

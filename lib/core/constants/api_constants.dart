@@ -1,6 +1,6 @@
 class ApiConstants {
   //:Base Url
-  // static const String baseUrl = 'http://192.168.1.113:8000/api';
+//   static const String baseUrl = 'http://192.168.1.126:8000/api';
   //:Base Url
   static const String baseUrl = "http://10.0.2.2:8000/api";
   //:Image Url
@@ -38,10 +38,12 @@ class ApiConstants {
   static const String createAddress = "$baseUrl/customer/creat";
   //: delete
   static const String deleteAddress = "$baseUrl/customer/delete_addresse/"; //ID
+
+  //- Restaurants and Branches
   //: get nearby branches
   static const String nearbyBranches = '/branches/nearby';
   //: get all restaurants
-  static const String restaurants = '/restaurants';
+  static const String restaurants = '/restaurant';
 
   //: Cart Api
   static const String addToCart = "/cart/add";

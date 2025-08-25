@@ -28,6 +28,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     RequestLocationPermissionEvent event,
     Emitter<LocationState> emit,
   ) async {
+    print("📍 Event received: RequestLocationPermissionEvent");
     emit(LocationLoading());
     final result = await requestLocationPermission(NoParams());
     result.fold(
@@ -42,6 +43,8 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     GetCurrentLocationEvent event,
     Emitter<LocationState> emit,
   ) async {
+    print("📍 Event received: GetCurrentLocationEvent");
+
     emit(LocationLoading());
     final result = await getCurrentLocation(NoParams());
     result.fold(
@@ -54,6 +57,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     SendLocationToServerEvent event,
     Emitter<LocationState> emit,
   ) async {
+    print("📍 Event received: SendLocationToServerEvent");
     final result = await sendLocationUseCase(event.latitude, event.longitude);
     result.fold(
       (failure) {

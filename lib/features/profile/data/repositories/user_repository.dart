@@ -1,7 +1,6 @@
 import 'package:caterease/core/error/failures.dart';
 import 'package:caterease/features/profile/data/datasources/profile_remote_datasource.dart';
 import 'package:caterease/features/profile/data/models/user_model.dart';
-import 'package:caterease/features/profile/domain/entities/user.dart';
 import 'package:caterease/features/profile/domain/repositories/base_profile_repository.dart';
 import 'package:dartz/dartz.dart';
 

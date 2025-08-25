@@ -1,5 +1,6 @@
 import 'package:caterease/animated_splash_screen.dart';
 import 'package:caterease/core/network/network_client.dart';
+import 'package:caterease/core/services/firebase_notification_service.dart';
 import 'package:caterease/core/storage/secure_storage.dart';
 import 'package:caterease/features/authentication/presentation/controllers/bloc/login/login_bloc.dart';
 import 'package:caterease/features/authentication/presentation/controllers/bloc/logout/logout_bloc.dart';
@@ -7,15 +8,16 @@ import 'package:caterease/features/authentication/presentation/controllers/bloc/
 import 'package:caterease/features/authentication/presentation/controllers/bloc/verify/verify_bloc.dart';
 import 'package:caterease/features/authentication/presentation/screens/login_screen.dart';
 import 'package:caterease/features/cart/presentation/bloc/cart_bloc.dart';
+import 'package:caterease/features/customer_order_list/presentation/bloc/customer_order_list_bloc.dart';
+import 'package:caterease/features/customer_orders/presentation/bloc/customer_order_bloc.dart';
 import 'package:caterease/features/delivery/presentation/controller/bloc/order/delivery_order_bloc.dart';
 import 'package:caterease/features/delivery/presentation/controller/bloc/profile/delivery_profile_bloc.dart';
 import 'package:caterease/features/delivery/presentation/screens/orders_list.dart';
-import 'package:caterease/features/profile/presentation/screens/profile/profile_view_page.dart';
-import 'package:caterease/features/restaurants/presentation/pages/orders_main_page.dart';
+import 'package:caterease/features/order_details_feature/presentation/bloc/order_details_bloc.dart';
 import 'package:caterease/features/profile/presentation/controller/bloc/address/address_bloc.dart';
 import 'package:caterease/features/authentication/presentation/controllers/bloc/password_reset/password_reset_bloc.dart';
 import 'package:caterease/features/profile/presentation/controller/bloc/profile/profile_bloc.dart';
-import 'package:caterease/features/restaurants/presentation/pages/home_page.dart';
+import 'package:caterease/main_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:caterease/features/restaurants/presentation/bloc/restaurants_bloc.dart';
@@ -32,6 +34,9 @@ final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await init();
+
+  await FirebaseNotificationService.initialize();
+
   runApp(MyApp());
 }
 
@@ -55,6 +60,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => sl<AddressBloc>()),
         BlocProvider(create: (_) => sl<LocationBloc>()),
         BlocProvider(create: (_) => sl<DeliveryOrderBloc>()),
+        BlocProvider(create: (_) => sl<CustomerOrderBloc>()),
+        BlocProvider(create: (_) => sl<CustomerOrderListBloc>()),
+        BlocProvider(create: (_) => sl<OrderDetailsBloc>()),
       ],
       child: MaterialApp(
         navigatorKey: navigatorKey,
@@ -73,12 +81,9 @@ class MyApp extends StatelessWidget {
             final role = data?['role'];
 
             if (token != null) {
-              print("Token Found: $token");
               if (role == "3") {
-                print("It is Customer");
-                return HomePage();
+                return MainNavigation();
               } else if (role == "5") {
-                print("It is Delivery");
                 return const OrdersList();
               } else {
                 return const LoginPage();

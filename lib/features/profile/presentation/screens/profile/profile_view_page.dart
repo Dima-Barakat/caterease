@@ -57,16 +57,6 @@ class _ProfileScreenState extends State<ProfileViewPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    /* Center(
-                      child: CircleAvatar(
-                        radius: 40,
-                        backgroundColor: Colors.grey[300],
-                        foregroundImage: user.photo != null
-                            ? imageService.getNetworkImage(user.photo!)
-                            : null,
-                        child: const Icon(Icons.person),
-                      ),
-                    ), */
                     const SizedBox(height: 20),
                     _buildSectionHeader('Personal information', "Edit", () {
                       Navigator.of(context).push(MaterialPageRoute(

@@ -49,6 +49,7 @@ class NetworkClient {
   Future<http.Response> get(String url, {Map<String, String>? headers}) async {
     final defaultHeaders = await _getHeaders();
 
+    if (kDebugMode) print('>> REQUEST URL: $url');
     if (kDebugMode) print('>> REQUEST HEADERS: $defaultHeaders');
 
     final response = await client.get(
@@ -63,6 +64,7 @@ class NetworkClient {
       {Map<String, String>? headers, Map<String, dynamic>? body}) async {
     final defaultHeaders = await _getHeaders();
 
+    if (kDebugMode) print('>> REQUEST URL: $url');
     if (kDebugMode) print('>> REQUEST HEADERS: $defaultHeaders');
 
     if (kDebugMode) {
@@ -83,8 +85,8 @@ class NetworkClient {
       {Map<String, String>? headers}) async {
     final defaultHeaders = await _getHeaders();
 
+    if (kDebugMode) print('>> REQUEST URL: $url');
     if (kDebugMode) print('>> DELETE REQUEST HEADERS: $defaultHeaders');
-    if (kDebugMode) print('>> DELETE REQUEST URL: $url');
 
     final response = await client.delete(
       Uri.parse(url),
