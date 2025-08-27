@@ -104,6 +104,7 @@ class _OrdersListState extends State<OrdersList> {
                   ),
                 );
               },
+
             ),
             ListTile(
               leading: const Icon(Icons.person),

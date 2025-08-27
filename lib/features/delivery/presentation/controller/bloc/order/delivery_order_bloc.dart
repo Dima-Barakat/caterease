@@ -29,7 +29,6 @@ class DeliveryOrderBloc extends Bloc<DeliveryOrderEvent, DeliveryOrderState> {
 
       try {
         final result = await useCases.getOrderDetails(event.id);
-
         result.fold(
           (failure) => emit(OrderError(failure.toString())),
           (success) => emit(OrderLoaded(success)),

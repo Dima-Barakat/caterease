@@ -44,3 +44,4 @@ final class DeclineOrder extends DeliveryOrderEvent {
   @override
   List<Object> get props => [id, rejectReason];
 }
+

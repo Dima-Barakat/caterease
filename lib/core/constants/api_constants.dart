@@ -1,6 +1,6 @@
 class ApiConstants {
   //:Base Url
-//   static const String baseUrl = 'http://192.168.1.126:8000/api';
+  //static const String baseUrl = 'http://192.168.1.126:8000/api';
   //:Base Url
   static const String baseUrl = "http://10.0.2.2:8000/api";
   //:Image Url
@@ -73,4 +73,5 @@ class ApiConstants {
   //- Profile
   //: Get Profile
   static const String deliveryProfile = "$baseUrl/delivery/profile";
+
 }
