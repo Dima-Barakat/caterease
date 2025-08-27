@@ -8,5 +8,3 @@ sealed class DeliveryProfileEvent extends Equatable {
 }
 
 final class GetProfileEvent extends DeliveryProfileEvent {}
-
-final class ChangeAvailabilityEvent extends DeliveryProfileEvent {}

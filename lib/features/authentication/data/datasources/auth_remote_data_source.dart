@@ -30,6 +30,8 @@ abstract class BaseAuthRemoteDataSource {
       {required String email,
       required String newPassword,
       required String confirmPassword});
+
+  Future<Unit> logout();
 }
 
 class AuthRemoteDataSource implements BaseAuthRemoteDataSource {
@@ -174,6 +176,18 @@ class AuthRemoteDataSource implements BaseAuthRemoteDataSource {
       }
     } catch (e) {
       return throw ServerException("Password Reset failed: $e");
+    }
+  }
+
+  @override
+  Future<Unit> logout() async {
+    final response = await client.post(ApiConstants.logout);
+
+    if (response.statusCode == 200) {
+      return unit;
+    } else {
+      throw ServerException(
+          "Error while get order details: ${response.body.toString()}");
     }
   }
 }

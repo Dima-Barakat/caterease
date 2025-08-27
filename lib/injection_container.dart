@@ -1,3 +1,6 @@
+import 'package:caterease/core/network/network_info.dart';
+import 'package:caterease/features/authentication/domain/usecases/logout_use_case.dart';
+import 'package:caterease/features/authentication/presentation/controllers/bloc/logout/logout_bloc.dart';
 import 'package:caterease/features/cart/data/datasources/cart_remote_data_source.dart';
 import 'package:caterease/features/cart/data/repositories/cart_repository_impl.dart';
 import 'package:caterease/features/cart/domain/repositories/cart_repository.dart';
@@ -6,8 +9,31 @@ import 'package:caterease/features/cart/domain/usecases/get_cart_packages_use_ca
 import 'package:caterease/features/cart/domain/usecases/remove_cart_item_use_case.dart';
 import 'package:caterease/features/cart/domain/usecases/update_cart_item_use_case.dart';
 import 'package:caterease/features/cart/presentation/bloc/cart_bloc.dart';
+import 'package:caterease/features/customer_order_list/data/datasources/customer_order_list_remote_data_source.dart';
+import 'package:caterease/features/customer_order_list/data/repositories/customer_order_list_repository_impl.dart';
+import 'package:caterease/features/customer_order_list/domain/repositories/customer_order_list_repository.dart';
+import 'package:caterease/features/customer_order_list/domain/usecases/delete_order_use_case.dart';
+import 'package:caterease/features/customer_order_list/domain/usecases/get_customer_order_list_use_case.dart';
+import 'package:caterease/features/customer_order_list/presentation/bloc/customer_order_list_bloc.dart';
+import 'package:caterease/features/customer_orders/data/datasources/customer_order_remote_data_source.dart';
+import 'package:caterease/features/customer_orders/data/repositories/customer_order_repository_impl.dart';
+import 'package:caterease/features/customer_orders/domain/repositories/customer_order_repository.dart';
+import 'package:caterease/features/customer_orders/domain/usecases/create_customer_order_use_case.dart';
+import 'package:caterease/features/customer_orders/presentation/bloc/customer_order_bloc.dart';
+import 'package:caterease/features/delivery/data/datasources/delivery_profile_remote_data_source.dart';
+import 'package:caterease/features/delivery/data/repositories/delivery_profile_repository.dart';
+import 'package:caterease/features/delivery/domain/repositories/base_delivery_profile_repository.dart';
+import 'package:caterease/features/delivery/domain/usecases/delivery_profile_use_cases.dart';
+import 'package:caterease/features/delivery/domain/usecases/order_use_cases.dart';
+import 'package:caterease/features/delivery/presentation/controller/bloc/profile/delivery_profile_bloc.dart';
 import 'package:caterease/features/location/data/datasources/send_location_remote_data_source.dart';
 import 'package:caterease/features/location/domain/usecases/send_location_usecase.dart';
+import 'package:caterease/features/order_details_feature/data/datasources/order_details_remote_data_source.dart';
+import 'package:caterease/features/order_details_feature/data/datasources/order_details_remote_data_source_impl.dart';
+import 'package:caterease/features/order_details_feature/data/repositories/order_details_repository_impl.dart';
+import 'package:caterease/features/order_details_feature/domain/repositories/order_details_repository.dart';
+import 'package:caterease/features/order_details_feature/domain/usecases/get_order_details_usecase.dart';
+import 'package:caterease/features/order_details_feature/presentation/bloc/order_details_bloc.dart';
 import 'package:caterease/features/packages/data/datasources/packages_remote_data_source.dart';
 import 'package:caterease/features/packages/data/repositories/packages_repository_impl.dart';
 import 'package:caterease/features/packages/domain/repositories/packages_repository.dart';
@@ -17,8 +43,6 @@ import 'package:caterease/features/packages/presentation/bloc/packages_bloc.dart
 import 'package:caterease/features/delivery/data/datasources/order_remote_data_source.dart';
 import 'package:caterease/features/delivery/data/repositories/order_repository.dart';
 import 'package:caterease/features/delivery/domain/repositories/base_order_repository.dart';
-import 'package:caterease/features/delivery/domain/usecases/get_all_orders_use_case.dart';
-import 'package:caterease/features/delivery/domain/usecases/get_order_details_use_case.dart';
 import 'package:caterease/features/delivery/presentation/controller/bloc/order/delivery_order_bloc.dart';
 import 'package:caterease/features/profile/data/datasources/address_remote_datasource.dart';
 import 'package:caterease/features/profile/data/repositories/address_repository.dart';
@@ -48,7 +72,7 @@ import 'package:caterease/features/profile/presentation/controller/bloc/profile/
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 import 'features/restaurants/data/datasources/restaurants_remote_data_source.dart';
 import 'features/restaurants/data/repositories/restaurants_repository_impl.dart';
@@ -66,7 +90,6 @@ import 'features/location/presentation/bloc/location_bloc.dart';
 
 import 'core/network/network_client.dart';
 
-
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -78,19 +101,25 @@ Future<void> init() async {
   await _initCore();
   await _initExternal();
   await _initProfile();
+  await _initDeliveryProfile();
   await _initAddress();
   await _initOrder();
+  await _initCustomerOrders();
+  await _initCustomerOrderList();
+  await _initCustomerOrderDetails();
 }
 
 Future<void> _initAuthentication() async {
   //:Bloc
   sl.registerFactory(() => LoginBloc(sl()));
+  sl.registerFactory(() => LogoutBloc(sl()));
   sl.registerFactory(() => RegisterBloc(sl()));
   sl.registerFactory(() => VerifyBloc(sl()));
   sl.registerFactory(() => PasswordResetBloc(sl()));
 
   //: UseCases
   sl.registerLazySingleton(() => LoginUserUseCase(sl()));
+  sl.registerLazySingleton(() => LogoutUseCase(sl()));
   sl.registerLazySingleton(() => RegisterUserUseCase(sl()));
   sl.registerLazySingleton(() => VerifyEmailUseCase(sl()));
   sl.registerLazySingleton(() => PasswordResetUseCase(sl()));
@@ -116,6 +145,22 @@ Future<void> _initProfile() async {
   //:DataSource
   sl.registerLazySingleton<BaseProfileRemoteDatasource>(
       () => ProfileRemoteDatasource(sl()));
+}
+
+Future<void> _initDeliveryProfile() async {
+  //: Bloc
+  sl.registerFactory(() => DeliveryProfileBloc(sl()));
+
+  //:UseCases
+  sl.registerLazySingleton(() => DeliveryProfileUseCases(sl()));
+
+  //:Repository
+  sl.registerLazySingleton<BaseDeliveryProfileRepository>(
+      () => DeliveryProfileRepository(sl()));
+
+  //:DataSource
+  sl.registerLazySingleton<BaseDeliveryProfileRemoteDataSource>(
+      () => DeliveryProfileRemoteDataSource(sl()));
 }
 
 Future<void> _initRestaurants() async {
@@ -165,12 +210,14 @@ Future<void> _initLocation() async {
 }
 
 Future<void> _initCore() async {
+  sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
   sl.registerLazySingleton(() => NetworkClient(sl(), sl()));
 }
 
 Future<void> _initExternal() async {
   sl.registerLazySingleton(() => http.Client());
   sl.registerLazySingleton(() => const FlutterSecureStorage());
+  sl.registerLazySingleton(() => InternetConnectionChecker());
 }
 
 Future<void> _initPackages() async {
@@ -245,11 +292,10 @@ Future<void> _initAddress() async {
 
 Future<void> _initOrder() async {
   //:Bloc
-  sl.registerFactory(() => DeliveryOrderBloc(sl(), sl()));
+  sl.registerFactory(() => DeliveryOrderBloc(sl()));
 
   //:UseCase
-  sl.registerLazySingleton(() => GetAllOrdersUseCase(repository: sl()));
-  sl.registerLazySingleton(() => GetOrderDetailsUseCase(repository: sl()));
+  sl.registerLazySingleton(() => OrderUseCases(sl()));
 
   //:Repository
   sl.registerLazySingleton<BaseOrderRepository>(
@@ -258,4 +304,50 @@ Future<void> _initOrder() async {
   //:DataSource
   sl.registerLazySingleton<BaseOrderRemoteDataSource>(
       () => OrderRemoteDataSource(client: sl()));
+}
+
+Future<void> _initCustomerOrders() async {
+  sl.registerLazySingleton<CustomerOrderRemoteDataSource>(
+      () => CustomerOrderRemoteDataSourceImpl(networkClient: sl()));
+  sl.registerLazySingleton<CustomerOrderRepository>(
+      () => CustomerOrderRepositoryImpl(remoteDataSource: sl()));
+
+  sl.registerLazySingleton(() => CreateCustomerOrderUseCase(repository: sl()));
+
+  sl.registerFactory(() => CustomerOrderBloc(createCustomerOrderUseCase: sl()));
+}
+
+Future<void> _initCustomerOrderList() async {
+  // Bloc
+  sl.registerFactory(() => CustomerOrderListBloc(
+      getCustomerOrderListUseCase: sl(), deleteOrderUseCase: sl()));
+
+  // Use Cases
+  sl.registerLazySingleton(() => GetCustomerOrderListUseCase(repository: sl()));
+  sl.registerLazySingleton(() => DeleteOrderUseCase(sl())); // أضف هذا السطر
+
+  // Repository
+  sl.registerLazySingleton<CustomerOrderListRepository>(() =>
+      CustomerOrderListRepositoryImpl(
+          remoteDataSource: sl(), networkInfo: sl()));
+
+  // Data Source
+  sl.registerLazySingleton<CustomerOrderListRemoteDataSource>(
+      () => CustomerOrderListRemoteDataSourceImpl(client: sl()));
+}
+
+Future<void> _initCustomerOrderDetails() async {
+  // Bloc
+  sl.registerFactory(() => OrderDetailsBloc(getOrderDetailsUseCase: sl()));
+
+  // Use Cases
+  sl.registerLazySingleton(() => GetOrderDetailsUseCase(sl()));
+
+  // Repository
+  sl.registerLazySingleton<OrderDetailsRepository>(
+      () => OrderDetailsRepositoryImpl(remoteDataSource: sl()));
+
+  // Data Source
+  sl.registerLazySingleton<OrderDetailsRemoteDataSource>(
+      () => OrderDetailsRemoteDataSourceImpl(client: sl()));
 }

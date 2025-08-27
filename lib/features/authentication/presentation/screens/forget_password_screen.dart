@@ -92,7 +92,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                           onPressed: () {
                             if (formState.currentState!.validate()) {
                               context.read<PasswordResetBloc>().add(
-                                    PasswordResetRequested(
+                                    PasswordResetRequestedEvent(
                                       email: emailController.text,
                                     ),
                                   );

@@ -133,4 +133,16 @@ class AuthRepository implements BaseAuthRepository {
       return Left(UnexpectedFailure("Unexpected error: $e"));
     }
   }
+
+  @override
+  Future<Either<Failure, Unit>> logout() async {
+    try {
+      final response = await remoteDataSource.logout();
+      return Right(response);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
+    } catch (e) {
+      return Left(UnexpectedFailure("Unexpected error: $e"));
+    }
+  }
 }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:caterease/core/constants/api_constants.dart';
 import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' as http;
 import '../../../../core/error/failures.dart';
@@ -41,7 +42,7 @@ class RestaurantsRepositoryImpl implements RestaurantsRepository {
 
   Future<List<BranchModel>> getBranchesByCategory(String category) async {
     final url = Uri.parse(
-        "http://192.168.198.155:8000/api/branches/category/$category");
+        "${ApiConstants.baseUrl}/branches/category/$category");
 
     SecureStorage secureStorage = SecureStorage();
     String? token = await secureStorage.getAccessToken();

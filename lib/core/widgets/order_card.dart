@@ -4,68 +4,94 @@ import 'package:flutter/material.dart';
 class OrderCard extends StatelessWidget {
   final String image;
   final String restaurantName;
-  final String message;
+  final String status;
   final String createdSince;
+  final int? isProcessed;
+  final VoidCallback onAccept;
+  final VoidCallback onDecline;
 
-  OrderCard({
-    super.key,
-    required this.image,
-    required this.restaurantName,
-    required this.message,
-    required this.createdSince,
-  });
+  const OrderCard(
+      {super.key,
+      required this.image,
+      required this.restaurantName,
+      required this.status,
+      required this.createdSince,
+      this.isProcessed,
+      required this.onAccept,
+      required this.onDecline});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 110,
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const CircleAvatar(
-              radius: 30,
-              backgroundColor: Colors.grey,
-              child: Icon(Icons.restaurant, color: Colors.white),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  buildText(restaurantName, message),
-                  const SizedBox(height: 6),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        createdSince,
-                        style: const TextStyle(
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const CircleAvatar(
+            radius: 30,
+            backgroundColor: Colors.grey,
+            child: Icon(Icons.restaurant, color: Colors.white),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      restaurantName,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(status),
+                  ],
+                ),
+                const SizedBox(height: 6),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      createdSince,
+                      style: const TextStyle(
                           color: Colors.grey,
                           fontSize: 12,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          if (isProcessed == null)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  onPressed: onAccept,
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: AppTheme.darkBlue,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 8),
+                      minimumSize: const Size(80, 36)),
+                  child: const Text("Accept",
+                      style: TextStyle(fontSize: 12, color: Colors.white)),
+                ),
+                ElevatedButton(
+                  onPressed: onDecline,
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: AppTheme.lightGray,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 8),
+                      minimumSize: const Size(80, 36)),
+                  child: const Text("Decline",
+                      style: TextStyle(fontSize: 12, color: Colors.black)),
+                ),
+              ],
+            ),
+        ],
       ),
-    );
-  }
-
-  Widget buildText(String restaurantName, String message) {
-    return Column(
-      children: [
-        Text(
-          restaurantName,
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        Text(message),
-      ],
     );
   }
 

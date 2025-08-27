@@ -9,7 +9,9 @@ import 'package:dartz/dartz.dart';
 abstract class BaseOrderRemoteDataSource {
   Future<List<OrderModel>> getAllOrders();
   Future<OrderModel> getOrderDetails(int id);
-  Future<Unit> changeOrderStatus(int id);
+  Future<Unit> changeOrderStatus(int id, String status);
+  Future<Unit> acceptOrder(int id);
+  Future<Unit> declineOrder(int id, String rejectReason);
 }
 
 class OrderRemoteDataSource implements BaseOrderRemoteDataSource {
@@ -33,7 +35,8 @@ class OrderRemoteDataSource implements BaseOrderRemoteDataSource {
 
   @override
   Future<OrderModel> getOrderDetails(int id) async {
-    final response = await client.get("${ApiConstants.orderDetails}$id");
+    final response = await client.get(
+        ApiConstants.orderDetails.replaceFirst("{orderId}", id.toString()));
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -45,8 +48,38 @@ class OrderRemoteDataSource implements BaseOrderRemoteDataSource {
   }
 
   @override
-  Future<Unit> changeOrderStatus(int id) async {
-    final response = await client.post("${ApiConstants.orderStatus}$id");
+  Future<Unit> changeOrderStatus(int id, String status) async {
+    final response = await client.post(
+        ApiConstants.orderStatus.replaceFirst("{orderId}", id.toString()),
+        body: {"status": status});
+
+    if (response.statusCode == 200) {
+      return unit;
+    } else {
+      throw ServerException(
+          "Error while changing the order status: ${response.body.toString()}");
+    }
+  }
+
+  @override
+  Future<Unit> acceptOrder(int id) async {
+    final response = await client.post(
+        ApiConstants.orderDecision.replaceFirst("{orderId}", id.toString()),
+        body: {"decision": "approve"});
+
+    if (response.statusCode == 200) {
+      return unit;
+    } else {
+      throw ServerException(
+          "Error while changing the order status: ${response.body.toString()}");
+    }
+  }
+
+  @override
+  Future<Unit> declineOrder(int id, String rejectReason) async {
+    final response = await client.post(
+        ApiConstants.orderDecision.replaceFirst("{orderId}", id.toString()),
+        body: {"decision": "reject", "rejection_reason": rejectReason});
 
     if (response.statusCode == 200) {
       return unit;

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:caterease/core/services/image_service.dart';
 import 'package:caterease/core/widgets/build_label.dart';
 import 'package:caterease/core/widgets/build_text_field.dart';
@@ -78,48 +76,6 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /*   GestureDetector(
-              onTap: () async {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (context) => SizedBox(
-                    height: 150,
-                    child: Column(
-                      children: [
-                        ListTile(
-                          leading: const Icon(Icons.camera_alt),
-                          title: const Text("open camera "),
-                          onTap: () async {
-                            final File? image =
-                                await imageService.pickImageFromCamera();
-                            Navigator.pop(context);
-                          },
-                        ),
-                        ListTile(
-                          leading: const Icon(Icons.photo_library),
-                          title: const Text("choose from gallery"),
-                          onTap: () async {
-                            final File? image =
-                                await imageService.pickImageFromGallery();
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-              child: Center(
-                child: CircleAvatar(
-                  radius: 40,
-                  backgroundColor: Colors.grey[300],
-                  foregroundImage: photoUrl != null
-                      ? imageService.getNetworkImage(photoUrl)
-                      : null,
-                  child: const Icon(Icons.person),
-                ),
-              ),
-            ), */
             const SizedBox(height: 20),
             buildLabel("Your Full Name"),
             buildTextField(controller: nameController, hint: "Enter full name"),

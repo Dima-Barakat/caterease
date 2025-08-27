@@ -10,7 +10,6 @@ class AddressModel extends Address {
     super.apartment,
     super.latitude,
     super.longitude,
-    //required super.isDefault
   });
 
   factory AddressModel.fromJson(Map<String, dynamic> json) {
