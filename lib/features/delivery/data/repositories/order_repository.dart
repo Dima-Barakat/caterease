@@ -38,9 +38,38 @@ class OrderRepository implements BaseOrderRepository {
   }
 
   @override
-  Future<Either<Failure, Unit>> changeOrderStatus(int id) async {
+  Future<Either<Failure, Unit>> changeOrderStatus(int id, String status) async {
     try {
-      await dataSource.changeOrderStatus(id);
+      await dataSource.changeOrderStatus(id, status);
+      return const Right(unit);
+    } catch (e) {
+      if (e is ServerException) {
+        return Left(ServerFailure(e.message));
+      } else {
+        return Left(UnexpectedFailure("Unexpected error: ${e.toString()}"));
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> acceptOrder(int id) async {
+    try {
+      await dataSource.acceptOrder(id);
+      return const Right(unit);
+    } catch (e) {
+      if (e is ServerException) {
+        return Left(ServerFailure(e.message));
+      } else {
+        return Left(UnexpectedFailure("Unexpected error: ${e.toString()}"));
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> declineOrder(
+      int id, String rejectReason) async {
+    try {
+      await dataSource.declineOrder(id, rejectReason);
       return const Right(unit);
     } catch (e) {
       if (e is ServerException) {

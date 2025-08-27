@@ -6,15 +6,14 @@ sealed class PasswordResetEvent extends Equatable {
 }
 
 //! Password Reset Request Events
-class PasswordResetRequested extends PasswordResetEvent {
+class PasswordResetRequestedEvent extends PasswordResetEvent {
   final String email;
 
-  PasswordResetRequested({required this.email});
+  PasswordResetRequestedEvent({required this.email});
 
   @override
   List<Object> get props => [email];
 }
-
 
 //! Password Reset Verification Events
 

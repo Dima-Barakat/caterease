@@ -10,6 +10,7 @@ class User extends Equatable {
   final String? photo;
   final int? roleId;
   final List<Address>? addresses;
+  final Role? role;
 
   const User(
       {required this.id,
@@ -19,8 +20,22 @@ class User extends Equatable {
       required this.gender,
       this.photo,
       this.roleId,
-      this.addresses});
+      this.addresses,
+      this.role});
 
   @override
   List<Object?> get props => [];
+}
+
+class Role extends Equatable {
+  final int id;
+  final String name;
+
+  const Role({
+    required this.id,
+    required this.name,
+  });
+
+  @override
+  List<Object> get props => [];
 }

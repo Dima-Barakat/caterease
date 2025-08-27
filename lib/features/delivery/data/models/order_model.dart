@@ -1,48 +1,60 @@
-import 'package:caterease/features/orders/domain/entities/order.dart';
+import 'package:caterease/features/delivery/domain/entities/order.dart';
 import 'package:caterease/features/profile/data/models/address_model.dart';
 
 class OrderModel extends Order {
-  const OrderModel(
-      {required super.orderId,
-      required super.status,
-      required super.totalPrice,
-      required super.createdAt,
-      required super.createdSince,
-      required super.customerName,
-      required super.branchName,
-      required super.restaurantName,
-      super.items,
-      super.address});
+  const OrderModel({
+    required super.order,
+    required super.user,
+    required super.restaurant,
+  });
 
   factory OrderModel.fromJson(Map<String, dynamic> json) {
+    final orderJson = json['order'];
+    final userJson = json['user'];
+    final restaurantJson = json['restaurant'];
+
     return OrderModel(
-      orderId: json['order_id'],
-      status: json['status'],
-      totalPrice: json['total_price'],
-      createdAt: json['created_at'],
-      createdSince: json['created_since'],
-      customerName: json['customer_name'],
-      branchName: json['branch_name'],
-      restaurantName: json['restaurant_name'],
-      items: json['items'],
-      address: json['address'] != null
-          ? AddressModel.fromJson(json['address'] as Map<String, dynamic>)
-          : null,
+      order: OrderInfo(
+        id: orderJson['id'],
+        status: orderJson['status'],
+        totalPrice: orderJson['total_price'],
+        createdAt: orderJson['created_at'],
+        createdSince: orderJson['created_since'],
+        items: orderJson['items'],
+        isAccepted: orderJson['is_accepted'],
+      ),
+      user: UserInfo(
+        name: userJson['name'],
+        phone: userJson['phone'],
+        address: AddressModel.fromJson(userJson['address']),
+      ),
+      restaurant: RestaurantInfo(
+        name: restaurantJson['name'],
+        branch: restaurantJson['branch'],
+        location: restaurantJson['location'],
+      ),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'order_id': orderId,
-      'status': status,
-      'total_price': totalPrice,
-      'created_at': createdAt,
-      'created_since': createdSince,
-      'customer_name': customerName,
-      'branch_name': branchName,
-      'restaurant_name': restaurantName,
-      'items': items,
-      'address': (address as AddressModel).toJson(),
+      'order': {
+        'id': order.id,
+        'status': order.status,
+        'total_price': order.totalPrice,
+        'created_at': order.createdAt,
+        'created_since': order.createdSince,
+        'items': order.items,
+      },
+      'user': {
+        'name': user.name,
+        'phone': user.phone,
+        'address': (user.address as AddressModel).toJson(),
+      },
+      'restaurant': {
+        'name': restaurant.name,
+        'branch': restaurant.branch,
+      }
     };
   }
 }

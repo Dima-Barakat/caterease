@@ -7,5 +7,9 @@ abstract class BaseOrderRepository {
 
   Future<Either<Failure, OrderModel>> getOrderDetails(int id);
 
-  Future<Either<Failure, Unit>> changeOrderStatus(int id);
+  Future<Either<Failure, Unit>> changeOrderStatus(int id, String status);
+
+  Future<Either<Failure, Unit>> acceptOrder(int id);
+
+  Future<Either<Failure, Unit>> declineOrder(int id, String rejectReason);
 }
