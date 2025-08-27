@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 
 class FirebaseNotificationService {
+  
   static Future<void> initialize() async {
     await Firebase.initializeApp();
 

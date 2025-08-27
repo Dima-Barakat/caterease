@@ -115,11 +115,6 @@ class _OrdersListState extends State<OrdersList> {
               ),
             ),
             ListTile(
-              leading: const Icon(Icons.report),
-              title: const Text('Reports'),
-              onTap: () => Navigator.pop(context),
-            ),
-            ListTile(
               leading: const Icon(Icons.logout),
               title: const Text('Logout'),
               onTap: () => Navigator.of(context).pushAndRemoveUntil(

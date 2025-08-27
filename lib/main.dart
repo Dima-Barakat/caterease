@@ -1,6 +1,7 @@
 import 'package:caterease/animated_splash_screen.dart';
 import 'package:caterease/core/network/network_client.dart';
 import 'package:caterease/core/services/firebase_notification_service.dart';
+import 'package:caterease/core/services/payment_service.dart';
 import 'package:caterease/core/storage/secure_storage.dart';
 import 'package:caterease/features/authentication/presentation/controllers/bloc/login/login_bloc.dart';
 import 'package:caterease/features/authentication/presentation/controllers/bloc/logout/logout_bloc.dart';
@@ -36,6 +37,8 @@ void main() async {
   await init();
 
   await FirebaseNotificationService.initialize();
+
+  await PaymentService.initialize();
 
   runApp(MyApp());
 }
