@@ -59,3 +59,21 @@ final class OrderError extends DeliveryOrderState {
   @override
   List<Object> get props => [message];
 }
+
+class LoadingScanCodeState extends DeliveryOrderState {}
+
+class ErrorScanCodeState extends DeliveryOrderState {
+  final String message;
+  const ErrorScanCodeState({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+class SuccessScanCodeState extends DeliveryOrderState {
+  final String message;
+  const SuccessScanCodeState(this.message);
+
+  @override
+  List<Object> get props => [message];
+}

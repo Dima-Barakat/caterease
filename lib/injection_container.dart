@@ -47,6 +47,7 @@ import 'package:caterease/features/delivery/presentation/controller/bloc/order/d
 import 'package:caterease/features/profile/data/datasources/address_remote_datasource.dart';
 import 'package:caterease/features/profile/data/repositories/address_repository.dart';
 import 'package:caterease/features/profile/domain/repositories/base_address_repository.dart';
+import 'package:caterease/features/profile/domain/usecases/address/address_use_case.dart';
 import 'package:caterease/features/profile/domain/usecases/address/create_address_use_case.dart';
 import 'package:caterease/features/profile/domain/usecases/address/delete_address_use_case.dart';
 import 'package:caterease/features/profile/domain/usecases/address/index_addresses_use_case.dart';
@@ -274,12 +275,10 @@ Future<void> _initCart() async {
 
 Future<void> _initAddress() async {
   //:Bloc
-  sl.registerFactory(() => AddressBloc(sl(), sl(), sl()));
+  sl.registerFactory(() => AddressBloc(sl()));
 
   //:UseCase
-  sl.registerLazySingleton(() => IndexAddressesUseCase(sl()));
-  sl.registerLazySingleton(() => CreateAddressUseCase(sl()));
-  sl.registerLazySingleton(() => DeleteAddressUseCase(sl()));
+  sl.registerLazySingleton(() => AddressUseCase(sl()));
 
   //:Repository
   sl.registerLazySingleton<BaseAddressRepository>(

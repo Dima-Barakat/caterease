@@ -8,7 +8,6 @@ class User extends Equatable {
   final String phone;
   final String gender;
   final String? photo;
-  final int? roleId;
   final List<Address>? addresses;
   final Role? role;
 
@@ -19,7 +18,6 @@ class User extends Equatable {
       required this.phone,
       required this.gender,
       this.photo,
-      this.roleId,
       this.addresses,
       this.role});
 

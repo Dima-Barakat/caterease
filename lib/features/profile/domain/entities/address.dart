@@ -2,8 +2,12 @@ import 'package:equatable/equatable.dart';
 
 class Address extends Equatable {
   final int id;
-  final String city;
-  // final String? country;
+  final int? cityId;
+  final int? areaId;
+  final int? districtId;
+  final String? area;
+  final String? city;
+  final String? district;
   final String? street;
   final String? building;
   final String? floor;
@@ -13,8 +17,12 @@ class Address extends Equatable {
 
   const Address({
     required this.id,
-    required this.city,
-    // this.country,
+    required this.cityId,
+    this.city,
+    this.areaId,
+    this.area,
+    this.districtId,
+    this.district,
     this.street,
     this.building,
     this.floor,
@@ -24,5 +32,19 @@ class Address extends Equatable {
   });
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [
+        id,
+        cityId,
+        city,
+        area,
+        areaId,
+        district,
+        districtId,
+        street,
+        building,
+        floor,
+        apartment,
+        latitude,
+        longitude
+      ];
 }

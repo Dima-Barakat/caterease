@@ -1,5 +1,7 @@
 import 'package:caterease/core/services/image_service.dart';
+import 'package:caterease/core/storage/secure_storage.dart';
 import 'package:caterease/core/theming/app_theme.dart';
+import 'package:caterease/features/authentication/presentation/screens/login_screen.dart';
 import 'package:caterease/features/profile/domain/entities/address.dart';
 import 'package:caterease/features/profile/presentation/controller/bloc/address/address_bloc.dart';
 import 'package:caterease/features/profile/presentation/controller/bloc/address/address_event.dart';
@@ -9,6 +11,8 @@ import 'package:caterease/features/profile/presentation/screens/address/add_addr
 import 'package:caterease/features/profile/presentation/screens/profile/profile_edit_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
 class ProfileViewPage extends StatefulWidget {
   const ProfileViewPage({
@@ -21,6 +25,7 @@ class ProfileViewPage extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileViewPage> {
   final imageService = ImageService();
+  final storage = SecureStorage();
 
   @override
   void initState() {
@@ -28,12 +33,47 @@ class _ProfileScreenState extends State<ProfileViewPage> {
     context.read<ProfileBloc>().add(GetProfileEvent());
   }
 
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Logout'),
+        content: const Text('Are you sure you want to logout?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              storage.clearAll();
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (_) => const LoginPage()),
+                  (Route<dynamic> route) => false);
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: const Text(
+          'Profile',
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
+        backgroundColor: AppTheme.darkBlue,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout, color: Colors.white),
+            onPressed: () => _showLogoutDialog(context),
+          ),
+        ],
       ),
       body: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) {},
@@ -176,12 +216,74 @@ class _ProfileScreenState extends State<ProfileViewPage> {
                 const SizedBox(height: 8),
 
                 /// Coordinates
-                Text(
-                  'Location on map: ${address.latitude ?? '0.0'}, ${address.longitude ?? '0.0'}',
-                  style: const TextStyle(
-                    color: AppTheme.darkBlue,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
+                GestureDetector(
+                  onTap: () {
+                    if (address.latitude != null && address.longitude != null) {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            contentPadding: EdgeInsets.zero,
+                            content: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.9,
+                              height: MediaQuery.of(context).size.height * 0.7,
+                              child: FlutterMap(
+                                options: MapOptions(
+                                  initialCenter: LatLng(
+                                    double.tryParse(address.latitude!) ?? 0.0,
+                                    double.tryParse(address.longitude!) ?? 0.0,
+                                  ),
+                                  initialZoom: 15,
+                                ),
+                                children: [
+                                  TileLayer(
+                                    urlTemplate:
+                                        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                    userAgentPackageName:
+                                        'com.example.cater_ease',
+                                  ),
+                                  MarkerLayer(
+                                    markers: [
+                                      Marker(
+                                        point: LatLng(
+                                          double.tryParse(address.latitude!) ??
+                                              0.0,
+                                          double.tryParse(address.longitude!) ??
+                                              0.0,
+                                        ),
+                                        width: 50,
+                                        height: 50,
+                                        child: const Icon(Icons.location_on,
+                                            size: 40, color: Colors.red),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text("Close"),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("No location available")),
+                      );
+                    }
+                  },
+                  child: const Text(
+                    "View Location on Map",
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      decoration: TextDecoration.underline,
+                    ),
                   ),
                 ),
               ],

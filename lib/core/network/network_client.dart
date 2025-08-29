@@ -42,6 +42,7 @@ class NetworkClient {
       );
     }
     if (kDebugMode) print(response.statusCode);
+    if (kDebugMode) print(response.body);
     return response;
   }
 

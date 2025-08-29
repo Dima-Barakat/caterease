@@ -1,6 +1,7 @@
-import 'package:caterease/core/error/failures.dart';
 import 'package:caterease/features/delivery/data/models/order_model.dart';
+import 'package:caterease/features/delivery/domain/entities/scan_code.dart';
 import 'package:caterease/features/delivery/domain/usecases/order_use_cases.dart';
+import 'package:caterease/features/order_details_feature/presentation/bloc/order_details_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -104,6 +105,14 @@ class DeliveryOrderBloc extends Bloc<DeliveryOrderEvent, DeliveryOrderState> {
       } catch (e) {
         emit(OrderError(e.toString()));
       }
+    });
+
+    on<ScanCodeEvent>((event, emit) async {
+      emit(LoadingScanCodeState());
+      final failureORdone = await useCases.deliverOrder(event.code, event.note);
+      failureORdone.fold(
+          (failure) => {emit(ErrorScanCodeState(message: failure.toString()))},
+          (order) => {emit(const SuccessScanCodeState("Delivery Completed"))});
     });
   }
 }

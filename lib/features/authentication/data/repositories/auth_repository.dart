@@ -28,14 +28,6 @@ class AuthRepository implements BaseAuthRepository {
           email: authentication.user.email,
           name: authentication.user.name,
           roleId: authentication.user.roleId);
-/*       print("DATA: \n");
-      String? token = await secureStorage.getAccessToken();
-      String? id = await secureStorage.getUserId();
-      String? userEmail = await secureStorage.getEmail();
-      String? role = await secureStorage.getRole();
-      print(
-          "User Token: $token \n User ID: $id \n User Role: $role \n User Email: $userEmail");
-      print("\n"); */
       return Right(authentication);
     } on ServerException catch (e) {
       return Left(ServerFailure(e.message));
