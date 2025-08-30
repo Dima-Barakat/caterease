@@ -2,7 +2,6 @@ import 'package:caterease/features/delivery/data/models/delivery_profile_model.d
 import 'package:caterease/features/delivery/domain/usecases/delivery_profile_use_cases.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-
 part 'delivery_profile_event.dart';
 part 'delivery_profile_state.dart';
 

@@ -45,6 +45,7 @@ final class DeclineOrder extends DeliveryOrderEvent {
   List<Object> get props => [id, rejectReason];
 }
 
+
 class ScanCodeEvent extends DeliveryOrderEvent {
   final String code;
   final String? note;
@@ -52,5 +53,3 @@ class ScanCodeEvent extends DeliveryOrderEvent {
   @override
   List<Object> get props => [code];
 }
-
-class ResetScanStateEvent extends DeliveryOrderEvent {}
