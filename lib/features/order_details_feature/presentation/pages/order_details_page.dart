@@ -5,6 +5,7 @@ import 'package:caterease/features/order_details_feature/presentation/bloc/order
 import 'package:caterease/features/restaurants/presentation/widgets/base64_image_widget.dart';
 import 'package:caterease/injection_container.dart';
 import 'package:caterease/core/theming/app_theme.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class OrderDetailsPage extends StatelessWidget {
   final int orderId;
@@ -163,6 +164,14 @@ class OrderDetailsPage extends StatelessWidget {
               _infoTile(
                   Icons.location_city, 'المدينة', order.address.city, null),
             ],
+          ),
+          const SizedBox(height: 16),
+          Center(
+            child: QrImageView(
+              data: 'kljhqwerkljhqwerkjhqwerlkjhqwer',
+              version: QrVersions.auto,
+              size: 120,
+            ),
           ),
           const SizedBox(height: 16),
           Padding(

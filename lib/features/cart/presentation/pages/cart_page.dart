@@ -1,11 +1,15 @@
 import 'package:caterease/features/cart/presentation/widgets/AnimatedCheckoutButto.dart';
 import 'package:caterease/features/restaurants/presentation/widgets/base64_image_widget.dart';
 import 'package:caterease/features/packages/presentation/pages/package_edit_page.dart';
+import 'package:caterease/features/customer_orders/presentation/pages/create_order_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:caterease/features/cart/presentation/bloc/cart_bloc.dart';
 import 'package:caterease/features/cart/domain/entities/update_cart_item_request.dart';
 import 'package:caterease/core/theming/app_theme.dart';
+import 'package:caterease/features/customer_orders/presentation/bloc/customer_order_bloc.dart';
+import 'package:caterease/features/profile/presentation/controller/bloc/address/address_bloc.dart';
+import 'package:caterease/injection_container.dart'; // تأكد من استيراد sl
 
 class CartPage extends StatefulWidget {
   const CartPage({Key? key}) : super(key: key);
@@ -30,10 +34,9 @@ class _CartPageState extends State<CartPage> {
         foregroundColor: AppTheme.darkBlue,
         elevation: 0,
         automaticallyImplyLeading: false,
-        leading: const SizedBox.shrink(), // هذا يمنع ظهور السهم فقط
-        title: const Text("السلة"),
+        leading: const SizedBox.shrink(),
+        title: const Text("cart"),
         centerTitle: true,
-
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -95,7 +98,7 @@ class _CartPageState extends State<CartPage> {
               );
             }
 
-            // حساب مجموع جميع basePrice:
+            // حساب المجموع الكلي
             double totalBasePrice = 0.0;
             for (var item in cartPackages.data) {
               try {
@@ -149,7 +152,6 @@ class _CartPageState extends State<CartPage> {
                                             ),
                                           ),
                                   ),
-                                  // تاج السعر
                                   Positioned(
                                     top: 12,
                                     right: 12,
@@ -247,24 +249,92 @@ class _CartPageState extends State<CartPage> {
                     },
                   ),
                 ),
-                // Checkout button + المجموع
+                // عرض المجموع الكلي بشكل منفصل
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  color: Colors.white,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "المجموع الكلي:",
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  color: AppTheme.darkBlue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                      ),
+                      Text(
+                        "\$${totalBasePrice.toStringAsFixed(2)}",
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  color: AppTheme.lightGreen,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                      ),
+                    ],
+                  ),
+                ),
+                // زر إنشاء طلب
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  color: Colors.white,
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: cartPackages.data.isNotEmpty
+                          ? () {
+                              // جمع معرفات عناصر السلة
+                              final List<int> cartItemIds = cartPackages.data
+                                  .map((item) => item.cartItemId)
+                                  .toList();
+
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => MultiBlocProvider(
+                                    providers: [
+                                      BlocProvider<AddressBloc>(
+                                        create: (context) => sl<AddressBloc>(),
+                                      ),
+                                      BlocProvider<CustomerOrderBloc>(
+                                        create: (context) =>
+                                            sl<CustomerOrderBloc>(),
+                                      ),
+                                    ],
+                                    child: CreateOrderPage(
+                                      cartItemIds: cartItemIds,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                          : null,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppTheme.darkBlue,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: const Text(
+                        "إنشاء طلب",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ),
+                // زر الدفع بدون المبلغ
                 Container(
                   padding: const EdgeInsets.all(16),
                   color: Colors.white,
                   child: AnimatedCheckoutButton(
                     enabled: cartPackages.data.isNotEmpty,
-                    label:
-                        "متابعة للدفع  (\$${totalBasePrice.toStringAsFixed(2)})",
-                    onPressed: cartPackages.data.isNotEmpty
-                        ? () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                    "المجموع الكلي: \$${totalBasePrice.toStringAsFixed(2)}"),
-                              ),
-                            );
-                          }
-                        : null,
+                    label: "متابعة للدفع",
+                    onPressed: cartPackages.data.isNotEmpty ? () {} : null,
                   ),
                 ),
               ],
@@ -281,16 +351,11 @@ class _CartPageState extends State<CartPage> {
 
   void _navigateToEditPage(BuildContext context, dynamic item) {
     final int cartItemId = item.cartItemId;
-    final String packageId =
-        item.packageId.toString(); // Keep packageId as string
-    print(
-        "Navigating to edit page with cartItemId: $cartItemId and packageId: $packageId");
-
+    final String packageId = item.packageId.toString();
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => PackageEditPage(
-          packageId: int.tryParse(packageId) ??
-              0, // Pass packageId as int, default to 0 if parsing fails
+          packageId: int.tryParse(packageId) ?? 0,
           cartItem: item,
           isEditMode: true,
         ),

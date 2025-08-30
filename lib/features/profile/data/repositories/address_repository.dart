@@ -11,6 +11,26 @@ class AddressRepository implements BaseAddressRepository {
   const AddressRepository(this.datasource, this.client);
 
   @override
+  Future<Either<Failure, List<Map<String, dynamic>>>> getCities() async {
+    final cities = await datasource.fetchCities();
+    return Right(cities);
+  }
+
+  @override
+  Future<Either<Failure, List<Map<String, dynamic>>>> getDistricts(
+      String cityId) async {
+    final districts = await datasource.fetchDistricts(cityId);
+    return Right(districts);
+  }
+
+  @override
+  Future<Either<Failure, List<Map<String, dynamic>>>> getAreas(
+      String districtId) async {
+    final areas = await datasource.fetchAreas(districtId);
+    return Right(areas);
+  }
+
+  @override
   Future<Either<Failure, List<AddressModel>>> indexAddresses() async {
     final addresses = await datasource.getAllAddresses();
     return Right(addresses);
@@ -19,6 +39,8 @@ class AddressRepository implements BaseAddressRepository {
   @override
   Future<Either<Failure, Unit>> createAddress(
       {required String cityId,
+      String? districtId,
+      String? areaId,
       String? street,
       String? building,
       String? floor,
@@ -27,7 +49,16 @@ class AddressRepository implements BaseAddressRepository {
       String? lat}) async {
     try {
       final response = await datasource.createAddress(
-          cityId, street, building, floor, apartment, long, lat);
+        cityId,
+        districtId,
+        areaId,
+        street,
+        building,
+        floor,
+        apartment,
+        long,
+        lat,
+      );
 
       return Right(response);
     } catch (e) {

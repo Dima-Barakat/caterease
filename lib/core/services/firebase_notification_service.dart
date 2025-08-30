@@ -1,9 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class FirebaseNotificationService {
-  
   static Future<void> initialize() async {
     await Firebase.initializeApp();
 
@@ -22,12 +23,17 @@ class FirebaseNotificationService {
       String? token = await FirebaseMessaging.instance.getToken();
       debugPrint("FCM Token: $token\n");
 
+      if (token != null) Clipboard.setData(ClipboardData(text: token));
+
       //: Background handler
       FirebaseMessaging.onBackgroundMessage(
           _firebaseMessagingBackgroundHandler);
 
       //: Foreground messages
-      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+        WidgetsFlutterBinding.ensureInitialized();
+        await Firebase.initializeApp();
+
         debugPrint("Foreground message: ${message.notification?.title}");
       });
 
@@ -45,6 +51,7 @@ class FirebaseNotificationService {
   // Background handler (must be a top-level function or static)
   static Future<void> _firebaseMessagingBackgroundHandler(
       RemoteMessage message) async {
+    WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp();
     debugPrint("Handling a background message: ${message.messageId}");
   }

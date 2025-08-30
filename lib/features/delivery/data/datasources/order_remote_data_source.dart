@@ -12,6 +12,7 @@ abstract class BaseOrderRemoteDataSource {
   Future<Unit> changeOrderStatus(int id, String status);
   Future<Unit> acceptOrder(int id);
   Future<Unit> declineOrder(int id, String rejectReason);
+  Future<Unit> deliverOrder(String qrCode, String? notes);
 }
 
 class OrderRemoteDataSource implements BaseOrderRemoteDataSource {
@@ -80,6 +81,19 @@ class OrderRemoteDataSource implements BaseOrderRemoteDataSource {
     final response = await client.post(
         ApiConstants.orderDecision.replaceFirst("{orderId}", id.toString()),
         body: {"decision": "reject", "rejection_reason": rejectReason});
+
+    if (response.statusCode == 200) {
+      return unit;
+    } else {
+      throw ServerException(
+          "Error while changing the order status: ${response.body.toString()}");
+    }
+  }
+
+  @override
+  Future<Unit> deliverOrder(String qrCode, String? notes) async {
+    final response = await client.post(ApiConstants.deliverTheOrder,
+        body: {"qr_string": qrCode, "notes": notes});
 
     if (response.statusCode == 200) {
       return unit;

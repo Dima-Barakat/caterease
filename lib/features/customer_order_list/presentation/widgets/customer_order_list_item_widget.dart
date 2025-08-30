@@ -65,19 +65,61 @@ class CustomerOrderListItemWidget extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Colors.blueAccent,
-                            borderRadius: BorderRadius.circular(8),
+                        if (order.status == 'confirmed')
+                          InkWell(
+                            onTap: () {
+                            /*   context
+                                  .read<PaymentBloc>()
+                                  .add(SubmitPaymentEvent(amount: )); */
+                            },
+                            borderRadius: BorderRadius.circular(12),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 12),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                gradient: const LinearGradient(
+                                  colors: [
+                                    Color(0xFF42A5F5),
+                                    Color(0xFF1E88E5)
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.blueAccent.withOpacity(0.4),
+                                    offset: const Offset(0, 4),
+                                    blurRadius: 6,
+                                  ),
+                                ],
+                              ),
+                              child: const Center(
+                                child: Text(
+                                  'Pay \$',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
-                          child: Text(
-                            order.status,
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 12),
+                        if (order.status != 'confirmed')
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: Colors.blueAccent,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              order.status,
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 12),
+                            ),
                           ),
-                        ),
                         const SizedBox(width: 8),
                         BlocBuilder<CustomerOrderListBloc,
                             CustomerOrderListState>(

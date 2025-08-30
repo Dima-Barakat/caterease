@@ -1,5 +1,6 @@
 import 'package:caterease/core/error/failures.dart';
 import 'package:caterease/features/delivery/data/models/order_model.dart';
+import 'package:caterease/features/delivery/domain/entities/scan_code.dart';
 import 'package:caterease/features/delivery/domain/repositories/base_order_repository.dart';
 import 'package:dartz/dartz.dart';
 
@@ -27,5 +28,9 @@ class OrderUseCases {
   Future<Either<Failure, Unit>> declineOrder(
       int id, String rejectReason) async {
     return await repository.declineOrder(id, rejectReason);
+  }
+
+  Future<Either<Failure, Unit>> deliverOrder(String code, String? notes) async {
+    return await repository.deliverOrder(code, notes);
   }
 }
