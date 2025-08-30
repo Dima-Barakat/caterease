@@ -49,8 +49,8 @@ class CustomerOrderListBloc
       case ServerFailure:
         return SERVER_FAILURE_MESSAGE;
 
-      case NetworkFailure:
-        return NETWORK_FAILURE_MESSAGE;
+ /*      case NetworkFailure:
+        return NETWORK_FAILURE_MESSAGE; */
       default:
         return 'Unexpected error';
     }

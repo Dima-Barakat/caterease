@@ -14,17 +14,17 @@ dependencies:
   flutter_bloc: ^8.1.4
   get_it: ^7.6.7
   http: ^1.2.0
-  geolocator: ^10.1.0
-  permission_handler: ^11.2.0
-  cached_network_image: ^3.3.1
+  geolocator: ^10.1.1
+  permission_handler: ^11.4.0
+  cached_network_image: ^3.4.1
   dartz: ^0.10.1
   equatable: ^2.0.5
   internet_connection_checker: ^1.0.0+1
   pin_code_fields: ^8.0.0   
   salomon_bottom_bar: ^3.3.2
   cupertino_icons: ^1.0.8
-  image_picker: ^1.0.0
-  flutter_local_notifications: ^17.0.0
+  image_picker: ^1.1.2
+  flutter_local_notifications: ^17.2.4
   flutter_secure_storage: ^9.0.0
   flutter_stripe: ^11.3.0
   convex_bottom_bar: ^3.2.0
@@ -36,12 +36,14 @@ dependencies:
   flutter_map: ^7.0.2
   geocoding: ^2.2.2
   loading_animation_widget: ^1.3.0
+  intl: ^0.18.1
+  latlong2: ^0.9.1
 
 dev_dependencies:
   flutter_launcher_icons: ^0.14.4
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
   build_runner: ^2.4.4
   mockito: ^5.3.2
 
@@ -66,5 +68,5 @@ flutter_launcher_icons:
   web:
     generate: true
     image_path: "assets/logos/caterease_logo.png"
-  adaptive_icon_background: "#ffffff"             # ← لون خلفية
-  adaptive_icon_foreground: "assets/logos/caterease_logo.png"  
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/logos/caterease_logo.png"

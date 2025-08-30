@@ -57,6 +57,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => sl<RestaurantsBloc>()),
         BlocProvider(create: (_) => sl<PackagesBloc>()),
         BlocProvider(create: (_) => sl<CartBloc>()),
+        BlocProvider(create: (_) => sl<CustomerOrderBloc>()),
         BlocProvider(create: (_) => sl<ProfileBloc>()),
         BlocProvider(create: (_) => sl<DeliveryProfileBloc>()),
         BlocProvider(create: (_) => sl<PasswordResetBloc>()),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:caterease/features/restaurants/domain/entities/restaurant.dart';
 import 'package:caterease/features/restaurants/presentation/bloc/restaurants_bloc.dart';
-import 'package:caterease/features/restaurants/presentation/widgets/restaurant_card.dart';
+import 'package:caterease/features/restaurants/presentation/widgets/branch_card.dart';
 import '../../../../main.dart';
 
 class CategoryRestaurantsPage extends StatefulWidget {
@@ -75,7 +75,7 @@ class _CategoryRestaurantsPageState extends State<CategoryRestaurantsPage>
               itemCount: branches.length,
               itemBuilder: (context, index) {
                 final branch = branches[index];
-                return RestaurantCard(
+                return BranchCard(
                   restaurant: Restaurant(
                     id: branch.branchId,
                     name: '${branch.restaurant} - ${widget.category}',
@@ -86,6 +86,7 @@ class _CategoryRestaurantsPageState extends State<CategoryRestaurantsPage>
                     distance: branch.distanceKm,
                     city: null,
                   ),
+                  isCompact: false,
                 );
               },
             );

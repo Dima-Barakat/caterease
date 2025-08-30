@@ -17,29 +17,31 @@ class CustomerOrderListRepositoryImpl implements CustomerOrderListRepository {
   @override
   Future<Either<Failure, List<CustomerOrderListEntity>>>
       getCustomerOrderList() async {
-    if (await networkInfo.isConnected) {
-      try {
-        final remoteOrders = await remoteDataSource.getCustomerOrderList();
-        return Right(remoteOrders);
-      } on ServerException catch (e) {
-        return Left(ServerFailure());
-      }
+    try {
+      final remoteOrders = await remoteDataSource.getCustomerOrderList();
+      return Right(remoteOrders);
+    } on ServerException catch (e) {
+      return Left(ServerFailure());
+    }
+    /*  if (await networkInfo.isConnected) {
+      
     } else {
       return Left(NetworkFailure());
-    }
+    } */
   }
 
   @override
   Future<Either<Failure, bool>> deleteOrder(int orderId) async {
-    if (await networkInfo.isConnected) {
-      try {
-        final result = await remoteDataSource.deleteOrder(orderId);
-        return Right(result);
-      } on ServerException catch (e) {
-        return Left(ServerFailure());
-      }
+    try {
+      final result = await remoteDataSource.deleteOrder(orderId);
+      return Right(result);
+    } on ServerException catch (e) {
+      return Left(ServerFailure());
+    }
+    /*   if (await networkInfo.isConnected) {
+      
     } else {
       return Left(NetworkFailure());
-    }
+    } */
   }
 }

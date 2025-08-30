@@ -85,7 +85,7 @@ class _PackageDetailWidgetState extends State<PackageDetailWidget> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text("Order Confirmation", textAlign: TextAlign.start),
+        title: const Text("Package Confirmation", textAlign: TextAlign.start),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -491,7 +491,7 @@ class _PackageDetailWidgetState extends State<PackageDetailWidget> {
             height: 56,
             child: ElevatedButton(
               onPressed: isOrderValid ? _confirmOrder : null,
-              child: const Text("Place Order", style: TextStyle(fontSize: 16)),
+              child: const Text("Add to cart", style: TextStyle(fontSize: 16)),
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12)),
