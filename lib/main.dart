@@ -15,8 +15,6 @@ import 'package:caterease/features/delivery/presentation/controller/bloc/order/d
 import 'package:caterease/features/delivery/presentation/controller/bloc/profile/delivery_profile_bloc.dart';
 import 'package:caterease/features/delivery/presentation/screens/orders_list.dart';
 import 'package:caterease/features/order_details_feature/presentation/bloc/order_details_bloc.dart';
-import 'package:caterease/features/profile/presentation/screens/profile/profile_view_page.dart';
-import 'package:caterease/features/restaurants/presentation/pages/orders_main_page.dart';
 import 'package:caterease/features/profile/presentation/controller/bloc/address/address_bloc.dart';
 import 'package:caterease/features/authentication/presentation/controllers/bloc/password_reset/password_reset_bloc.dart';
 import 'package:caterease/features/profile/presentation/controller/bloc/profile/profile_bloc.dart';
