@@ -4,83 +4,84 @@ import 'package:flutter/material.dart';
 class OrderCard extends StatelessWidget {
   final String image;
   final String restaurantName;
-  final String message;
-  final String text;
+  final String status;
+  final String createdSince;
+  final String isProcessed;
+  final VoidCallback onAccept;
+  final VoidCallback onDecline;
 
-  OrderCard(
+  const OrderCard(
       {super.key,
       required this.image,
       required this.restaurantName,
-      required this.message,
-      required this.text});
+      required this.status,
+      required this.createdSince,
+      required this.isProcessed,
+      required this.onAccept,
+      required this.onDecline});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 150,
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const CircleAvatar(
-              radius: 30,
-              backgroundColor: Colors.grey,
-              child: Icon(Icons.restaurant, color: Colors.white),
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const CircleAvatar(
+            radius: 30,
+            backgroundColor: Colors.grey,
+            child: Icon(Icons.restaurant, color: Colors.white),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      restaurantName,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(status),
+                  ],
+                ),
+                const SizedBox(height: 6),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      createdSince,
+                      style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ],
             ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  buildText(restaurantName, message),
-                  const SizedBox(height: 6),
-                  elevatedButton(text)
-                ],
-              ),
+          ),
+          if (isProcessed == 'assigned')
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  onPressed: onDecline,
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: AppTheme.lightGray,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 8),
+                      minimumSize: const Size(80, 36)),
+                  child: const Text("Reject",
+                      style: TextStyle(fontSize: 12, color: Colors.black)),
+                ),
+              ],
             ),
-          ],
-        ),
+        ],
       ),
-    );
-  }
-
-  Widget buildText(String restaurantName, String message) {
-    return Column(
-      children: [
-        Text(
-          restaurantName,
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        Text(message),
-        const Text(
-          '2h',
-          style: TextStyle(fontSize: 12, color: Colors.grey),
-        ),
-      ],
-    );
-  }
-
-  Widget elevatedButton(String text) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        ElevatedButton(
-          onPressed: () {},
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppTheme.lightGray,
-            // side: const BorderSide(color: Colors.purple),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-          ),
-          child: Text(
-            text,
-            style: TextStyle(color: AppTheme.darkBlue),
-          ),
-        ),
-      ],
     );
   }
 }
@@ -145,40 +146,3 @@ class OrderInfoCard extends StatelessWidget {
     );
   }
 }
-
-/* 
-class OrderCard extends StatelessWidget {
-  final String customerName;
-  final String orderNumber;
-  final String orderStatus;
-
-  const OrderCard({
-    Key? key,
-    required this.orderNumber,
-    required this.orderStatus,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      elevation: 5,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 8),
-            Text("order number : $orderNumber", style: TextStyle(fontSize: 14)),
-            SizedBox(height: 8),
-            Text("status: $orderStatus",
-                style: TextStyle(fontSize: 14, color: Colors.grey[700])),
-            SizedBox(height: 16),
-          ],
-        ),
-      ),
-    );
-  }
-}
- */

@@ -1,5 +1,6 @@
 import "dart:convert";
-import "package:caterease/core/storage/secure_storage.dart";
+import "package:caterease/core/constants/api_constants.dart";
+import 'package:caterease/core/storage/secure_storage.dart';
 import "package:caterease/features/restaurants/data/models/branch_model.dart";
 import "package:dartz/dartz.dart";
 import "package:http/http.dart" as http;
@@ -23,8 +24,7 @@ abstract class RestaurantsRepository {
 Future<List<BranchModel>> getRestaurantsByCategory(String category) async {
   print("📥 [START] getRestaurantsByCategory called with category: $category");
 
-  final url =
-      Uri.parse("http://192.168.67.155:8000/api/branches/category/$category");
+  final url = Uri.parse('${ApiConstants.baseUrl}/branches/category/$category');
   print("🌐 API URL: $url");
   SecureStorage secureStorage = SecureStorage();
   String? token = await secureStorage.getAccessToken();

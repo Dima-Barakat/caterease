@@ -395,8 +395,12 @@ class _HomePageState extends State<HomePage> with RouteAware {
             return BlocBuilder<RestaurantsBloc, RestaurantsState>(
               builder: (context, restaurantsState) {
                 if (restaurantsState is RestaurantsLoading) {
+                  print(">> THE STATE IS: $restaurantsState");
+
                   return Center(child: CircularProgressIndicator());
                 } else if (restaurantsState is RestaurantsLoaded) {
+                  print(">> THE STATE IS: $restaurantsState");
+
                   return SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -509,8 +513,12 @@ class _HomePageState extends State<HomePage> with RouteAware {
                     ),
                   );
                 } else if (restaurantsState is RestaurantsError) {
-                  return Center(child: Text(restaurantsState.message));
+                  print(">> THE STATE IS: $restaurantsState");
+                  return Center(
+                      child: Text(
+                          "${restaurantsState.message}/n >> THE STATE IS: $restaurantsState"));
                 } else {
+                  print(">> THE STATE IS: $restaurantsState");
                   return Center(child: Text('لا توجد مطاعم لعرضها.'));
                 }
               },

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:caterease/core/constants/api_constants.dart';
 import 'package:caterease/core/error/failures.dart';
 import 'package:caterease/features/customer_order_list/data/models/customer_order_list_model.dart';
 import 'package:http/http.dart' as http;
@@ -21,7 +22,7 @@ class CustomerOrderListRemoteDataSourceImpl
     SecureStorage secureStorage = SecureStorage();
     String? token = await secureStorage.getAccessToken();
     final response = await client.get(
-      Uri.parse('http://192.168.67.155:8000/api/order/user/orders'),
+      Uri.parse('${ApiConstants.baseUrl}/order/user/orders'),
       headers: {
         'Accept': 'application/json',
         'Authorization': 'Bearer $token',
@@ -47,7 +48,7 @@ class CustomerOrderListRemoteDataSourceImpl
     SecureStorage secureStorage = SecureStorage();
     String? token = await secureStorage.getAccessToken();
     final response = await client.delete(
-      Uri.parse('http://192.168.67.155:8000/api/order/$orderId'),
+      Uri.parse('http://10.184.209.155:8000/api/order/$orderId'),
       headers: {
         'Accept': 'application/json',
         'Authorization': 'Bearer $token',

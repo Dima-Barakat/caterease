@@ -1,11 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:caterease/core/error/failures.dart';
-import 'package:caterease/features/delivery/domain/usecases/get_order_details_use_case.dart'
-    as delivery;
 import 'package:caterease/features/order_details_feature/domain/entities/order_details_entity.dart';
-import 'package:caterease/features/order_details_feature/domain/usecases/get_order_details_usecase.dart'
-    as details;
-
 import 'package:caterease/features/order_details_feature/domain/usecases/get_order_details_usecase.dart';
 import 'package:equatable/equatable.dart';
 

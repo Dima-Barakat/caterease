@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:caterease/features/profile/presentation/screens/address/add_address_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -27,23 +28,6 @@ class CreateOrderPage extends StatefulWidget {
 }
 
 class _CreateOrderPageState extends State<CreateOrderPage> {
-  final List<Map<String, dynamic>> _syrianGovernorates = [
-    {"id": 1, "name": "دمشق"},
-    {"id": 2, "name": "ريف دمشق"},
-    {"id": 3, "name": "حلب"},
-    {"id": 4, "name": "حمص"},
-    {"id": 5, "name": "حماة"},
-    {"id": 6, "name": "اللاذقية"},
-    {"id": 7, "name": "طرطوس"},
-    {"id": 8, "name": "إدلب"},
-    {"id": 9, "name": "دير الزور"},
-    {"id": 10, "name": "الرقة"},
-    {"id": 11, "name": "الحسكة"},
-    {"id": 12, "name": "درعا"},
-    {"id": 13, "name": "السويداء"},
-    {"id": 14, "name": "القنيطرة"},
-  ];
-
   final _formKey = GlobalKey<FormState>();
   final _notesController = TextEditingController();
   final _searchController = TextEditingController();
@@ -480,7 +464,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
                       const SizedBox(height: 16),
                       if (_addressType == 'existing')
                         ..._buildExistingAddressFields(),
-                      if (_addressType == 'new') ..._buildNewAddressFields(),
+                      if (_addressType == 'new') _buildNewAddress(),
                       const SizedBox(height: 24),
                       SizedBox(
                         width: double.infinity,
@@ -534,12 +518,14 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
             borderSide: BorderSide.none,
           ),
         ),
-        items: _existingAddresses.map((address) {
-          return DropdownMenuItem<int>(
-            value: address.id,
-            child: Text('${address.street}, ${address.building}'),
-          );
-        }).toList(),
+        items: _existingAddresses.isEmpty
+            ? []
+            : _existingAddresses.map((address) {
+                return DropdownMenuItem<int>(
+                  value: address.id,
+                  child: Text('${address.street}, ${address.building}'),
+                );
+              }).toList(),
         onChanged: (value) {
           setState(() {
             _selectedExistingAddressId = value;
@@ -555,7 +541,37 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
     ];
   }
 
-  List<Widget> _buildNewAddressFields() {
+  Widget _buildNewAddress() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: ElevatedButton.icon(
+        icon: const Icon(Icons.add_location_alt),
+        label: const Text("Add New Address"),
+        onPressed: () {
+          final addressBloc = context.read<AddressBloc>();
+          // Open the popup
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            builder: (ctx) {
+              return BlocProvider.value(
+                value: addressBloc, // pass the same instance
+                child: const AddAddressPopup(),
+              );
+            },
+          ).whenComplete(() {
+            // Refresh addresses after popup closes
+            addressBloc.add(GetAllAddressesEvent());
+          });
+        },
+      ),
+    );
+  }
+
+  /* List<Widget> _buildNewAddressFields() {
     return [
       Text(
         'تفاصيل العنوان الجديد:',
@@ -772,7 +788,7 @@ class _CreateOrderPageState extends State<CreateOrderPage> {
         ),
       const SizedBox(height: 12),
     ];
-  }
+  } */
 
   Future<void> _selectDeliveryTime() async {
     final DateTime? pickedDate = await showDatePicker(

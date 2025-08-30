@@ -1,6 +1,6 @@
 // lib/features/profile/data/models/address_model.dart
 
-class Address {
+class Address{
   final String? addressId;
   final String city;
   final String country;
@@ -24,11 +24,11 @@ class Address {
   factory Address.fromJson(Map<String, dynamic> json) {
     return Address(
       addressId: json['address_id'] as String?,
-      city: json['city'] as String? ?? '–',
-      country: json['country'] as String? ?? '–',
-      street: json['street'] as String? ?? '–',
-      building: json['building'] as String? ?? '–',
-      floor: json['floor'] as String? ?? '–',
+      city: json['city'] as String? ?? '',
+      country: json['country'] as String? ?? '',
+      street: json['street'] as String? ?? '',
+      building: json['building'] as String? ?? '',
+      floor: json['floor'] as String? ?? '',
       apartment: json['apartment'] as String? ?? '–',
       coordinate: (json['coordinate'] is List)
           ? List<double>.from(

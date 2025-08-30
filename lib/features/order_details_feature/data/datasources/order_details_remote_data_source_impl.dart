@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:caterease/core/constants/api_constants.dart';
 import 'package:caterease/core/error/failures.dart';
 import 'package:caterease/core/storage/secure_storage.dart';
 import 'package:caterease/features/order_details_feature/data/datasources/order_details_remote_data_source.dart';
@@ -15,7 +16,7 @@ class OrderDetailsRemoteDataSourceImpl implements OrderDetailsRemoteDataSource {
     SecureStorage secureStorage = SecureStorage();
     String? token = await secureStorage.getAccessToken();
     final response = await client.get(
-      Uri.parse('http://192.168.67.155:8000/api/order/$orderId'),
+      Uri.parse('${ApiConstants.baseUrl}/order/$orderId'),
       headers: {
         'Authorization': 'Bearer $token',
       },

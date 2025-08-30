@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:caterease/core/services/image_service.dart';
 import 'package:caterease/core/widgets/build_label.dart';
 import 'package:caterease/core/widgets/build_text_field.dart';
@@ -27,8 +25,10 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
   String? selectedGender;
   String? photoUrl;
   final imageService = ImageService();
-  final List<String> genders = ['m', 'f'];
-
+  final genders = [
+    {"label": "Female", "value": "f"},
+    {"label": "Male", "value": "m"},
+  ];
   @override
   void initState() {
     super.initState();
@@ -76,48 +76,6 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /*   GestureDetector(
-              onTap: () async {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (context) => SizedBox(
-                    height: 150,
-                    child: Column(
-                      children: [
-                        ListTile(
-                          leading: const Icon(Icons.camera_alt),
-                          title: const Text("open camera "),
-                          onTap: () async {
-                            final File? image =
-                                await imageService.pickImageFromCamera();
-                            Navigator.pop(context);
-                          },
-                        ),
-                        ListTile(
-                          leading: const Icon(Icons.photo_library),
-                          title: const Text("choose from gallery"),
-                          onTap: () async {
-                            final File? image =
-                                await imageService.pickImageFromGallery();
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-              child: Center(
-                child: CircleAvatar(
-                  radius: 40,
-                  backgroundColor: Colors.grey[300],
-                  foregroundImage: photoUrl != null
-                      ? imageService.getNetworkImage(photoUrl)
-                      : null,
-                  child: const Icon(Icons.person),
-                ),
-              ),
-            ), */
             const SizedBox(height: 20),
             buildLabel("Your Full Name"),
             buildTextField(controller: nameController, hint: "Enter full name"),
@@ -137,11 +95,13 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
               value: selectedGender,
               items: genders
                   .map((gender) => DropdownMenuItem(
-                        value: gender,
-                        child: Text(gender),
+                        value: gender["value"],
+                        child: Text(gender["label"]!),
                       ))
                   .toList(),
-              onChanged: (value) => setState(() => selectedGender = value),
+              onChanged: (value) => setState(() {
+                selectedGender = value!;
+              }),
               decoration: inputDecoration(),
             ),
             const SizedBox(height: 20),
@@ -179,8 +139,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
 
   String? _normalizeGender(String? genderCode) {
     if (genderCode == null) return null;
-    if (genderCode == 'm') return 'm';
-    if (genderCode == 'f') return 'f';
+    if (genderCode == 'm' || genderCode == 'Male') return 'm';
+    if (genderCode == 'f' || genderCode == 'Female') return 'f';
     return genderCode; // fallback
   }
 }

@@ -15,17 +15,83 @@ class OrderRepository implements BaseOrderRepository {
       final response = await dataSource.getAllOrders();
       return Right(response);
     } catch (e) {
-      throw Exception(" Error while get All orders: $e");
+      if (e is ServerException) {
+        return Left(ServerFailure(e.message));
+      } else {
+        return Left(UnexpectedFailure("Unexpected error: ${e.toString()}"));
+      }
     }
   }
 
   @override
-  Future<Either<Failure, OrderModel>> getOrderDetails() async {
+  Future<Either<Failure, OrderModel>> getOrderDetails(int id) async {
     try {
-      final response = await dataSource.getOrderDetails();
+      final response = await dataSource.getOrderDetails(id);
       return Right(response);
     } catch (e) {
-      throw Exception(" Error while get order details: $e");
+      if (e is ServerException) {
+        return Left(ServerFailure(e.message));
+      } else {
+        return Left(UnexpectedFailure("Unexpected error: ${e.toString()}"));
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> changeOrderStatus(int id, String status) async {
+    try {
+      await dataSource.changeOrderStatus(id, status);
+      return const Right(unit);
+    } catch (e) {
+      if (e is ServerException) {
+        return Left(ServerFailure(e.message));
+      } else {
+        return Left(UnexpectedFailure("Unexpected error: ${e.toString()}"));
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> acceptOrder(int id) async {
+    try {
+      await dataSource.acceptOrder(id);
+      return const Right(unit);
+    } catch (e) {
+      if (e is ServerException) {
+        return Left(ServerFailure(e.message));
+      } else {
+        return Left(UnexpectedFailure("Unexpected error: ${e.toString()}"));
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> declineOrder(
+      int id, String rejectReason) async {
+    try {
+      await dataSource.declineOrder(id, rejectReason);
+      return const Right(unit);
+    } catch (e) {
+      if (e is ServerException) {
+        return Left(ServerFailure(e.message));
+      } else {
+        return Left(UnexpectedFailure("Unexpected error: ${e.toString()}"));
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> deliverOrder(
+      String qrCode, String? notes) async {
+    try {
+      await dataSource.deliverOrder(qrCode, notes);
+      return const Right(unit);
+    } catch (e) {
+      if (e is ServerException) {
+        return Left(ServerFailure(e.message));
+      } else {
+        return Left(UnexpectedFailure("Unexpected error: ${e.toString()}"));
+      }
     }
   }
 }

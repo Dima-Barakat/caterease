@@ -25,7 +25,7 @@ class CustomerOrderRemoteDataSourceImpl
       print(">> Sending customer order data: $flatData");
 
       final response = await networkClient.post(
-        'http://192.168.67.155:8000/api/order/create',
+        '${ApiConstants.baseUrl}/order/create',
         body: flatData,
       );
 

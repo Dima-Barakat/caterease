@@ -8,23 +8,52 @@ class UserModel extends User {
       required super.name,
       required super.phone,
       required super.gender,
-      required super.roleId,
       super.photo,
-      super.addresses});
+      super.addresses,
+      super.role});
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-        id: json["id"],
-        email: json["email"],
-        name: json["name"],
-        phone: json["phone"],
-        gender: json["gender"],
-        roleId: json["role_id"],
-        photo: json["photo"] != null ? json['photo'] : null,
-        addresses: json['addresses'] != null
-            ? List<AddressModel>.from(
-                json['addresses']
-                    .map((addressJson) => AddressModel.fromJson(addressJson)),
+      id: json["id"],
+      email: json["email"],
+      name: json["name"],
+      phone: json["phone"],
+      gender: json["gender"],
+      photo: json["photo"] != null ? json['photo'] : null,
+      addresses: json['addresses'] != null
+          ? List<AddressModel>.from(
+              json['addresses']
+                  .map((addressJson) => AddressModel.fromJson(addressJson)),
+            )
+          : null,
+      role: json['role'] != null ? RoleModel.fromJson(json['role']) : null);
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "email": email,
+        "name": name,
+        "phone": phone,
+        "gender": gender,
+        "photo": photo,
+        "addresses": addresses != null
+            ? List<dynamic>.from(
+                addresses!.map((address) => (address as AddressModel).toJson()),
               )
             : null,
-      );
+        "role": role != null ? (role as RoleModel).toJson() : null,
+      };
+}
+
+class RoleModel extends Role {
+  const RoleModel({
+    required super.id,
+    required super.name,
+  });
+
+  factory RoleModel.fromJson(Map<String, dynamic> json) =>
+      RoleModel(id: json['id'], name: json['name']);
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+      };
 }
