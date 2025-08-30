@@ -1,16 +1,16 @@
 import 'package:caterease/features/packages/presentation/pages/packages_page.dart';
 import 'package:caterease/features/restaurants/presentation/widgets/base64_image_widget.dart';
-import 'package:caterease/features/restaurants/presentation/widgets/feedback_popup.dart';
+import 'package:caterease/features/restaurants/presentation/widgets/branch_feedback_popup.dart';
 import 'package:flutter/material.dart';
 import '../../domain/entities/restaurant.dart';
 
-class RestaurantCard extends StatelessWidget {
+class BranchCard extends StatelessWidget {
   final Restaurant restaurant;
   final String defaultImagePath = 'assets/images/restaurant_placeholder.png';
   final bool isCompact;
 
-  const RestaurantCard({
-    Key? key, 
+  const BranchCard({
+    Key? key,
     required this.restaurant,
     this.isCompact = false,
   }) : super(key: key);
@@ -39,18 +39,18 @@ class RestaurantCard extends StatelessWidget {
       onLongPress: () {
         showDialog(
           context: context,
-          builder: (context) => FeedbackPopup(
-            restaurantId: restaurant.id,
-            restaurantName: restaurant.name,
+          builder: (context) => BranchFeedbackPopup(
+            branchId: restaurant.id,
+            branchName: restaurant.name,
           ),
         );
       },
       child: Container(
-        key: Key('restaurant_card_compact_${restaurant.id}'),
-        margin: const EdgeInsets.symmetric(vertical: 4),
+        key: Key('branch_card_compact_${restaurant.id}'),
+        margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(14),
           boxShadow: [
             BoxShadow(
               color: Colors.black12,
@@ -61,25 +61,24 @@ class RestaurantCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            // صورة المطعم
             Base64ImageWidget(
               base64String: restaurant.photo ?? '',
-              height: 80,
-              width: 80,
-              borderRadius: const BorderRadius.horizontal(right: Radius.circular(12)),
+              height: 90,
+              width: 90,
+              borderRadius:
+                  const BorderRadius.horizontal(right: Radius.circular(14)),
             ),
-            const SizedBox(width: 12),
-            // معلومات المطعم
+            const SizedBox(width: 14),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12),
+                padding: const EdgeInsets.symmetric(vertical: 14),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       restaurant.name,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: 17,
                         fontWeight: FontWeight.bold,
                       ),
                       maxLines: 1,
@@ -90,8 +89,8 @@ class RestaurantCard extends StatelessWidget {
                     Text(
                       restaurant.description,
                       style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey[600],
+                        fontSize: 13,
+                        color: Colors.grey[700],
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -101,7 +100,7 @@ class RestaurantCard extends StatelessWidget {
                     Row(
                       children: [
                         Icon(Icons.star, color: Colors.amber, size: 14),
-                        const SizedBox(width: 2),
+                        const SizedBox(width: 3),
                         Text(
                           restaurant.rating.toStringAsFixed(1),
                           style: const TextStyle(
@@ -118,11 +117,11 @@ class RestaurantCard extends StatelessWidget {
                                 color: Colors.grey[500],
                                 size: 12,
                               ),
-                              const SizedBox(width: 2),
+                              const SizedBox(width: 3),
                               Text(
                                 "${restaurant.distance!.toStringAsFixed(1)} كم",
                                 style: TextStyle(
-                                  fontSize: 10,
+                                  fontSize: 11,
                                   color: Colors.grey[600],
                                 ),
                               ),
@@ -157,21 +156,21 @@ class RestaurantCard extends StatelessWidget {
       onLongPress: () {
         showDialog(
           context: context,
-          builder: (context) => FeedbackPopup(
-            restaurantId: restaurant.id,
-            restaurantName: restaurant.name,
+          builder: (context) => BranchFeedbackPopup(
+            branchId: restaurant.id,
+            branchName: restaurant.name,
           ),
         );
       },
       child: SizedBox(
-        width: 250,
-        height: null, // ارتفاع ديناميكي
+        width: 320, // تكبير الكارد
+        height: 380, // ارتفاع أكبر للكارد
         child: Container(
-          key: Key('restaurant_card_${restaurant.id}'),
-          margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+          key: Key('branch_card_${restaurant.id}'),
+          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(18),
             boxShadow: [
               BoxShadow(
                 color: Colors.black12,
@@ -183,45 +182,41 @@ class RestaurantCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // صورة المطعم مع صورة افتراضية في حالة null
               Base64ImageWidget(
                 base64String: restaurant.photo ?? '',
-                height: 180,
+                height: 220, // صورة أكبر
                 width: double.infinity,
                 borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(16)),
+                    const BorderRadius.vertical(top: Radius.circular(18)),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 10),
               Padding(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(19), // زيادة padding
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // اسم المطعم
                     Text(
                       restaurant.name,
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      textDirection: TextDirection.rtl, // للنصوص العربية
+                      textDirection: TextDirection.rtl,
                     ),
                     const SizedBox(height: 6),
-                    // وصف المطعم
                     Text(
                       restaurant.description,
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.grey[700],
                       ),
-                      maxLines: 2,
+                      maxLines: 3,
                       overflow: TextOverflow.ellipsis,
-                      textDirection: TextDirection.rtl, // للنصوص العربية
+                      textDirection: TextDirection.rtl,
                     ),
-                    const SizedBox(height: 8),
-                    // تقييم المطعم والمسافة
+                    const SizedBox(height: 12),
                     Row(
                       children: [
                         Icon(Icons.star, color: Colors.amber, size: 16),

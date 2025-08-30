@@ -40,6 +40,17 @@ class RestaurantsRepositoryImpl implements RestaurantsRepository {
     }
   }
 
+  // الجديد - تنفيذ method للفلترة حسب المحافظة
+  @override
+  Future<Either<Failure, List<Restaurant>>> getRestaurantsByCity(int cityId) async {
+    try {
+      final restaurants = await remoteDataSource.getRestaurantsByCity(cityId);
+      return Right(restaurants);
+    } catch (e) {
+      return Left(ServerFailure());
+    }
+  }
+
   Future<List<BranchModel>> getBranchesByCategory(String category) async {
     final url = Uri.parse(
         "${ApiConstants.baseUrl}/branches/category/$category");
@@ -69,3 +80,4 @@ class RestaurantsRepositoryImpl implements RestaurantsRepository {
     }
   }
 }
+

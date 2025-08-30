@@ -30,7 +30,9 @@ class _ProfileScreenState extends State<ProfileViewPage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
     context.read<ProfileBloc>().add(GetProfileEvent());
+  });
   }
 
   void _showLogoutDialog(BuildContext context) {
@@ -132,7 +134,7 @@ class _ProfileScreenState extends State<ProfileViewPage> {
                       );
                     }),
                     const SizedBox(height: 12),
-                    ...user.addresses!.map(
+                    ... (user.addresses ?? []).map(
                       (address) => _buildAddressCard(
                         address: address,
                       ),

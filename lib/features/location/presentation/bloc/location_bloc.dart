@@ -1,10 +1,11 @@
-import "package:flutter_bloc/flutter_bloc.dart";
 import "package:equatable/equatable.dart";
+import "package:flutter_bloc/flutter_bloc.dart";
 import "package:geolocator/geolocator.dart";
 import "../../../../core/usecases/usecase.dart";
 import "../../domain/usecases/get_current_location.dart";
 import "../../domain/usecases/request_location_permission.dart";
 import "../../domain/usecases/send_location_usecase.dart";
+import "../../../../core/error/failures.dart"; // Import Failure
 
 part "location_event.dart";
 part "location_state.dart";
@@ -32,10 +33,16 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     emit(LocationLoading());
     final result = await requestLocationPermission(NoParams());
     result.fold(
-      (failure) => emit(LocationError("فشل في طلب إذن الموقع")),
+      (failure) {
+        print(
+            "Location Permission Request Failed: ${failure.message}"); // Debug print
+        emit(LocationError(failure.message ??
+            "خطأ غير معروف في إذن الموقع")); // Provide a default message
+      },
       (granted) => granted
           ? emit(LocationPermissionGranted())
-          : emit(LocationError("تم رفض إذن الموقع")),
+          : emit(LocationError(
+              "تم رفض إذن الموقع")), // This message is correct for explicit denial
     );
   }
 
@@ -48,7 +55,11 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     emit(LocationLoading());
     final result = await getCurrentLocation(NoParams());
     result.fold(
-      (failure) => emit(LocationError("فشل في الحصول على الموقع الحالي")),
+      (failure) {
+        print("Get Current Location Failed: ${failure.message}"); // Debug print
+        emit(LocationError(failure.message ??
+            "خطأ غير معروف في الحصول على الموقع")); // Provide a default message
+      },
       (position) => emit(LocationLoaded(position)),
     );
   }
@@ -61,8 +72,10 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     final result = await sendLocationUseCase(event.latitude, event.longitude);
     result.fold(
       (failure) {
-        print(" Error sending location to server");
-        emit(LocationError("فشل في إرسال الموقع للسيرفر"));
+        print(
+            " Error sending location to server: ${failure.message}"); // Debug print
+        emit(LocationError(failure.message ??
+            "خطأ غير معروف في إرسال الموقع")); // Provide a default message
       },
       (_) {
         print("✅ Location sent to server");
