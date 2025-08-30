@@ -8,6 +8,8 @@ class CreateAddressUseCase {
 
   Future<Either<Failure, Unit>> createAddress(
       {required String cityId,
+      required String areaId,
+      required String districtId,
       String? street,
       String? building,
       String? floor,
@@ -16,6 +18,8 @@ class CreateAddressUseCase {
       String? lat}) async {
     return await repository.createAddress(
         cityId: cityId,
+        districtId: districtId,
+        areaId: areaId,
         street: street,
         building: building,
         floor: floor,

@@ -8,7 +8,6 @@ class UserModel extends User {
       required super.name,
       required super.phone,
       required super.gender,
-      required super.roleId,
       super.photo,
       super.addresses,
       super.role});
@@ -19,7 +18,6 @@ class UserModel extends User {
       name: json["name"],
       phone: json["phone"],
       gender: json["gender"],
-      roleId: json["role_id"],
       photo: json["photo"] != null ? json['photo'] : null,
       addresses: json['addresses'] != null
           ? List<AddressModel>.from(
@@ -35,7 +33,6 @@ class UserModel extends User {
         "name": name,
         "phone": phone,
         "gender": gender,
-        "role_id": roleId,
         "photo": photo,
         "addresses": addresses != null
             ? List<dynamic>.from(

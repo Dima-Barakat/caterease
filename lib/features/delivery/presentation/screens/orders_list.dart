@@ -17,6 +17,14 @@ class OrdersList extends StatefulWidget {
 }
 
 class _OrdersListState extends State<OrdersList> {
+  final Map<String, String> statusLabels = {
+    "assigned": "⏳ Pending ",
+    "accepted": "✅ Accepted",
+    "on_the_way": "🛵 On the Way",
+    "delivered": "📬 Delivered",
+    "rejection": "❌ Cancelled",
+  };
+
   @override
   void initState() {
     super.initState();
@@ -131,16 +139,15 @@ class _OrdersListState extends State<OrdersList> {
           if (state is OrderError) {
             showCustomSnackBar(context,
                 message: state.message, type: SnackBarType.error);
-          } else if (state is OrderAccepted) {
-            showCustomSnackBar(context,
-                message: state.message, type: SnackBarType.success);
           } else if (state is OrderDeclined) {
             showCustomSnackBar(context,
                 message: state.message, type: SnackBarType.info);
           }
         },
         builder: (context, state) {
-          if (state is OrderListLoaded) {
+          if (state is OrderLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is OrderListLoaded) {
             final orders = state.orders;
 
             if (orders.isEmpty) {
@@ -152,7 +159,8 @@ class _OrdersListState extends State<OrdersList> {
               padding: const EdgeInsets.all(16),
               itemBuilder: (context, index) {
                 final order = orders[index];
-
+                String statusLabel =
+                    statusLabels[order.order.status] ?? order.order.status;
                 return InkWell(
                   onTap: () {
                     Navigator.of(context).push(
@@ -177,9 +185,9 @@ class _OrdersListState extends State<OrdersList> {
                         image: "assets/images/restaurant.png",
                         restaurantName:
                             "${order.restaurant.name}\n${order.restaurant.branch}",
-                        status: "Status: ${order.order.status}",
+                        status: "Status: $statusLabel",
                         createdSince: order.order.createdSince,
-                        isProcessed: order.order.isAccepted,
+                        isProcessed: order.order.status,
                         onAccept: () {
                           context
                               .read<DeliveryOrderBloc>()
@@ -259,8 +267,38 @@ class _OrdersListState extends State<OrdersList> {
               },
             );
           } else {
-            print("The State is: $state");
-            return const Center(child: CircularProgressIndicator());
+            debugPrint("The State is: $state");
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Something went wrong!",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      // 🔹 Trigger reload
+                      context
+                          .read<DeliveryOrderBloc>()
+                          .add(GetAllOrdersEvent());
+                    },
+                    icon: const Icon(Icons.refresh, color: Colors.white),
+                    label: const Text("Reload",
+                        style: TextStyle(color: Colors.white)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
           }
         },
       ),

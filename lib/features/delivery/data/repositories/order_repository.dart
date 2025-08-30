@@ -79,4 +79,19 @@ class OrderRepository implements BaseOrderRepository {
       }
     }
   }
+
+  @override
+  Future<Either<Failure, Unit>> deliverOrder(
+      String qrCode, String? notes) async {
+    try {
+      await dataSource.deliverOrder(qrCode, notes);
+      return const Right(unit);
+    } catch (e) {
+      if (e is ServerException) {
+        return Left(ServerFailure(e.message));
+      } else {
+        return Left(UnexpectedFailure("Unexpected error: ${e.toString()}"));
+      }
+    }
+  }
 }

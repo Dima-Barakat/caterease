@@ -1,3 +1,4 @@
+import 'package:caterease/core/storage/secure_storage.dart';
 import 'package:caterease/features/customer_order_list/domain/entities/customer_order_list_entity.dart';
 import 'package:caterease/features/customer_order_list/presentation/bloc/customer_order_list_bloc.dart';
 import 'package:caterease/features/customer_order_list/presentation/bloc/customer_order_list_event.dart';
@@ -6,6 +7,8 @@ import 'package:caterease/features/order_details_feature/presentation/pages/orde
 import 'package:caterease/features/restaurants/presentation/widgets/base64_image_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class CustomerOrderListItemWidget extends StatelessWidget {
   final CustomerOrderListEntity order;
@@ -163,6 +166,70 @@ class CustomerOrderListItemWidget extends StatelessWidget {
                     );
                   },
                 ),
+                if (order.status == 'pending')
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16.0),
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        print(
+                            "=== Submit Button Pressed for Order #${order.orderId} ===");
+
+                        try {
+                          SecureStorage secureStorage = SecureStorage();
+                          String? token = await secureStorage.getAccessToken();
+                          print("Token: $token");
+
+                          final url = Uri.parse(
+                            'http://192.168.67.155:8000/api/order/${order.orderId}/submit',
+                          );
+                          print("Request URL: $url");
+
+                          final response = await http.post(
+                            url,
+                            headers: {
+                              'Authorization': 'Bearer $token',
+                              'Content-Type': 'application/json',
+                            },
+                          );
+
+                          print("Response Status: ${response.statusCode}");
+                          print("Response Body: ${response.body}");
+
+                          if (response.statusCode == 200) {
+                            final responseBody = json.decode(response.body);
+                            print("Decoded Response: $responseBody");
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(responseBody['message'] ??
+                                    'Order submitted successfully.'),
+                                backgroundColor: Colors.green,
+                              ),
+                            );
+                            BlocProvider.of<CustomerOrderListBloc>(context)
+                                .add(GetCustomerOrderList());
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                    'Failed to submit order: ${response.statusCode}'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        } catch (e) {
+                          print("Exception: $e");
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Error submitting order: $e'),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                      },
+                      child: const Text('Submit'),
+                    ),
+                  ),
               ],
             ),
           ),

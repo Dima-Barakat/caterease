@@ -1,10 +1,10 @@
 class ApiConstants {
   //:Base Url
-  //static const String baseUrl = 'http://192.168.1.126:8000/api';
+  // static const String baseUrl = 'http://192.168.1.129:8000/api';
   //:Base Url
   static const String baseUrl = "http://10.0.2.2:8000/api";
   //:Image Url
-  static const String imageUrl = "http://10.0.2.2:8000";
+  static const String imageUrl = "http://192.168.67.155:8000";
 
   //! Authentication
   //: Login
@@ -32,6 +32,13 @@ class ApiConstants {
       "$baseUrl/customer/update-password";
 
   //- Addresses:
+  //: Get all cities
+  static const String cities = "$baseUrl/address/cities";
+  //: Get all district
+  static const String districts = "$baseUrl/address/cities/{cityId}/districts";
+  //: Get all areas
+  static const String areas = "$baseUrl/address/districts/{districtId}/areas";
+
   //: get all
   static const String getAllAddress = "$baseUrl/customer/list-addresses";
   //: create
@@ -50,6 +57,11 @@ class ApiConstants {
   static const String getCartPackages = "/cart/packages";
   static const String updateCartItem = "/cart/item/"; // يتبعه ID
   static const String removeCartItem = "/cart/items/"; // يتبعه ID
+
+  //: Payment
+  static const String bill = "$baseUrl/bill/orders/{id}";
+  static const String clientSecret = "$baseUrl/payment/intent";
+  static const String pay = "$baseUrl/order/orders/{id}/prepayment";
 
   //! Delivery Section
   //- orders:
@@ -73,5 +85,4 @@ class ApiConstants {
   //- Profile
   //: Get Profile
   static const String deliveryProfile = "$baseUrl/delivery/profile";
-
 }

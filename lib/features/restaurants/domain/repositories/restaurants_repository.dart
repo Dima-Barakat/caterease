@@ -14,7 +14,11 @@ abstract class RestaurantsRepository {
     double latitude,
     double longitude,
   );
+  
   Future<Either<Failure, List<Restaurant>>> getAllRestaurants();
+  
+  // الجديد - إضافة method للفلترة حسب المحافظة
+  Future<Either<Failure, List<Restaurant>>> getRestaurantsByCity(int cityId);
 }
 
 Future<List<BranchModel>> getRestaurantsByCategory(String category) async {
@@ -28,8 +32,8 @@ Future<List<BranchModel>> getRestaurantsByCategory(String category) async {
     final response = await http.get(
       url,
       headers: {
-        'Authorization': '$token',
-        'Accept': 'application/json',
+        "Authorization": "$token",
+        "Accept": "application/json",
       },
     );
     print("📡 tokennnnnnnnnnnnnnn: $token");
@@ -41,7 +45,7 @@ Future<List<BranchModel>> getRestaurantsByCategory(String category) async {
       final decoded = json.decode(response.body);
       print("✅ JSON Decoded Successfully");
 
-      final data = decoded['data'] as List<dynamic>;
+      final data = decoded["data"] as List<dynamic>;
       print("📦 Extracted Data Length: ${data.length}");
 
       final branches = data.map((item) {
@@ -61,3 +65,4 @@ Future<List<BranchModel>> getRestaurantsByCategory(String category) async {
     throw Exception("Failed to fetch restaurants : $e");
   }
 }
+

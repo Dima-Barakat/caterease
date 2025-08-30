@@ -12,7 +12,7 @@ final class GetAllOrdersEvent extends DeliveryOrderEvent {}
 final class GetOrderDetailsEvent extends DeliveryOrderEvent {
   final int id;
 
-  const GetOrderDetailsEvent({required this.id});
+  const GetOrderDetailsEvent(this.id);
 
   @override
   List<Object> get props => [id];
@@ -45,3 +45,11 @@ final class DeclineOrder extends DeliveryOrderEvent {
   List<Object> get props => [id, rejectReason];
 }
 
+
+class ScanCodeEvent extends DeliveryOrderEvent {
+  final String code;
+  final String? note;
+  const ScanCodeEvent({required this.code, this.note});
+  @override
+  List<Object> get props => [code];
+}
