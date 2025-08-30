@@ -27,8 +27,8 @@ class OrderDetailsBloc extends Bloc<OrderDetailsEvent, OrderDetailsState> {
     switch (failure.runtimeType) {
       case ServerFailure:
         return "Server Failure";
-      case NetworkFailure:
-        return "Network Failure";
+/*       case NetworkFailure:
+        return "Network Failure"; */
       default:
         return "Unexpected Error";
     }

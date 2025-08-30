@@ -56,9 +56,7 @@ import 'package:caterease/features/delivery/presentation/controller/bloc/order/d
 import 'package:caterease/features/profile/data/datasources/address_remote_datasource.dart';
 import 'package:caterease/features/profile/data/repositories/address_repository.dart';
 import 'package:caterease/features/profile/domain/repositories/base_address_repository.dart';
-import 'package:caterease/features/profile/domain/usecases/address/create_address_use_case.dart';
-import 'package:caterease/features/profile/domain/usecases/address/delete_address_use_case.dart';
-import 'package:caterease/features/profile/domain/usecases/address/index_addresses_use_case.dart';
+import 'package:caterease/features/profile/domain/usecases/address/address_use_case.dart';
 import 'package:caterease/features/profile/presentation/controller/bloc/address/address_bloc.dart';
 import 'package:caterease/features/authentication/data/datasources/auth_remote_data_source.dart';
 import 'package:caterease/features/authentication/data/repositories/auth_repository.dart';
@@ -99,12 +97,12 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   await _initAuthentication();
-  await _initLocation();
-  await _initRestaurants();
-  await _initPackages();
-  await _initCart();
   await _initProfile();
   await _initDeliveryProfile();
+  await _initRestaurants();
+  await _initLocation();
+  await _initPackages();
+  await _initCart();
   await _initAddress();
   await _initOrder();
   await _initCustomerOrders();
@@ -245,9 +243,7 @@ Future<void> _initCart() async {
 // ---------------- ADDRESS ----------------
 Future<void> _initAddress() async {
   sl.registerFactory(() => AddressBloc(sl()));
-  sl.registerLazySingleton(() => IndexAddressesUseCase(sl()));
-  sl.registerLazySingleton(() => CreateAddressUseCase(sl()));
-  sl.registerLazySingleton(() => DeleteAddressUseCase(sl()));
+  sl.registerLazySingleton(() => AddressUseCase(sl()));
 
   sl.registerLazySingleton<BaseAddressRepository>(
       () => AddressRepository(sl(), sl()));
@@ -293,7 +289,6 @@ Future<void> _initCustomerOrderList() async {
 // ---------------- CUSTOMER ORDER DETAILS ----------------
 Future<void> _initCustomerOrderDetails() async {
   sl.registerFactory(() => OrderDetailsBloc(getOrderDetailsUseCase: sl()));
-  sl.registerLazySingleton(() => GetOrderDetailsUseCase(sl()));
   sl.registerLazySingleton<OrderDetailsRepository>(
       () => OrderDetailsRepositoryImpl(remoteDataSource: sl()));
   sl.registerLazySingleton<OrderDetailsRemoteDataSource>(

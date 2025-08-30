@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.caterease">
+    package="com.example.cater_ease">
 
     <!-- سماحيات الموقع -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
