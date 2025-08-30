@@ -3,6 +3,7 @@ import 'package:caterease/features/authentication/presentation/controllers/bloc/
 import 'package:caterease/features/authentication/presentation/controllers/bloc/register/register_bloc.dart';
 import 'package:caterease/features/authentication/presentation/controllers/bloc/verify/verify_bloc.dart';
 import 'package:caterease/features/cart/presentation/bloc/cart_bloc.dart';
+import 'package:caterease/features/customer_orders/presentation/bloc/customer_order_bloc.dart';
 import 'package:caterease/features/delivery/presentation/controller/bloc/delivery_order_bloc.dart';
 import 'package:caterease/features/profile/presentation/controller/bloc/address/address_bloc.dart';
 import 'package:caterease/features/authentication/presentation/controllers/bloc/password_reset/password_reset_bloc.dart';
@@ -15,6 +16,7 @@ import 'package:caterease/features/packages/presentation/bloc/packages_bloc.dart
 import 'package:caterease/features/packages/presentation/pages/package_detail_page.dart';
 import 'package:caterease/features/packages/domain/entities/package.dart';
 import 'package:caterease/injection_container.dart';
+import 'package:caterease/features/customer_order_list/presentation/bloc/customer_order_list_bloc.dart'; // New import
 
 import 'core/theming/app_theme.dart';
 
@@ -37,11 +39,13 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => sl<RestaurantsBloc>()),
         BlocProvider(create: (_) => sl<PackagesBloc>()),
         BlocProvider(create: (_) => sl<CartBloc>()),
+        BlocProvider(create: (_) => sl<CustomerOrderBloc>()),
         BlocProvider(create: (_) => sl<ProfileBloc>()),
         BlocProvider(create: (_) => sl<PasswordResetBloc>()),
         BlocProvider(create: (_) => sl<AddressBloc>()),
         BlocProvider(create: (_) => sl<LocationBloc>()),
         BlocProvider(create: (_) => sl<DeliveryOrderBloc>()),
+        BlocProvider(create: (_) => sl<CustomerOrderListBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

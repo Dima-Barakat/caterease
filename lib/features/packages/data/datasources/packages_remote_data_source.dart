@@ -21,7 +21,7 @@ class PackagesRemoteDataSourceImpl implements PackagesRemoteDataSource {
     String? token = await secureStorage.getAccessToken();
 
     final response = await client.get(
-      Uri.parse('http://192.168.198.155:8000/api/branches/$branchId/packages'),
+      Uri.parse('http://192.168.67.155:8000/api/branches/$branchId/packages'),
       headers: {
         'Accept': 'application/json',
         'Authorization': 'Bearer $token',
@@ -43,7 +43,7 @@ class PackagesRemoteDataSourceImpl implements PackagesRemoteDataSource {
     String? token = await secureStorage.getAccessToken();
 
     final response = await client.get(
-      Uri.parse('http://192.168.198.155:8000/api/packages/$packageId'),
+      Uri.parse('http://192.168.67.155:8000/api/packages/$packageId'),
       headers: {
         'Accept': 'application/json',
         'Authorization': 'Bearer $token',

@@ -23,16 +23,18 @@ class SendLocationRemoteDataSourceImpl implements SendLocationRemoteDataSource {
   }) async {
     SecureStorage secureStorage = SecureStorage();
     String? token = await secureStorage.getAccessToken();
-    final url = Uri.parse('http://192.168.198.155:8000/api/customer/creat');
+    final url = Uri.parse('http://192.168.67.155:8000/api/customer/creat');
     print(' Token: $token');
     final response = await http.post(
       url,
       headers: {
         'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       body: jsonEncode({
         "city_id": "1",
+        "district_id": "5", // مثال - يجب وضع ID صحيح
+        "area_id": "5",
         "street": "test street",
         "building": "B12",
         "floor": "3",
@@ -42,12 +44,15 @@ class SendLocationRemoteDataSourceImpl implements SendLocationRemoteDataSource {
       }),
     );
 
+    print("URL: $url");
+    print("Status Code: ${response.statusCode}");
+    print("Headers: ${response.headers}");
+    print("Response Body: ${response.body}");
+
     if (response.statusCode == 201) {
       print(" ***Location sent successfully");
-      print("Response: ${response.body}");
     } else {
-      print(" *****Failed to send location: ${response.statusCode}");
-      print("Response: ${response.body}");
+      print(" *****Failed to send location");
     }
   }
 }

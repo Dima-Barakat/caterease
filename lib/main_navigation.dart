@@ -6,6 +6,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:caterease/features/restaurants/presentation/pages/home_page.dart';
 import 'package:caterease/features/packages/presentation/pages/packages_main_page.dart';
 import 'package:caterease/features/delivery/presentation/screens/orders_main_page.dart';
+import 'package:caterease/features/customer_order_list/presentation/pages/customer_order_list_screen.dart';
 
 class MainNavigation extends StatefulWidget {
   @override
@@ -18,6 +19,7 @@ class _MainNavigationState extends State<MainNavigation> {
 
   final List<Widget> _pages = [
     HomePage(),
+    CustomerOrderListScreen(), // New screen added here
     OrdersMainPage(),
     CartPage(),
     ProfileViewPage()
@@ -32,6 +34,7 @@ class _MainNavigationState extends State<MainNavigation> {
         height: 60.0,
         items: <Widget>[
           Icon(Icons.home, size: 30, color: Colors.white),
+          Icon(Icons.list_alt, size: 30, color: Colors.white), // New icon for customer order list
           Icon(Icons.local_offer, size: 30, color: Colors.white),
           Icon(Icons.shopping_cart, size: 30, color: Colors.white),
           Icon(Icons.person, size: 30, color: Colors.white),
@@ -58,3 +61,5 @@ class _MainNavigationState extends State<MainNavigation> {
     navBarState?.setPage(index);
   }
 }
+
+

@@ -9,6 +9,9 @@ abstract class RestaurantsRemoteDataSource {
     double longitude,
   );
   Future<List<RestaurantModel>> getAllRestaurants();
+
+  // الجديد - إضافة method للفلترة حسب المحافظة
+  Future<List<RestaurantModel>> getRestaurantsByCity(int cityId);
 }
 
 class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
@@ -47,6 +50,23 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
       return restaurants.map((json) => RestaurantModel.fromJson(json)).toList();
     } else {
       throw Exception("Failed to load restaurants");
+    }
+  }
+
+  // الجديد - تنفيذ API call للفلترة حسب المحافظة
+  @override
+  Future<List<RestaurantModel>> getRestaurantsByCity(int cityId) async {
+    final response = await client.get(
+      "${ApiConstants.baseUrl}/branches/nearby?city_id=$cityId",
+    );
+
+    if (response.statusCode == 200) {
+      final responseData = json.decode(response.body);
+      final List<dynamic> restaurants = responseData["data"];
+
+      return restaurants.map((json) => RestaurantModel.fromJson(json)).toList();
+    } else {
+      throw Exception("Failed to load restaurants by city");
     }
   }
 }

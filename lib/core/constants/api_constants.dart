@@ -2,9 +2,9 @@ class ApiConstants {
   //:Base Url
   // static const String baseUrl = 'http://192.168.43.2:8000/api';
   //:Base Url
-  static const String baseUrl = "http://10.0.2.2:8000/api";
+  static const String baseUrl = "http://192.168.67.155:8000/api";
   //:Image Url
-  static const String imageUrl = "http://10.0.2.2:8000";
+  static const String imageUrl = "http://192.168.67.155:8000";
 
   //! Authentication
   //: Login Api
@@ -39,18 +39,18 @@ class ApiConstants {
   //: get nearby branches
   static const String nearbyBranches = '/branches/nearby';
   //: get all restaurants
-  static const String restaurants = '/restaurants';
+  static const String restaurants = '/restaurant';
 
   //: Cart Api
   static const String addToCart = "/cart/add";
   static const String getCartPackages = "/cart/packages";
-  static const String updateCartItem = "/cart/item/"; // يتبعه ID
-  static const String removeCartItem = "/cart/items/"; // يتبعه ID
+  static const String updateCartItem = "/cart/item/";
+  static const String removeCartItem = "/cart/items/";
 
   //! Delivery Section
   //- orders:
   //: Get All Orders
   static const String orders = "$baseUrl/delivery/orders";
   //: Get Order Details
-  static const String orderDetails = "$baseUrl/delivery/assigned-orders/"; //ID
+  static const String orderDetails = "$baseUrl/delivery/assigned-orders/";
 }
