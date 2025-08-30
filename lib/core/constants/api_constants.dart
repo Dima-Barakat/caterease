@@ -85,4 +85,5 @@ class ApiConstants {
   //- Profile
   //: Get Profile
   static const String deliveryProfile = "$baseUrl/delivery/profile";
+
 }

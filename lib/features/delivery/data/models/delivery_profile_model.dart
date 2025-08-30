@@ -1,4 +1,5 @@
 import 'package:caterease/features/delivery/domain/entities/delivery_profile.dart';
+
 import 'package:caterease/features/profile/data/models/user_model.dart';
 
 class DeliveryProfileModel extends DeliveryProfile {

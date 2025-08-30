@@ -20,7 +20,6 @@ class NetworkClient {
     String? token = await secureStorage.getAccessToken();
 
     if (kDebugMode) print("→ token from storage: $token");
-
     return {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
