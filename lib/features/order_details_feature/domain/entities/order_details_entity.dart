@@ -1,26 +1,15 @@
+import 'package:caterease/features/customer_order_list/domain/entities/bill_entity.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 class OrderDetailsEntity extends Equatable {
-  final int orderId;
-  final String status;
-  final bool isApproved;
-  final String? approvalDeadline;
-  final String? notes;
-  final String deliveryTime;
-  final String totalPrice;
+  final OrderEntity order;
   final AddressEntity address;
   final List<PackageEntity> packages;
   final BillEntity? bill;
 
   const OrderDetailsEntity({
-    required this.orderId,
-    required this.status,
-    required this.isApproved,
-    this.approvalDeadline,
-    this.notes,
-    required this.deliveryTime,
-    required this.totalPrice,
+    required this.order,
     required this.address,
     required this.packages,
     this.bill,
@@ -28,16 +17,41 @@ class OrderDetailsEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        orderId,
-        status,
-        isApproved,
-        approvalDeadline,
-        notes,
-        deliveryTime,
-        totalPrice,
+        order,
         address,
         packages,
         bill,
+      ];
+}
+
+class OrderEntity extends Equatable {
+  final int orderId;
+  final String status;
+  final bool isApproved;
+  final String? approvalDeadline;
+  final String? notes;
+  final String deliveryTime;
+  final String totalPrice;
+  final String? qrCode;
+  const OrderEntity(
+      {required this.approvalDeadline,
+      required this.deliveryTime,
+      required this.isApproved,
+      required this.notes,
+      required this.orderId,
+      required this.qrCode,
+      required this.status,
+      required this.totalPrice});
+  @override
+  List<Object?> get props => [
+        approvalDeadline,
+        deliveryTime,
+        isApproved,
+        notes,
+        orderId,
+        qrCode,
+        status,
+        totalPrice
       ];
 }
 
@@ -170,13 +184,6 @@ class ServiceEntity extends Equatable {
 class ExtraEntity extends Equatable {
   // Assuming extras can be empty for now based on the JSON example
   // If there's a structure for extras, it should be defined here.
-  @override
-  List<Object?> get props => [];
-}
-
-class BillEntity extends Equatable {
-  // Assuming bill can be null for now based on the JSON example
-  // If there's a structure for bill, it should be defined here.
   @override
   List<Object?> get props => [];
 }

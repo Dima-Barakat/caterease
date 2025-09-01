@@ -9,18 +9,23 @@ import 'package:caterease/features/cart/domain/usecases/get_cart_packages_use_ca
 import 'package:caterease/features/cart/domain/usecases/remove_cart_item_use_case.dart';
 import 'package:caterease/features/cart/domain/usecases/update_cart_item_use_case.dart';
 import 'package:caterease/features/cart/presentation/bloc/cart_bloc.dart';
+import 'package:caterease/features/customer_order_list/domain/usecases/apply_coupon_use_case.dart';
 import 'package:caterease/features/customer_order_list/domain/usecases/delete_order_use_case.dart';
 
 import 'package:caterease/features/customer_order_list/data/datasources/customer_order_list_remote_data_source.dart';
 import 'package:caterease/features/customer_order_list/data/repositories/customer_order_list_repository_impl.dart';
 import 'package:caterease/features/customer_order_list/domain/repositories/customer_order_list_repository.dart';
+import 'package:caterease/features/customer_order_list/domain/usecases/get_bill_use_case.dart';
 import 'package:caterease/features/customer_order_list/domain/usecases/get_customer_order_list_use_case.dart';
+import 'package:caterease/features/customer_order_list/domain/usecases/get_payment_code_use_case.dart';
+import 'package:caterease/features/customer_order_list/domain/usecases/submit_payment_use_case.dart';
 import 'package:caterease/features/customer_order_list/presentation/bloc/customer_order_list_bloc.dart';
 import 'package:caterease/features/customer_orders/data/datasources/customer_order_remote_data_source.dart';
 import 'package:caterease/features/customer_orders/data/repositories/customer_order_repository_impl.dart';
 import 'package:caterease/features/customer_orders/domain/repositories/customer_order_repository.dart';
 import 'package:caterease/features/customer_orders/domain/usecases/create_customer_order_use_case.dart';
 import 'package:caterease/features/customer_orders/presentation/bloc/customer_order_bloc.dart';
+import 'package:caterease/features/delivery/domain/usecases/order_use_cases.dart';
 
 import 'package:caterease/features/location/data/datasources/location_data_source.dart';
 import 'package:caterease/features/delivery/data/datasources/delivery_profile_remote_data_source.dart';
@@ -39,9 +44,9 @@ import 'package:caterease/features/order_details_feature/data/datasources/order_
 import 'package:caterease/features/order_details_feature/data/datasources/order_details_remote_data_source_impl.dart';
 import 'package:caterease/features/order_details_feature/data/repositories/order_details_repository_impl.dart';
 import 'package:caterease/features/order_details_feature/domain/repositories/order_details_repository.dart';
+import 'package:caterease/features/order_details_feature/domain/usecases/get_order_details_usecase.dart';
 import 'package:caterease/features/order_details_feature/presentation/bloc/order_details_bloc.dart';
 
-import 'package:caterease/features/order_details_feature/domain/usecases/get_order_details_usecase.dart';
 import 'package:caterease/features/packages/data/datasources/packages_remote_data_source.dart';
 import 'package:caterease/features/packages/data/repositories/packages_repository_impl.dart';
 import 'package:caterease/features/packages/domain/repositories/packages_repository.dart';
@@ -254,7 +259,7 @@ Future<void> _initAddress() async {
 // ---------------- ORDER ----------------
 Future<void> _initOrder() async {
   sl.registerFactory(() => DeliveryOrderBloc(sl()));
-  sl.registerLazySingleton(() => GetOrderDetailsUseCase(sl()));
+  sl.registerLazySingleton(() => OrderUseCases(sl()));
   sl.registerLazySingleton<BaseOrderRepository>(
       () => OrderRepository(dataSource: sl()));
   sl.registerLazySingleton<BaseOrderRemoteDataSource>(
@@ -274,11 +279,18 @@ Future<void> _initCustomerOrders() async {
 // ---------------- CUSTOMER ORDER LIST ----------------
 Future<void> _initCustomerOrderList() async {
   sl.registerFactory(() => CustomerOrderListBloc(
-        getCustomerOrderListUseCase: sl(),
-        deleteOrderUseCase: sl(),
-      ));
+      getCustomerOrderListUseCase: sl(),
+      deleteOrderUseCase: sl(),
+      submitPaymentUseCase: sl(),
+      getBillUseCase: sl(),
+      applyCouponUseCase: sl(),
+      getPaymentCodeUseCase: sl()));
   sl.registerLazySingleton(() => GetCustomerOrderListUseCase(repository: sl()));
   sl.registerLazySingleton(() => DeleteOrderUseCase(sl()));
+  sl.registerLazySingleton(() => GetPaymentCodeUseCase(sl()));
+  sl.registerLazySingleton(() => ApplyCouponUseCase(sl()));
+  sl.registerLazySingleton(() => SubmitPaymentUseCase(sl()));
+  sl.registerLazySingleton(() => GetBillUseCase(sl()));
   sl.registerLazySingleton<CustomerOrderListRepository>(() =>
       CustomerOrderListRepositoryImpl(
           remoteDataSource: sl(), networkInfo: sl()));
@@ -289,6 +301,7 @@ Future<void> _initCustomerOrderList() async {
 // ---------------- CUSTOMER ORDER DETAILS ----------------
 Future<void> _initCustomerOrderDetails() async {
   sl.registerFactory(() => OrderDetailsBloc(getOrderDetailsUseCase: sl()));
+  sl.registerLazySingleton(() => GetOrderDetailsUseCase(sl()));
   sl.registerLazySingleton<OrderDetailsRepository>(
       () => OrderDetailsRepositoryImpl(remoteDataSource: sl()));
   sl.registerLazySingleton<OrderDetailsRemoteDataSource>(

@@ -1,6 +1,6 @@
 class ApiConstants {
   //:Base Url
-  // static const String baseUrl = 'http://192.168.1.129:8000/api';
+  // static const String baseUrl = 'http://10.125.84.87:8000/api';
   //:Base Url
   static const String baseUrl = "http://10.0.2.2:8000/api";
   //:Image Url
@@ -52,16 +52,20 @@ class ApiConstants {
   //: get all restaurants
   static const String restaurants = '/restaurant';
 
-  //: Cart Api
+  //- Cart Api
   static const String addToCart = "/cart/add";
   static const String getCartPackages = "/cart/packages";
   static const String updateCartItem = "/cart/item/"; // يتبعه ID
   static const String removeCartItem = "/cart/items/"; // يتبعه ID
 
-  //: Payment
+  //- Bill and  Payment
   static const String bill = "$baseUrl/bill/orders/{id}";
   static const String clientSecret = "$baseUrl/payment/intent";
-  static const String pay = "$baseUrl/order/orders/{id}/prepayment";
+  // static const String pay = "$baseUrl/order/orders/{id}/prepayment";
+  static const String pay = "$baseUrl/payment/bills/{id}/pay";
+
+  static const String applyCoupon =
+      "$baseUrl/coupon/bills/{billId}/apply-coupon";
 
   //! Delivery Section
   //- orders:

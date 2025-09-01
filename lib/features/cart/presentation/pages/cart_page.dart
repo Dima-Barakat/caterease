@@ -5,7 +5,6 @@ import 'package:caterease/features/customer_orders/presentation/pages/create_ord
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:caterease/features/cart/presentation/bloc/cart_bloc.dart';
-import 'package:caterease/features/cart/domain/entities/update_cart_item_request.dart';
 import 'package:caterease/core/theming/app_theme.dart';
 import 'package:caterease/features/customer_orders/presentation/bloc/customer_order_bloc.dart';
 import 'package:caterease/features/profile/presentation/controller/bloc/address/address_bloc.dart';
@@ -130,8 +129,7 @@ class _CartPageState extends State<CartPage> {
                                 children: [
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(16),
-                                    child: (item.packageImage != null &&
-                                            item.packageImage.isNotEmpty)
+                                    child: (item.packageImage.isNotEmpty)
                                         ? Base64ImageWidget(
                                             base64String: item.packageImage,
                                             height: 180,

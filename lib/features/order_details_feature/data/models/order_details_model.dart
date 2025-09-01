@@ -1,25 +1,14 @@
+import 'package:caterease/features/customer_order_list/data/models/bill_model.dart';
 import 'package:caterease/features/order_details_feature/domain/entities/order_details_entity.dart';
 
 class OrderDetailsModel extends OrderDetailsEntity {
-  OrderDetailsModel({
-    required int orderId,
-    required String status,
-    required bool isApproved,
-    String? approvalDeadline,
-    String? notes,
-    required String deliveryTime,
-    required String totalPrice,
+  const OrderDetailsModel({
+    required OrderModel order,
     required AddressModel address,
     required List<PackageModel> packages,
     BillModel? bill,
   }) : super(
-          orderId: orderId,
-          status: status,
-          isApproved: isApproved,
-          approvalDeadline: approvalDeadline,
-          notes: notes,
-          deliveryTime: deliveryTime,
-          totalPrice: totalPrice,
+          order: order,
           address: address,
           packages: packages,
           bill: bill,
@@ -28,13 +17,7 @@ class OrderDetailsModel extends OrderDetailsEntity {
   factory OrderDetailsModel.fromJson(Map<String, dynamic> json) {
     final data = json["data"] ?? {};
     return OrderDetailsModel(
-      orderId: data["order_id"] ?? 0,
-      status: data["status"] ?? '',
-      isApproved: data["is_approved"] ?? false,
-      approvalDeadline: data["approval_deadline"] ?? '',
-      notes: data["notes"] ?? '',
-      deliveryTime: data["delivery_time"] ?? '',
-      totalPrice: data["total_price"] ?? '0',
+      order: OrderModel.fromJson(data['order']),
       address: AddressModel.fromJson(data["address"] ?? {}),
       packages: (data["packages"] as List? ?? [])
           .map((e) => PackageModel.fromJson(e))
@@ -44,20 +27,40 @@ class OrderDetailsModel extends OrderDetailsEntity {
   }
 }
 
+class OrderModel extends OrderEntity {
+  const OrderModel({
+    required super.approvalDeadline,
+    required super.deliveryTime,
+    required super.isApproved,
+    required super.notes,
+    required super.orderId,
+    required super.qrCode,
+    required super.status,
+    required super.totalPrice,
+  });
+
+  factory OrderModel.fromJson(Map<String, dynamic> json) {
+    return OrderModel(
+      orderId: json['id'],
+      status: json['status'] ?? '',
+      approvalDeadline: json['approval_deadline'] ?? '',
+      deliveryTime: json['delivery_time'] ?? '',
+      isApproved: json['is_approved'] ?? '',
+      totalPrice: json['total_price'] ?? '',
+      notes: json['notes'] ?? '',
+      qrCode: json['qr'] ?? '',
+    );
+  }
+}
+
 class AddressModel extends AddressEntity {
-  AddressModel({
-    required String street,
-    required String building,
-    required String floor,
-    required String apartment,
-    required String city,
-  }) : super(
-          street: street,
-          building: building,
-          floor: floor,
-          apartment: apartment,
-          city: city,
-        );
+  const AddressModel({
+    required super.street,
+    required super.building,
+    required super.floor,
+    required super.apartment,
+    required super.city,
+  });
 
   factory AddressModel.fromJson(Map<String, dynamic> json) {
     return AddressModel(
@@ -201,10 +204,4 @@ class ExtraModel extends ExtraEntity {
   }
 }
 
-class BillModel extends BillEntity {
-  BillModel();
 
-  factory BillModel.fromJson(Map<String, dynamic> json) {
-    return BillModel();
-  }
-}

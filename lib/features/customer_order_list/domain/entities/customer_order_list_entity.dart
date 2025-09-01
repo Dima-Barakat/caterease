@@ -5,17 +5,17 @@ class CustomerOrderListEntity extends Equatable {
   final int orderId;
   final String status;
   final String deliveryTime;
+  final double totalPrice;
   final List<PackageEntity> packages;
 
   const CustomerOrderListEntity({
     required this.orderId,
     required this.status,
     required this.deliveryTime,
+    required this.totalPrice,
     required this.packages,
   });
 
   @override
   List<Object?> get props => [orderId, status, deliveryTime, packages];
 }
-
-
