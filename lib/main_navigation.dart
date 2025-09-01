@@ -5,7 +5,6 @@ import 'package:caterease/features/profile/presentation/screens/profile/profile_
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:caterease/features/restaurants/presentation/pages/home_page.dart';
-import 'package:caterease/features/packages/presentation/pages/packages_main_page.dart';
 
 class MainNavigation extends StatefulWidget {
   @override

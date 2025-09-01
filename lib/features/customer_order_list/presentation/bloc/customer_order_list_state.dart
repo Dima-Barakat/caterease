@@ -1,3 +1,4 @@
+import 'package:caterease/features/customer_order_list/data/models/bill_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:caterease/features/customer_order_list/domain/entities/customer_order_list_entity.dart';
 
@@ -49,4 +50,55 @@ class OrderDeleted extends CustomerOrderListState {
   List<Object> get props => [orderId, message];
 }
 
+////Bill
+class LoadingBill extends CustomerOrderListState {}
 
+class SuccessBill extends CustomerOrderListState {
+  final BillModel bill;
+
+  const SuccessBill(this.bill);
+  @override
+  List<Object> get props => [bill];
+}
+
+class ErrorBill extends CustomerOrderListState {
+  final String message;
+  const ErrorBill(this.message);
+
+  @override
+  List<Object> get props => [message];
+}
+
+//// EPayment
+
+class LoadingEPayment extends CustomerOrderListState {}
+
+class SuccessEPayment extends CustomerOrderListState {
+  final String data;
+  const SuccessEPayment({required this.data});
+  List<Object> get props => [data];
+}
+
+class ErrorEPayment extends CustomerOrderListState {
+  final String message;
+  const ErrorEPayment(this.message);
+  @override
+  List<Object> get props => [message];
+}
+
+//// Pay
+
+class LoadingPay extends CustomerOrderListState {}
+
+class SuccessPay extends CustomerOrderListState {
+  List<Object> get props => [];
+}
+
+class ErrorPay extends CustomerOrderListState {
+  final String message;
+  const ErrorPay(this.message);
+  @override
+  List<Object> get props => [message];
+}
+
+class CouponSuccess extends CustomerOrderListState {}

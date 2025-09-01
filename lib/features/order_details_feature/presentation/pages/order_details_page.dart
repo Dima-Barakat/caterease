@@ -141,15 +141,16 @@ class OrderDetailsPage extends StatelessWidget {
             title: 'معلومات الطلب',
             icon: Icons.receipt_long,
             children: [
-              _infoTile(Icons.confirmation_number, 'الحالة', order.status,
-                  statusColor(order.status)),
+              _infoTile(Icons.confirmation_number, 'الحالة', order.order.status,
+                  statusColor(order.order.status)),
               _infoTile(Icons.check_circle, 'تمت الموافقة',
-                  order.isApproved ? 'نعم' : 'لا', null),
-              _infoTile(Icons.timer, 'وقت التوصيل', order.deliveryTime, null),
+                  order.order.isApproved ? 'نعم' : 'لا', null),
+              _infoTile(
+                  Icons.timer, 'وقت التوصيل', order.order.deliveryTime, null),
               _infoTile(Icons.attach_money, 'السعر الإجمالي',
-                  '\$${order.totalPrice}', AppTheme.lightGreen),
-              if (order.notes != null)
-                _infoTile(Icons.note, 'ملاحظات', order.notes!, null),
+                  '\$${order.order.totalPrice}', AppTheme.lightGreen),
+              if (order.order.notes != null)
+                _infoTile(Icons.note, 'ملاحظات', order.order.notes!, null),
             ],
           ),
           const SizedBox(height: 16),
@@ -167,10 +168,28 @@ class OrderDetailsPage extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Center(
-            child: QrImageView(
-              data: 'kljhqwerkljhqwerkjhqwerlkjhqwer',
-              version: QrVersions.auto,
-              size: 120,
+            child: Container(
+              width: 140, // Square size
+              height: 140, // Same as width
+              decoration: BoxDecoration(
+                color: Colors.white, // Background color behind QR
+                borderRadius: BorderRadius.circular(20), // Round edges
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 6,
+                    offset: Offset(2, 2),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: QrImageView(
+                  data: order.order.qrCode ?? 'XXXXX',
+                  version: QrVersions.auto,
+                  size: 120, // Slightly smaller for padding
+                ),
+              ),
             ),
           ),
           const SizedBox(height: 16),

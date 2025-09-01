@@ -25,10 +25,53 @@ class _QRScannerPageState extends State<QRScannerPage> {
       _isScanned = true;
       _scannedCode = code;
 
-      context.read<DeliveryOrderBloc>().add(ScanCodeEvent(code: code));
-
-      _showScanResultDialog();
+      _showNoteDialog(code);
     }
+  }
+
+  void _showNoteDialog(String code) {
+    final TextEditingController noteController = TextEditingController();
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) {
+        return AlertDialog(
+          title: const Text('Add Note'),
+          content: TextField(
+            controller: noteController,
+            maxLines: 3,
+            decoration: const InputDecoration(
+              hintText: 'Enter a note (optional)',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+                setState(() => _isScanned = false); // allow rescanning
+              },
+              child: const Text('Cancel', style: TextStyle(color: Colors.red)),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+                context.read<DeliveryOrderBloc>().add(
+                      ScanCodeEvent(
+                          code: code,
+                          note: noteController.text.trim().isEmpty
+                              ? null
+                              : noteController.text.trim()),
+                    );
+                _showScanResultDialog();
+              },
+              child: const Text('Submit'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _showScanResultDialog() {
@@ -37,62 +80,54 @@ class _QRScannerPageState extends State<QRScannerPage> {
       barrierDismissible: false,
       builder: (ctx) {
         return BlocConsumer<DeliveryOrderBloc, DeliveryOrderState>(
-          listener: (context, state) {},
+          listener: (context, state) {
+            if (state is SuccessScanCodeState) {
+              // ✅ Do Bloc stuff immediately on success
+              context
+                  .read<DeliveryOrderBloc>()
+                  .add(GetOrderDetailsEvent(widget.id));
+              Navigator.pop(context); // Close the dialog
+              Navigator.pop(
+                  context, "Code Scanned successfully"); // Pop scanner page
+            }
+          },
           builder: (context, state) {
-            Widget content;
-            List<Widget> actions = [];
             if (state is LoadingScanCodeState) {
-              content = LoadingAnimationWidget.flickr(
-                leftDotColor: AppTheme.darkGray,
-                rightDotColor: AppTheme.lightBlue,
-                size: 30,
-              );
-            } else if (state is SuccessScanCodeState) {
-              content = Text(_scannedCode ?? 'Code scanned');
-              actions.add(
-                TextButton(
-                  onPressed: () {
-                    context
-                        .read<DeliveryOrderBloc>()
-                        .add(GetOrderDetailsEvent(widget.id));
-                    Navigator.pop(context);
-                    Navigator.pop(context, "Code Scanned successfully");
-                  },
-                  child: Text(
-                    'OK',
-                    style: TextStyle(color: Theme.of(context).primaryColor),
-                  ),
+              return AlertDialog(
+                title: const Text('Processing...'),
+                content: LoadingAnimationWidget.flickr(
+                  leftDotColor: AppTheme.darkGray,
+                  rightDotColor: AppTheme.lightBlue,
+                  size: 30,
                 ),
               );
             } else if (state is ErrorScanCodeState) {
-              content = Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.error, color: Colors.red, size: 30),
-                  const SizedBox(height: 10),
-                  Text(state.message, textAlign: TextAlign.center),
+              return AlertDialog(
+                title: const Text('Error'),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.error, color: Colors.red, size: 30),
+                    const SizedBox(height: 10),
+                    Text(state.message, textAlign: TextAlign.center),
+                  ],
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context); // Close dialog
+                      setState(() => _isScanned = false); // Allow rescanning
+                    },
+                    child: const Text(
+                      'Close',
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ),
                 ],
               );
-              actions.add(
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    setState(() => _isScanned = false);
-                  },
-                  child: const Text(
-                    'Close',
-                    style: TextStyle(color: Colors.red),
-                  ),
-                ),
-              );
-            } else {
-              content = const Text('Code scanned');
             }
-            return AlertDialog(
-              title: const Text('Result'),
-              content: content,
-              actions: actions,
-            );
+            // Show nothing if not loading or error
+            return const SizedBox.shrink();
           },
         );
       },

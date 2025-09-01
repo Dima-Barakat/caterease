@@ -20,6 +20,13 @@ class SecureStorage {
     await storage.write(key: 'name', value: name.toString());
   }
 
+  //: Save Device Token
+  Future<void> saveDeviceToken(String? deviceToken) async {
+    if (deviceToken != null) {
+      await storage.write(key: 'device_token', value: deviceToken);
+    }
+  }
+
   //: Read the Access-Token from the storage
   Future<String?> getAccessToken() async =>
       await storage.read(key: 'access_token');
@@ -32,6 +39,10 @@ class SecureStorage {
 
   //: Read the User's Role from the storage
   Future<String?> getRole() async => await storage.read(key: "role");
+
+  //: Read Device Token
+  Future<String?> getDeviceToken() async =>
+      await storage.read(key: "device_token");
 
   //: Clear all data on logout
   Future<void> clearAll() async => await storage.deleteAll();

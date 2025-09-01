@@ -3,21 +3,21 @@ import 'package:caterease/features/customer_order_list/domain/entities/customer_
 
 class CustomerOrderListModel extends CustomerOrderListEntity {
   const CustomerOrderListModel({
-    required int orderId,
+    required super.orderId,
     String? status,
     String? deliveryTime,
-    required List<PackageModel> packages,
+    required super.totalPrice,
+    required List<PackageModel> super.packages,
   }) : super(
-          orderId: orderId,
           status: status ?? "", // قيمة افتراضية لو null
-          deliveryTime: deliveryTime ?? "", // قيمة افتراضية لو null
-          packages: packages,
+          deliveryTime: deliveryTime ?? "",
         );
 
   factory CustomerOrderListModel.fromJson(Map<String, dynamic> json) {
     return CustomerOrderListModel(
       orderId: json["order_id"] ?? 0,
       status: json["status"] as String?,
+      totalPrice: json["total_price"] as double,
       deliveryTime: json["delivery_time"] as String?,
       packages: (json["packages"] as List? ?? [])
           .map((e) => PackageModel.fromJson(e))

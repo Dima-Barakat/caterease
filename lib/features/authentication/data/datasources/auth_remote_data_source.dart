@@ -7,6 +7,7 @@ import 'package:caterease/features/profile/data/models/user_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:caterease/core/constants/api_constants.dart';
 import 'package:caterease/features/authentication/data/models/authentication_model.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 abstract class BaseAuthRemoteDataSource {
   Future<AuthenticationModel> login(String email, String password);
@@ -41,9 +42,12 @@ class AuthRemoteDataSource implements BaseAuthRemoteDataSource {
 
   @override
   Future<AuthenticationModel> login(String email, String password) async {
+    String? token = await FirebaseMessaging.instance.getToken();
+
     final formData = {
       'email': email,
       'password': password,
+      'device_token': token
     };
     try {
       final response = await client.post(ApiConstants.login, body: formData);
@@ -69,6 +73,7 @@ class AuthRemoteDataSource implements BaseAuthRemoteDataSource {
     required String phone,
     required String gender,
   }) async {
+    String? token = await FirebaseMessaging.instance.getToken();
     try {
       final formData = {
         'name': name,
@@ -77,6 +82,7 @@ class AuthRemoteDataSource implements BaseAuthRemoteDataSource {
         'password_confirmation': passwordConfirmation,
         'phone': phone,
         'gender': gender,
+        'device_token': token,
       };
       final response = await client.post(ApiConstants.register, body: formData);
 
